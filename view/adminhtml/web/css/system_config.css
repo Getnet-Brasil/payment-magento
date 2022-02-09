@@ -4,7 +4,7 @@
  * @author    Bruno Elisei <brunoelisei@o2ti.com>
  * See LICENSE for license details.
  */
-.complex.getnet-payment-section .heading strong {
+ a#payment_other_getnet_base-head {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,6 +23,7 @@
 
 .complex.getnet-payment-section .getnet-payment-byline {
   flex-basis: 85%;
+  font-size: 12px;
   padding-left: 2%;
 }
 

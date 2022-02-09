@@ -145,7 +145,7 @@ class TxnIdBoletoHandler implements HandlerInterface
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_BOLETO_EXPIRATION_DATE,
-            $payBoleto[self::RESPONSE_BOLETO_EXPIRATION_DATE]
+            str_replace($payBoleto[self::RESPONSE_BOLETO_EXPIRATION_DATE], 'Z', '')
         );
 
         $payment->setAdditionalInformation(
