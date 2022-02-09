@@ -1,0 +1,44 @@
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+.complex.getnet-payment-section .heading strong {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: normal;
+}
+
+.complex.getnet-payment-section .getnet-payment-logo {
+  flex-basis: 15%;
+  height: 70px;
+  background: url('../images/logo.svg') no-repeat center center;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
+}
+
+.complex.getnet-payment-section .getnet-payment-byline {
+  flex-basis: 85%;
+  padding-left: 2%;
+}
+
+.complex.getnet-payment-section .button-container { float: right; }
+
+fieldset#payment_other_getnet_base,
+fieldset#payment_us_getnet_base {
+  margin-left: 2%;
+}
+
+.getnet-featured-session {
+  background-color:#f8f8f8;
+  border:1px solid #e3e3e3;
+  padding:10px;
+}
+
+.getnet-sub-title {
+  padding-top: 15px;
+}

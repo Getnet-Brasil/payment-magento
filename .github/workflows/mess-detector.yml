@@ -1,0 +1,12 @@
+name: Magento Mess Detector
+on: [push, pull_request]
+
+jobs:
+  phpmd:
+    name: Magento Mess Detector
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Running Magento 2 Mess Detector
+        uses: extdn/github-actions-m2/magento-mess-detector@master

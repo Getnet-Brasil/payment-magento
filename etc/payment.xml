@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<payment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/payment.xsd">
+    <groups>
+        <group id="getnet_group">
+            <label>Getnet</label>
+        </group>
+    </groups>
+    <methods>
+        <method name="getnet_paymentmagento_cc">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
+        <method name="getnet_paymentmagento_boleto">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
+        <method name="getnet_paymentmagento_pix">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
+    </methods>
+    <credit_cards>
+        <type id="HC" order="130">
+            <label>Hipercard</label>
+        </type>
+        <type id="ELO" order="140">
+            <label>Elo</label>
+        </type>
+    </credit_cards>
+</payment>

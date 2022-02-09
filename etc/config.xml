@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <getnet_paymentmagento>
+                <debug>0</debug>
+                <active>1</active>
+                <environment>production</environment>
+                <statement_descriptor>Store Name</statement_descriptor>
+                <client_id_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_id_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <oauth_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <oauth_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <key_public_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <key_public_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <model>PaymentMagentoBaseFacade</model>
+                <order_status>payment_review</order_status>
+                <payment_action>authorize</payment_action>
+                <title>Getnet</title>
+                <currency>BRL</currency>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>0</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <min_order_total>5</min_order_total>
+                <max_order_total>1000000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+                <group>getnet_group</group>
+                <get_tax_document_from>address</get_tax_document_from>
+                <street>0</street>
+                <number>1</number>
+                <district>2</district>
+                <complement>3</complement>
+                <min_order_total>5</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+            </getnet_paymentmagento>
+            <getnet_paymentmagento_cc>
+                <active>1</active>
+                <model>PaymentMagentoCcFacade</model>
+                <order_status>processing</order_status>
+                <payment_action>authorize_capture</payment_action>
+                <title>Cartão de Crédito</title>
+                <currency>BRL</currency>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>cc_installments,cc_type,cc_number,cc_cardholder_name,cc_holder_tax_document,cc_holder_phone,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</paymentInfoKeys>
+                <privateInfoKeys>device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</privateInfoKeys>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize_vault>1</can_authorize_vault>
+                <can_capture_vault>1</can_capture_vault>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_review_payment>1</can_review_payment>
+                <can_deny_payment>1</can_deny_payment>
+                <can_accept_payment>1</can_accept_payment>
+                <group>getnet_group</group>
+                <cctypes>HC,ELO,AE,VI,MC</cctypes>
+                <cctypes_mapper><![CDATA[{"Amex":"AE","Elo":"ELO","Mastercard":"MC","MasterCard":"MC","Visa":"VI","Hipercard":"HC"}]]></cctypes_mapper>
+                <cvv_enabled>1</cvv_enabled>
+                <fraud_manager>1</fraud_manager>
+                <installment_min_installment>5</installment_min_installment>
+                <installment_max_installment>12</installment_max_installment>
+                <installment_interest_1>0</installment_interest_1>
+                <installment_interest_2>0</installment_interest_2>
+                <installment_interest_3>0</installment_interest_3>
+                <installment_interest_4>0</installment_interest_4>
+                <installment_interest_5>0</installment_interest_5>
+                <installment_interest_6>0</installment_interest_6>
+                <installment_interest_7>0</installment_interest_7>
+                <installment_interest_8>0</installment_interest_8>
+                <installment_interest_9>0</installment_interest_9>
+                <installment_interest_10>0</installment_interest_10>
+                <installment_interest_11>0</installment_interest_11>
+                <installment_interest_12>0</installment_interest_12>
+                <get_tax_document>0</get_tax_document>
+                <get_phone>0</get_phone>
+                <min_order_total>1</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+            </getnet_paymentmagento_cc>
+            <getnet_paymentmagento_cc_vault>
+                <active>1</active>
+                <model>PaymentMagentoCcVaultFacade</model>
+                <title>Stored Cards (Getnet)</title>
+                <can_use_internal>0</can_use_internal>
+                <cvv_enabled>1</cvv_enabled>
+                <group>getnet_group</group>
+            </getnet_paymentmagento_cc_vault>
+            <getnet_paymentmagento_boleto>
+                <active>1</active>
+                <model>PaymentMagentoBoletoFacade</model>
+                <order_status>pending</order_status>
+                <title>Boleto Bancário</title>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>boleto_line_code,boleto_pdf_href,boleto_expiration_date,boleto_our_number,boleto_document_number,boleto_payer_fullname,boleto_payer_tax_document</paymentInfoKeys>
+                <payment_action>order</payment_action>
+                <can_initialize>1</can_initialize>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>0</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>0</can_refund>
+                <can_void>0</can_void>
+                <can_cancel>1</can_cancel>
+                <group>getnet_group</group>
+                <expiration>1</expiration>
+                <instruction_line>Não receber após vencimento.</instruction_line>
+                <instruction_checkout><![CDATA[Pagar o boleto em qualquer casa lotérica ou internet bank.
+O boleto não será enviado ao seu endereço.
+Não parcelamos no boleto.]]></instruction_checkout>
+                <get_name>0</get_name>
+                <get_tax_document>0</get_tax_document>
+                <min_order_total>1</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+            </getnet_paymentmagento_boleto>
+            <getnet_paymentmagento_pix>
+                <active>1</active>
+                <model>PaymentMagentoPixFacade</model>
+                <order_status>pending</order_status>
+                <title>Pix</title>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>qr_code_image,qr_code,creation_date_qrcode,expiration_date_qrcode,psp_code</paymentInfoKeys>
+                <privateInfoKeys>creation_date_qrcode,psp_code</privateInfoKeys>
+                <payment_action>order</payment_action>
+                <can_initialize>1</can_initialize>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>0</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>0</can_refund>
+                <can_void>0</can_void>
+                <can_cancel>1</can_cancel>
+                <group>getnet_group</group>
+                <expiration>30</expiration>
+                <instruction_checkout><![CDATA[O prazo de pagamento é de até 3 minutos.
+O QrCode para pagamento será exibido ao finalizar o pedido.
+A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruction_checkout>
+                <min_order_total>1</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+            </getnet_paymentmagento_pix>
+            <getnet_paymentmagento_getpay>
+                <active>1</active>
+                <model>PaymentMagentoGetpayFacade</model>
+                <order_status>pending</order_status>
+                <title>Getpay</title>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>getpay_link,getpay_expiration_date</paymentInfoKeys>
+                <payment_action>order</payment_action>
+                <can_initialize>1</can_initialize>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>0</can_use_checkout>
+                <can_capture>0</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>0</can_refund>
+                <can_void>0</can_void>
+                <can_cancel>1</can_cancel>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <group>getnet_group</group>
+                <expiration>1</expiration>
+                <instruction_checkout><![CDATA[Ao finalizar o pedido será criado um link e enviado por email para o cliente realizar o pagamento.]]></instruction_checkout>
+                <product_type>physical_goods</product_type>
+                <allowed_methods>credit,debit</allowed_methods>
+                <max_installments>12</max_installments>
+                <min_order_total>1</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+            </getnet_paymentmagento_getpay>
+        </payment>
+    </default>
+</config>

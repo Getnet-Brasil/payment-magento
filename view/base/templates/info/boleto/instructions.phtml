@@ -1,0 +1,103 @@
+<?php
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+
+/**
+ * @var \Magento\Payment\Block\Info $block
+ * @see \Magento\Payment\Block\Info
+ */
+$specificInfo = $block->getSpecificInformation();
+$title = $block->escapeHtml($block->getMethod()->getTitle());
+$boletoLineCode = isset($specificInfo['boleto_line_code']) ? $specificInfo['boleto_line_code']: null;
+$boletoPdfHref = isset($specificInfo['boleto_pdf_href']) ? $specificInfo['boleto_pdf_href'] : null;
+$expirationDateBoleto = isset($specificInfo['boleto_expiration_date']) ? $specificInfo['boleto_expiration_date'] : null;
+$boletoOurNumber = isset($specificInfo['boleto_our_number']) ? $specificInfo['boleto_our_number'] : null;
+$boletoDocumentNumber = isset($specificInfo['boleto_document_number']) ? $specificInfo['boleto_document_number'] : null;
+$boletoPayerFullname = isset($specificInfo['boleto_payer_fullname']) ? $specificInfo['boleto_payer_fullname'] : null;
+// phpcs:ignore Generic.Files.LineLength
+$boletoPayerTaxDocument = isset($specificInfo['boleto_payer_tax_document']) ? $specificInfo['boleto_payer_tax_document'] : null;
+?>
+<h4><?= /* @noEscape */ $title ?></h4>
+<?php if ($specificInfo): ?>
+    <div class="getnet-instruction boleto">
+        <?php if ($expirationDateBoleto): ?>
+        <div class="instruction-information expiration">
+            <div>
+                <?= $block->escapeHtml(__('Your payment is valid until')); ?>
+            </div>
+            <div class="expiration-date">
+                <strong>
+                    <?= /* @noEscape */ $expirationDateBoleto; ?>
+                </strong>
+            </div>
+        </div>
+        <?php endif;?>
+        <?php if ($boletoLineCode): ?>
+            <div class="instruction-information barcode">
+                <div class="step-to-pay">
+                    <?= $block->escapeHtml(__('Barcode of your Boleto is')); ?>
+                </div>
+                <div class="boleto-text">
+                    <textarea id="qr-code-value"
+                        rows="3" cols="30" readonly><?= $block->escapeHtml($boletoLineCode) ?></textarea>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if ($boletoPdfHref): ?>
+            <div class="instruction-information link">
+                <div class="step-to-pay">
+                    <?= $block->escapeHtml(__('Link to Pay')); ?>
+                </div>
+                <div class="boleto-link">
+                    <a target="_blank"
+                        href="<?=  $block->escapeHtml($boletoPdfHref) ?>" 
+                        alt="<?= /* @noEscape */ $title ?>"><?= $block->escapeHtml(__('Download the Boleto')); ?></a>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if ($boletoOurNumber): ?>
+            <div class="instruction-information boleto-more-information">
+                <div class="label">
+                    <?= $block->escapeHtml(__('Nosso Número')); ?>
+                </div>
+                <div class="value">
+                    <?=  $block->escapeHtml($boletoOurNumber) ?>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if ($boletoDocumentNumber): ?>
+            <div class="instruction-information boleto-more-information">
+                <div class="label">
+                    <?= $block->escapeHtml(__('Document Number')); ?>
+                </div>
+                <div class="value">
+                    <?=  $block->escapeHtml($boletoDocumentNumber) ?>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if ($boletoPayerFullname): ?>
+            <div class="instruction-information boleto-more-information">
+                <div class="label">
+                    <?= $block->escapeHtml(__('Issued on behalf of')); ?>
+                </div>
+                <div class="value">
+                    <?=  $block->escapeHtml($boletoPayerFullname) ?>
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if ($boletoPayerTaxDocument): ?>
+            <div class="instruction-information boleto-more-information">
+                <div class="label">
+                    <?= $block->escapeHtml(__('Taxvat')); ?>
+                </div>
+                <div class="value">
+                    <?=  $block->escapeHtml($boletoPayerTaxDocument) ?>
+                </div>
+            </div>
+        <?php endif;?>
+    </div>
+<?php endif;?>

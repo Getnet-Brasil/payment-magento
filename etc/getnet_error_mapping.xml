@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/error_mapping.xsd">
+    <message_list>
+        <!-- GENERIC -->
+        <message code="GENERIC-400" translate="true">Erro genérico.</message>
+
+        <!-- CONFIG -->
+        <message code="CONFIG-403" translate="true">O pagamento por boleto não está habilitado para esse estabelecimento.</message>
+
+        <!-- PAYMENTS -->
+        <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
+        <message code="PAYMENTS-013" translate="true">Valor da parcela inválido.</message>
+        <message code="PAYMENTS-015" translate="true">Contatar emissor.</message>
+        <message code="PAYMENTS-016" translate="true">NSU inválido.</message>
+        <message code="PAYMENTS-019" translate="true">Data de emissão do cartão inválida.</message>
+        <message code="PAYMENTS-020" translate="true">Data de vencimento inválida.</message>
+        <message code="PAYMENTS-024" translate="true">Transação desfeita.</message>
+        <message code="PAYMENTS-025" translate="true">Autenticação inválida.</message>
+        <message code="PAYMENTS-026" translate="true">Autorização inválida.</message>
+        <message code="PAYMENTS-029" translate="true">Pré-autorização inválida.</message>
+        <message code="PAYMENTS-044" translate="true">Erro de formato.</message>
+        <message code="PAYMENTS-050" translate="true">Entrar em contato com a instituição.</message>
+        <message code="PAYMENTS-051" translate="true">Resposta parametrizada negativa.</message>
+        <message code="PAYMENTS-054" translate="true">Pendente de confirmação.</message>
+        <message code="PAYMENTS-055" translate="true">Transação cancelada.</message>
+        <message code="PAYMENTS-056" translate="true">Transação não permitida neste ciclo.</message>
+        <message code="PAYMENTS-058" translate="true">Transação estornada.</message>
+        <message code="PAYMENTS-059" translate="true">Cartão obrigatório na transação.</message>
+        <message code="PAYMENTS-061" translate="true">Rejeição genérica.</message>
+        <message code="PAYMENTS-066" translate="true">Forma de pagamento inválido.</message>
+        <message code="PAYMENTS-068" translate="true">Dígito cartão inválido.</message>
+        <message code="PAYMENTS-069" translate="true">Transação repetida.</message>
+        <message code="PAYMENTS-070" translate="true">Número do cartão não confere.</message>
+        <message code="PAYMENTS-072" translate="true">Transação não cancelável.</message>
+        <message code="PAYMENTS-073" translate="true">Transação já cancelada.</message>
+        <message code="PAYMENTS-078" translate="true">Dados inválidos no cancelamento.</message>
+        <message code="PAYMENTS-079" translate="true">Valor cancelamento inválido.</message>
+        <message code="PAYMENTS-080" translate="true">Cartão inválido.</message>
+        <message code="PAYMENTS-081" translate="true">Excede data.</message>
+        <message code="PAYMENTS-082" translate="true">Cancelamento inválido.</message>
+        <message code="PAYMENTS-083" translate="true">Use função débito.</message>
+        <message code="PAYMENTS-084" translate="true">Use função crédito.</message>
+        <message code="PAYMENTS-085" translate="true">Transação já efetuada.</message>
+        <message code="PAYMENTS-090" translate="true">Transação não autorizada pelo cartão.</message>
+        <message code="PAYMENTS-091" translate="true">Fora do prazo permitido.</message>
+        <message code="PAYMENTS-093" translate="true">Autorização já encontra-se em processamento.</message>
+        <message code="PAYMENTS-094" translate="true">Autorização a confirmar o recebimento.</message>
+        <message code="PAYMENTS-098" translate="true">Cliente não cadastrado.</message>
+        <message code="PAYMENTS-117" translate="true">Solicite ao portator ligar para o emissor.</message>
+        <message code="PAYMENTS-118" translate="true">Cartao inválido ou produto não habilitado.</message>
+        <message code="PAYMENTS-999" translate="true">Transação não processada.</message>
+
+        <!-- Crédito/Débito - 404 Not Found -->
+        <message code="PAYMENTS-043" translate="true">Registro não encontrado.</message>
+        <message code="PAYMENTS-057" translate="true">Transação não existe.</message>
+        <message code="PAYMENTS-076" translate="true">Transação não disponível.</message>
+        <message code="PAYMENTS-095" translate="true">Autorização não encontrada.</message>
+
+        <!-- Crédito/Débito - 500 Internal Server Error -->
+        <message code="PAYMENTS-042" translate="true">Resposta inválida.</message>
+        <message code="PAYMENTS-059" translate="true">Instituição temporariamente fora de operação.</message>
+        <message code="PAYMENTS-063" translate="true">Mal funcionamento do sistema.</message>
+        <message code="PAYMENTS-064" translate="true">Erro banco de dados.</message>
+        <message code="PAYMENTS-071" translate="true">Autorizadora temporariamente bloqueada.</message>
+        <message code="PAYMENTS-086" translate="true">Erro na transação.</message>
+        <message code="PAYMENTS-096" translate="true">Autorizadora não inicializada.</message>
+        <message code="PAYMENTS-100" translate="true">Canal desconectado.</message>
+        <message code="PAYMENTS-107" translate="true">Erro de comunicação.</message>
+        <message code="PAYMENTS-500" translate="true">Internal Server Error.</message>
+
+        <!-- Crédito/Débito - 503 Service Unavailable -->
+        <message code="PAYMENTS-021" translate="true">Sistema do Emissor indisponível - Tente novamente.</message>
+
+        <!-- Crédito/Débito - 504 Gateway Timeout -->
+        <message code="PAYMENTS-031" translate="true">Timeout.</message>
+        <message code="PAYMENTS-089" translate="true">Timeout interno.</message>
+
+        <!-- Boleto - 402 Business Error -->
+        <message code="PAYMENTS-402" translate="true">Erro na geração de boleto.</message>
+        <message code="PAYMENTS-402-00001" translate="true">Nosso número inválido/incompatível.</message>
+        <message code="PAYMENTS-402-00016" translate="true">Data de vencimento inválida.</message>
+        <message code="PAYMENTS-402-00057" translate="true">CEP do sacado incorreto.</message>
+        <message code="PAYMENTS-402-00058" translate="true">CPF/CNPJ incorreto.</message>
+        <message code="PAYMENTS-402-00093" translate="true">Valor do título não informado.</message>
+        <message code="PAYMENTS-402-00098" translate="true">Data emissão inválida.</message>
+        <message code="PAYMENTS-402-00100" translate="true">Data emissão maior que a data vencimento.</message>
+        <message code="PAYMENTS-402-00102" translate="true">Endereço do sacado não informado.</message>
+        <message code="PAYMENTS-402-00103" translate="true">Município do sacado não informado.</message>
+        <message code="PAYMENTS-402-00107" translate="true">Unidade da federação incorreta.</message>
+        <message code="PAYMENTS-402-00113" translate="true">Valor desconto inválido.</message>
+        <message code="PAYMENTS-402-00124" translate="true">CEP do sacado não encontrado.</message>
+        <message code="PAYMENTS-402-00128" translate="true">Código protesto inválido.</message>
+        <message code="PAYMENTS-402-00145" translate="true">Tipo de documento inválido.</message>
+        <message code="PAYMENTS-402-00147" translate="true">Quantidade de dias para protesto inválido.</message>
+        <message code="PAYMENTS-402-00160" translate="true">Bairro do sacado não informado.</message>
+        <message code="PAYMENTS-402-00176" translate="true">Registro não encontrado.</message>
+        <message code="PAYMENTS-402-00422" translate="true">Certificado inconsistente.</message>
+        <message code="PAYMENTS-402-00423" translate="true">Estação não é do convênio.</message>
+        <message code="PAYMENTS-402-00424" translate="true">Convênio não marcado para troca de mensagem para entrada online.</message>
+        <message code="PAYMENTS-402-00425" translate="true">Ambiente marcado como teste e NSU não é de teste.</message>
+        <message code="PAYMENTS-402-00426" translate="true">Ambiente marcado como produção com NSU de teste.</message>
+        <message code="PAYMENTS-402-00427" translate="true">Código estação não pertence ao convênio.</message>
+        <message code="PAYMENTS-402-00428" translate="true">Convênio não está ativo.</message>
+        <message code="PAYMENTS-402-00429" translate="true">Tipo desconto inválido.</message>
+        <message code="PAYMENTS-402-00430" translate="true">Isento com valor de desconto.</message>
+        <message code="PAYMENTS-402-00431" translate="true">Campo nosso número não numérico.</message>
+        <message code="PAYMENTS-402-00432" translate="true">Cliente não possui entrada online.</message>
+        <message code="PAYMENTS-402-00433" translate="true">Data limite desconto inválida.</message>
+
+        <!-- Códigos De Retorno ABECS -->
+        <message code="PAYMENTS-002" translate="true">Número de cartão não pertence ao emissor | número de cartão inválido.</message>
+        <message code="PAYMENTS-003" translate="true">O cartão está expirado.</message>
+        <message code="PAYMENTS-039" translate="true">Valor mínimo da transação inválido.</message>
+        <message code="PAYMENTS-034" translate="true">Conta destino inválida ou inexistente.</message>
+        <message code="PAYMENTS-021" translate="true">Emissor fora do ar.</message>
+        <message code="PAYMENTS-605" translate="true">Suspensão de pagamento recorrente para todos serviço.</message>
+        <message code="PAYMENTS-116" translate="true">Consultar credenciador.</message>
+        <message code="PAYMENTS-049" translate="true">Transação não permitida para o cartão.</message>
+        <message code="PAYMENTS-084" translate="true">Função incorreta (débito).</message>
+        <message code="PAYMENTS-113" translate="true">Transação não autorizada.</message>
+        <message code="PAYMENTS-114" translate="true">Valor excesso | saque.</message>
+        <message code="PAYMENTS-600" translate="true">Conta origem inválida ou inexistente.</message>
+        <message code="PAYMENTS-045" translate="true">Cartão doméstico - transação internacional.</message>
+        <message code="PAYMENTS-115" translate="true">Quant. de saques excedido.</message>
+        <message code="PAYMENTS-008" translate="true">Senha vencida/erro de criptografia de senha.</message>
+        <message code="PAYMENTS-053" translate="true">Cartão novo sem desbloqueio.</message>
+        <message code="PAYMENTS-601" translate="true">Diferença - pré autorização.</message>
+        <message code="PAYMENTS-605" translate="true">Suspensão de pagamento recorrente para um serviço.</message>
+        <message code="PAYMENTS-077" translate="true">Verifique os dados do Cartão.</message>
+        <message code="PAYMENTS-033" translate="true">Entrar em contato com a Getnet.</message>
+
+        <!-- Antifraud -->
+        <message code="200" translate="true">Transação negada. Cód: 200.</message>
+        <message code="250" translate="true">Transação negada. Cód: 250.</message>
+        <message code="0700" translate="true">Transação negada. Cód: 0700.</message>
+        <message code="2000" translate="true">Transação negada. Cód: 2000.</message>
+        <message code="480" translate="true">Transação negada. Cód: 480.</message>
+        <message code="0150" translate="true">Transação enviada com o campo "amount" preenchido com o valor nulo ou inválido. Cód: 0150.</message>
+        <message code="0902" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 0902.</message>
+        <message code="101" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 101.</message>
+        <message code="102" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 102.</message>
+        <message code="231" translate="true">Dados do cartão de crédito preenchidos incorretamente. Cód: 231.</message>
+        <message code="0400" translate="true">Dados do cartão de crédito preenchidos incorretamente. Cód: 0400.</message>
+        <message code="202" translate="true">Dados do cartão de crédito preenchidos incorretamente. Cód: 202.</message>
+        <message code="400" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 400.</message>
+        <message code="0330" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 0330.</message>
+        <message code="0500" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 0500.</message>
+        <message code="0600" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 0600.</message>
+        <message code="1300" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 1300.</message>
+        <message code="0800" translate="true">Emissor do cartão de crédito não aprovou a transação. Cód: 0800.</message>
+        <message code="234" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 234.</message>
+        <message code="0901" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 0901.</message>
+        <message code="0000" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 0000.</message>
+        <message code="0903" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 0903.</message>
+        <message code="150" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 150.</message>
+        <message code="151" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.</message>
+        <message code="121" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.</message>
+        <message code="500" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.</message>
+    </message_list>
+</mapping>

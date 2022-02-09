@@ -1,0 +1,90 @@
+
+<?php
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var Getnet\PaymentMagento\Block\Order\Success $block
+ * @see Getnet\PaymentMagento\Block\Order\Success
+ */
+?>
+<?php if ($block->getMethodCode() === 'getnet_paymentmagento_boleto'): ?>
+    <div class="getnet-payment-success-details">
+        <p>
+            <?= /* @noEscape */ __('The Boleto barcode is') ?> 
+            <div class="field getnet-input-group">
+                <div class="control _with-tooltip">
+                    <input type="text"
+                        id="line-code-value"
+                        value="<?= /* @noEscape */ $block->getInfo('boleto_line_code'); ?>"
+                        class="input-text"/> 
+                    <div class="field-tooltip toggle">
+                        <button class="btn" id="copy-code" 
+                            data-clipboard-action="copy" 
+                            data-clipboard-target="#line-code-value">
+                            <?= /* @noEscape */ __('Copy'); ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </p>
+        <p>
+            <a href="<?= /* @noEscape */ $block->getInfo('boleto_pdf_href'); ?>"
+                target="_blank"
+                class="action primary continue">
+                <?= /* @noEscape */ __('Download the Boleto') ?> 
+            </a>
+        </p>
+    </div>
+<?php endif; ?>
+<?php if ($block->getMethodCode() === 'getnet_paymentmagento_pix'): ?>
+    <?php 
+        $qrCodeImage = $block->getInfo('qr_code_image');
+        $qrCodeImageUrl = $block->getImageQrCode($qrCodeImage); 
+    ?>
+    <div class="getnet-payment-success-details">
+        <p>
+            <?= /* @noEscape */ __('To pay, read the QRCode') ?> 
+            <div class="qrcode-image">
+                <img src="<?=  $block->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $block->escapeHtml(__('QrCode')); ?>" />
+            </div>
+        </p>
+        <p>
+            <?= /* @noEscape */ __('Or if you prefer, copy and paste the code') ?> 
+            <div class="field getnet-input-group">
+                <div class="control _with-tooltip">
+                    <input type="text"
+                        id="qr-code-value"
+                        value="<?= /* @noEscape */ $block->getInfo('qr_code'); ?>"
+                        class="input-text"/> 
+                    <div class="field-tooltip toggle">
+                        <button class="btn" id="copy-code" 
+                            data-clipboard-action="copy" 
+                            data-clipboard-target="#qr-code-value">
+                            <?= /* @noEscape */ __('Copy'); ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </p>
+    </div>
+<?php endif; ?>
+<?php if ($block->getMethodCode() === 'getnet_paymentmagento_pix' || $block->getMethodCode() === 'getnet_paymentmagento_boleto'): ?>
+    <script type="text/x-magento-init">
+        {
+            "#copy-code": {
+                "widgetClipboard": {
+                    "enabled": true,
+                    "copiedtext": "<?= /* @noEscape */ __('Copied'); ?>",
+                    "textBtn": "<?= /* @noEscape */ __('Copy'); ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_create_billing_form">
+            <action method="setMethodFormTemplate">
+                <argument name="method" xsi:type="string">getnet_paymentmagento_cc_vault</argument>
+                <argument name="template" xsi:type="string">Getnet_PaymentMagento::form/vault.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

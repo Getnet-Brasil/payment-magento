@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="getnet_paymentmagento_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderBase</item>
+                <item name="getnet_paymentmagento_cc_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderCc</item>
+                <item name="getnet_paymentmagento_cc_vault_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\Vault\ConfigProvider</item>
+                <item name="getnet_paymentmagento_boleto_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderBoleto</item>
+                <item name="getnet_paymentmagento_pix_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderPix</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoCc">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoBoleto">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoPix">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="getnet_paymentmagento_cc" xsi:type="const">Getnet\PaymentMagento\Gateway\Config\ConfigCc::METHOD</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Vault\Model\Ui\TokensConfigProvider">
+        <arguments>
+            <argument name="tokenUiComponentProviders" xsi:type="array">
+                <item name="getnet_paymentmagento_cc" xsi:type="object">Getnet\PaymentMagento\Model\Ui\TokenUiComponentProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
