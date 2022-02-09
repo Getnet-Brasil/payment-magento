@@ -10,9 +10,9 @@ Com os Pagamentos Digitais Getnet, você tem acesso a soluções completas para 
 
 Status Atual
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/badges/quality-score.png?b=main&s=c9c4d8417a960a4cb2de61217f3e8c6948f74036)](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/)
-[![Build Status](https://app.travis-ci.com/getnet-adquirencia/payment-magento.svg?branch=main)](https://app.travis-ci.com/getnet-adquirencia/payment-magento)
-[![StyleCI](https://github.styleci.io/repos/455276870/shield?branch=main)](https://github.styleci.io/repos/455276870?branch=main)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/badges/quality-score.png?b=Magento%402.4&s=c9c4d8417a960a4cb2de61217f3e8c6948f74036)](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/)
+[![Build Status](https://app.travis-ci.com/getnet-adquirencia/payment-magento.svg?branch=Magento%402.4)](https://app.travis-ci.com/getnet-adquirencia/payment-magento)
+[![StyleCI](https://github.styleci.io/repos/457461565/shield?branch=Magento@2.4)]
 [![Magento Coding Quality](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml)
 [![Magento Mess Detector](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml)
 
