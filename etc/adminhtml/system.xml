@@ -14,7 +14,7 @@
                 <label><![CDATA[<div class='getnet-payment-logo'></div><div class='getnet-payment-byline'><p><b>Pagamentos Digitais Getnet</b></p><p>Com os Pagamentos Digitais Getnet, você tem acesso a soluções completas para oferecer a melhor experiência de pagamento online. Além disso, você pode contar com uma tecnologia de ponta e segurança em todas as transações.</p></div>]]></label>
                 <fieldset_css>complex getnet-payment-section</fieldset_css>
                 <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PaymentGroup</frontend_model>
-                <comment><![CDATA[Technical support available <a href="https://github.com/elisei/getnet/wiki/">here</a>.]]></comment>
+                <comment><![CDATA[Technical support available <a href="https://github.com/getnet-adquirencia/payment-magento/issues/new/choose">here</a>.]]></comment>
                 <group id="credentials" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Credentials</label>
                     <comment>Configure the settings for your store.</comment>

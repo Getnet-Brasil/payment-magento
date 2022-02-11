@@ -113,7 +113,7 @@ Orders,Orders
 Actions,Actions
 "Payment Tokenize","Payment Tokenize"
 "<div class='getnet-payment-logo'></div><div class='getnet-payment-byline'><p><b>Pagamentos Digitais Getnet</b></p><p>Com os Pagamentos Digitais Getnet, você tem acesso a soluções completas para oferecer a melhor experiência de pagamento online. Além disso, você pode contar com uma tecnologia de ponta e segurança em todas as transações.</p></div>","<div class='getnet-payment-logo'></div><div class='getnet-payment-byline'><p><b>Pagamentos Digitais Getnet</b></p><p>Com os Pagamentos Digitais Getnet, você tem acesso a soluções completas para oferecer a melhor experiência de pagamento online. Além disso, você pode contar com uma tecnologia de ponta e segurança em todas as transações.</p></div>"
-"Technical support available <a href=""https://github.com/elisei/getnet/wiki/"">here</a>.","Technical support available <a href=""https://github.com/elisei/getnet/wiki/"">here</a>."
+"Technical support available <a href=""https://github.com/getnet-adquirencia/payment-magento/issues/new/choose"">here</a>.","Technical support available <a href=""https://github.com/getnet-adquirencia/payment-magento/issues/new/choose"">here</a>."
 Credentials,Credentials
 "Configure the settings for your store.","Configure the settings for your store."
 "Statement Descriptor","Statement Descriptor"
