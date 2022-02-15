@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Como instalar o módulo.
+    url: https://github.com/getnet-adquirencia/payment-magento/wiki/01-Instala%C3%A7%C3%A3o
+    about: Guia de como realizar a instalação do módulo.
+  - name: Como configurar o módulo.
+    url: https://github.com/getnet-adquirencia/payment-magento/wiki/02-Configura%C3%A7%C3%A3o
+    about: Guia de como realizar a instalação do módulo.
+  - name: Dúvidas comuns.
+    url: https://github.com/getnet-adquirencia/payment-magento/wiki/04-D%C3%BAvidas-Comuns-e-Solu%C3%A7%C3%B5es-de-Problemas
+    about: Principais dúvidas no uso e instalação do módulo.

@@ -12,7 +12,7 @@ body:
   - type: input
     id: contact
     attributes:
-      label: Contact Details
+      label: Detalhes de contato
       description: Como podemos entrar em contato com você se precisarmos de mais informações?
       placeholder: ex. email@example.com
     validations:
@@ -21,7 +21,7 @@ body:
     id: what-happened
     attributes:
       label: O que aconteceu?
-      description: Conte-nos também, o que você esperava que acontecesse?
+      description: Conte-nos também, o que você esperava que acontecesse e qual foi o resultado obtido!
       placeholder: Conte-nos qual foi o resultado obtido!
       value: "Aconteceu um bug!"
     validations:
@@ -50,9 +50,9 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Se você tem logs relavantes sobre o problema?
+      label: Há logs relavantes sobre o problema?
       description: Copie e cole qualquer saída de log relevante. Isso será formatado automaticamente em código, portanto, não há necessidade de backticks.
-      description: Caso esteja ativo, o nosso log fica em var/log/payment.log, considere também enviar o var/log/exception.log
+      placeholder: Caso esteja ativo, o nosso log fica em var/log/payment.log, considere também enviar o var/log/exception.log
       render: shell
   - type: checkboxes
     id: privacy
@@ -73,3 +73,5 @@ body:
         - Uma das formas de pagamento não está funcionando
         - Eu não consegui instalar o módulo
         - Eu não consegui configurar o módulo
+      validations:
+        required: true
