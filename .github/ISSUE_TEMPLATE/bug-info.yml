@@ -47,8 +47,6 @@ body:
         - Chrome
         - Safari
         - Microsoft Edge
-      validations:
-        required: true
   - type: textarea
     id: logs
     attributes:
@@ -75,5 +73,3 @@ body:
         - Uma das formas de pagamento não está funcionando
         - Eu não consegui instalar o módulo
         - Eu não consegui configurar o módulo
-      validations:
-        required: true
