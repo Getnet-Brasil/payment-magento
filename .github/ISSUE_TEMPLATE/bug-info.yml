@@ -1,7 +1,7 @@
 name: Reportar um Erro 🐞
 description: Problema técnico no módulo ou na integração
 title: "[Bug]: "
-labels: ['Bug", "Needs Triage"]
+labels: ["Bug","Needs Triage"]
 assignees:
   - elisei
 body:
