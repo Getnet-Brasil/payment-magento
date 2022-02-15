@@ -1,5 +1,5 @@
 ---
-name: Solicitação de Novo Recurso
+name: 🚀 Solicitação de Novo Recurso
 about: Descreve recursos que deseja ver no módulo
 labels: 'feature request'
 
