@@ -1,4 +1,4 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: Como instalar o módulo.
     url: https://github.com/getnet-adquirencia/payment-magento/wiki/01-Instala%C3%A7%C3%A3o

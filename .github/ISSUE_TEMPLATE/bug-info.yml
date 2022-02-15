@@ -1,7 +1,7 @@
-name: Reportar um Erro
+name: Reportar um Erro 🐞
 description: Problema técnico no módulo ou na integração
 title: "[Bug]: "
-labels: ["bug", "triage"]
+labels: ['Bug", "Needs Triage"]
 assignees:
   - elisei
 body:
@@ -73,5 +73,5 @@ body:
         - Uma das formas de pagamento não está funcionando
         - Eu não consegui instalar o módulo
         - Eu não consegui configurar o módulo
-      validations:
-        required: true
+    validations:
+      required: true
