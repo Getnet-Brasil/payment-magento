@@ -9,7 +9,7 @@
 namespace Getnet\PaymentMagento\Gateway\Request;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigBoleto;
+use Getnet\PaymentMagento\Gateway\Config\ConfigPix;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
@@ -52,23 +52,23 @@ class PixPaymentDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var Config Boleto
+     * @var ConfigPix
      */
-    protected $configBoleto;
+    protected $configPix;
 
     /**
      * @param SubjectReader $subjectReader
      * @param Config        $config
-     * @param ConfigBoleto  $configBoleto
+     * @param ConfigPix     $configPix
      */
     public function __construct(
         SubjectReader $subjectReader,
         Config $config,
-        ConfigBoleto $configBoleto
+        ConfigPix $configPix
     ) {
         $this->subjectReader = $subjectReader;
         $this->config = $config;
-        $this->configBoleto = $configBoleto;
+        $this->configPix = $configPix;
     }
 
     /**
@@ -105,8 +105,8 @@ class PixPaymentDataRequest implements BuilderInterface
         $instruction = [];
         $instruction[self::METHOD] = [
             self::DOCUMENT_NUMBER          => $order->getOrderIncrementId(),
-            self::BOLETO_INSTRUCTION       => $this->configBoleto->getInstructionLine($storeId),
-            self::BOLETO_EXPIRATION_DATE   => $this->configBoleto->getExpiration($storeId),
+            self::BOLETO_INSTRUCTION       => $this->configPix->getInstructionLine($storeId),
+            self::BOLETO_EXPIRATION_DATE   => $this->configPix->getExpiration($storeId),
         ];
 
         return $instruction;
