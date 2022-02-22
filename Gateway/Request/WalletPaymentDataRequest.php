@@ -31,12 +31,12 @@ class WalletPaymentDataRequest implements BuilderInterface
      * Type - Block name.
      */
     public const TYPE = 'type';
-    
+
     /**
      * Credit - Block name.
      */
     public const CREDIT = 'credit';
-  
+
     /**
      * Transaction Type - Block name.
      */
@@ -144,6 +144,7 @@ class WalletPaymentDataRequest implements BuilderInterface
                 self::NUMBER_INSTALLMENTS  => $installment,
                 self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', $phone),
             ];
+
             return $instruction;
         }
 
@@ -153,6 +154,7 @@ class WalletPaymentDataRequest implements BuilderInterface
                 self::SOFT_DESCRIPTOR      => $this->config->getStatementDescriptor($storeId),
                 self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', $phone),
             ];
+
             return $instruction;
         }
 
