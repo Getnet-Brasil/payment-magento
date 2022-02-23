@@ -8,7 +8,6 @@
 "Awaiting payment of the boleto.","Awaiting payment of the boleto."
 "Awaiting payment of the Getpay.","Awaiting payment of the Getpay."
 "Awaiting payment of the Pix.","Awaiting payment of the Pix."
-"Awaiting payment of the Wallet.","Awaiting payment of the Wallet."
 "Gateway rejected the transaction.","Gateway rejected the transaction."
 Credit,Credit
 Debit,Debit
@@ -70,8 +69,6 @@ Instruction,Instruction
 "Select Instalmment","Select Instalmment"
 ending,ending
 expires,expires
-"Select card type","Select card type"
-Mobile,Mobile
 "Your payment is valid until","Your payment is valid until"
 "Barcode of your Boleto is","Barcode of your Boleto is"
 "Link to Pay","Link to Pay"
@@ -101,8 +98,6 @@ Waiting...,Waiting...
 "A 3-digit number in italics on the back of your credit card.","A 3-digit number in italics on the back of your credit card."
 Month,Month
 Year,Year
-"Select Card type","Select Card type"
-"Payer Phone","Payer Phone"
 "Credit card number does not match credit card type.","Credit card number does not match credit card type."
 "Please enter a valid credit card type number.","Please enter a valid credit card type number."
 "Please enter a valid credit card number.","Please enter a valid credit card number."
@@ -112,8 +107,6 @@ Year,Year
 "%1x of %2 not interest","%1x of %2 not interest"
 "%1% of discount cash with total of %2","%1% of discount cash with total of %2"
 "%1x of %2 in the total value of %3","%1x of %2 in the total value of %3"
-"Credit Card","Credit Card"
-"Debit Card","Debit Card"
 "Payment Services","Payment Services"
 "Permission for set preference account Getnet","Permission for set preference account Getnet"
 Orders,Orders
@@ -172,7 +165,6 @@ Title,Title
 "Information displayed at checkout.","Information displayed at checkout."
 "Information will be printed on the boleto.","Information will be printed on the boleto."
 "Capture name in the payment form?","Capture name in the payment form?"
-Wallet,Wallet
 Getpay,Getpay
 "Offer sales via external link, keeping your inventory and order status in sync.","Offer sales via external link, keeping your inventory and order status in sync."
 "Product Type","Product Type"

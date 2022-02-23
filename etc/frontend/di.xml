@@ -16,7 +16,34 @@
                 <item name="getnet_paymentmagento_cc_vault_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\Vault\ConfigProvider</item>
                 <item name="getnet_paymentmagento_boleto_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderBoleto</item>
                 <item name="getnet_paymentmagento_pix_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderPix</item>
-                <item name="getnet_paymentmagento_wallet_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderWallet</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoCc">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoBoleto">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\InfoPix">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="getnet_paymentmagento_cc" xsi:type="const">Getnet\PaymentMagento\Gateway\Config\ConfigCc::METHOD</item>
             </argument>
         </arguments>
     </type>

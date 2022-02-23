@@ -8,7 +8,6 @@
 "Awaiting payment of the boleto.","Aguardando pagamento do Boleto."
 "Awaiting payment of the Getpay.","Aguardando pagamento via Getpay."
 "Awaiting payment of the Pix.","Aguardando pagamento do Pix."
-"Awaiting payment of the Wallet.","Aguardando pagamento via Wallet."
 "Gateway rejected the transaction.","Transação rejeitada."
 Production,Produção
 "Sandbox - Environment for tests","Sandbox - Ambiente de teste"
@@ -70,8 +69,6 @@ Instruction,Instrução
 "Select Instalmment","Opções de Parcelamento"
 ending,final
 expires,expiração
-"Select card type","Selecione o tipo de cartão"
-Mobile,Celular
 "Your payment is valid until","Seu pagamento válido até"
 "Barcode of your Boleto is","O códido de barras do seu boleto é"
 "Link to Pay","Link de pagamento"
@@ -101,8 +98,6 @@ Waiting...,Aguarde...
 "A 3-digit number in italics on the back of your credit card.","Um número de 3 dígitos em itálico no verso do seu cartão de crédito."
 Month,Mês
 Year,Ano
-"Select Card type","Selecione o tipo de Cartão"
-"Payer Phone","Telefone do pagador"
 "Credit card number does not match credit card type.","O número do cartão de crédito não corresponde ao tipo de cartão de crédito."
 "Please enter a valid credit card type number.","Insira um número de tipo de cartão de crédito válido."
 "Please enter a valid credit card number.","Por favor digite um número de cartão de crédito válido."
@@ -113,8 +108,6 @@ Year,Ano
 "%1% of discount cash with total of %2","%1% de desconto no valor total de %2"
 "%1x of %2 in the total value of %3","%1x de %2 no valor total de %3"
 "Permission for set preference account Getnet","Permissão para definir a conta de preferência Getnet"
-"Credit Card","Cartão de Crédito"
-"Debit Card","Cartão de Débito"
 "Payment Services","Serviços de pagamento"
 Orders,Pedidos
 Actions,Ações
@@ -172,7 +165,6 @@ Title,Título
 "Information displayed at checkout.","Informação exibida no checkout."
 "Information will be printed on the boleto.","Informação impressa no boleto."
 "Capture name in the payment form?","Capturar nome no formulário de pagamento?"
-Wallet,Carteira Digital
 Getpay,Getpay
 "Offer sales via external link, keeping your inventory and order status in sync.","Ofereça vendas via link externo, mantendo seu estoque e status do pedido sincronizados."
 "Product Type","Tipos de produto"
