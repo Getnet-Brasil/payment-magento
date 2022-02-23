@@ -81,6 +81,20 @@ Principais Recursos:
 - Reembolso off-line
 - Consolidação de status (cancelamento e confirmação de pagamento automática)
 
+<img src="view/base/web/images/wallet/logo.svg" align="right" width="35"/>
+
+### QrCode (Carteiras digitais)
+
+Ofereça pagamentos por carteiras digitais em diversos serviços.
+
+Principais Recursos:
+- Mercado Pago
+- PicPay
+- Ame
+- App's do seu banco
+- Reembolso off-line
+- Consolidação de status (cancelamento e confirmação de pagamento automática)
+
 <img src="view/base/web/images/getpay/logo.svg" align="right" width="35"/>
 
 ### Getpay
