@@ -17,7 +17,8 @@ define(
         var config = window.checkoutConfig.payment,
             methodBoleto = 'getnet_paymentmagento_boleto',
             methodCc = 'getnet_paymentmagento_cc',
-            methodPix = 'getnet_paymentmagento_pix';
+            methodPix = 'getnet_paymentmagento_pix',
+            methodWallet = 'getnet_paymentmagento_wallet';
 
         if (config[methodBoleto].isActive) {
             rendererList.push(
@@ -46,7 +47,15 @@ define(
             );
         }
 
-        /** Add view logic here if needed */
+        if (config[methodWallet].isActive) {
+            rendererList.push(
+                {
+                    type: methodWallet,
+                    component: 'Getnet_PaymentMagento/js/view/payment/method-renderer/getnet_paymentmagento_wallet'
+                }
+            );
+        }
+
         return Component.extend({});
     }
 );

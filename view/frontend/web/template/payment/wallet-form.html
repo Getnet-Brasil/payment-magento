@@ -1,0 +1,83 @@
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_payer_' + getCode()}">
+    <!-- ko if: (isShowLegend())-->
+    <legend class="legend">
+        <span class="legend-title"><!-- ko i18n: 'Wallet Information'--><!-- /ko --></span>
+    </legend>
+    <!-- /ko -->
+    <div class="field-to-pay"  data-bind="css: { _hidden:isPlaceOrderActionAllowed() }">
+      <p class="not-editable-title"><!-- ko i18n: 'Waiting...'--><!-- /ko --></p>
+    </div>
+    <div class="field-to-pay"  data-bind="css: { _hidden:!isPlaceOrderActionAllowed() }">
+        <!-- ko if: getInstructionCheckout() -->
+        <dl class="items check payable">
+            <!-- ko if: getInstructionCheckout() -->
+            <dt class="title"><!-- ko i18n: 'Instruction' --><!-- /ko --></dt>
+            <dd class="content">
+                <address class="getnet-wallet instruction address" data-bind="html: getInstructionCheckout()"></address>
+            </dd>
+            <!-- /ko -->
+        </dl>
+        <!-- /ko -->
+        <div class="field getnet-input-group method-type">
+            <div class="control">
+                <select name="payment[wallet_card_type]"
+                        class="select select-year"
+                        data-bind="attr: {autocomplete: 'off', id: getCode() + '_card_type', 'data-container': getCode() + '-card-type', 'data-validate': JSON.stringify({required:true})},
+                                   enable: isActive($parents),
+                                   options: getWalletCardType(),
+                                   optionsValue: 'value',
+                                   optionsText: 'cardType',
+                                   optionsCaption: $t('Select Card type'),
+                                   value: walletCardType,
+                                   valueUpdate: 'keyup' ">
+                </select>
+                <label data-bind="attr: {for: getCode() + '_card_type'}" class="label">
+                      <span><!-- ko i18n: 'Select card type' --><!-- /ko --></span>
+                </label>
+            </div>
+        </div>
+        <div class="field getnet-input-group holder phone required">
+            <div class="control">
+              <input type="text" name="payment[wallet_payer_phone]" class="input-text" value=""
+                     data-bind="attr: {
+                                      autocomplete: 'tel-national',
+                                      id: getCode() + '_payer_phone',
+                                      title: $t('Payer Phone'),
+                                      placeholder: $t('Mobile'),
+                                      'data-container': getCode() + '-payer-phone',
+                                      'data-validate': JSON.stringify({'required':true})},
+                                enable: isActive($parents),
+                                value: walletPayerPhone,
+                                valueUpdate: 'keyup' "/>
+              <label data-bind="attr: {for: getCode() + '_payer_phone'}" class="label">
+                  <span><!-- ko i18n: 'Mobile'--><!-- /ko --></span>
+              </label>
+            </div>
+        </div>
+        <div class="field getnet-input-group installments"  data-bind="visible: hasWalletDataFormCredit()">
+            <div class="control">
+                <select name="payment[cc_installments]"
+                        class="select select-year"
+                        data-bind="attr: {autocomplete: 'off', id: getCode() + '_installments', 'data-container': getCode() + '-installments', 'data-validate': JSON.stringify({required:true})},
+                                    enable: isActive($parents),
+                                    options: getInstallments(),
+                                    optionsValue: 'value',
+                                    optionsText: 'installments',
+                                    optionsCaption: $t('Select Instalmment'),
+                                    value: walletCcInstallments">
+                </select>
+                <label data-bind="attr: {for: getCode() + '_installments'}" class="label">
+                        <span><!-- ko i18n: 'Select Instalmment' --><!-- /ko --></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</fieldset>
