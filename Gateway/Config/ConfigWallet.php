@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Config;
 
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
@@ -158,7 +156,7 @@ class ConfigWallet extends PaymentConfig
     {
         $fileName = null;
         if ($this->hasPathDir()) {
-            $fileName = 'getnet/wallet/'.$transactionId.'.svg';
+            $fileName = 'getnet/pix/'.$transactionId.'.png';
             $mediaDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::MEDIA);
             $filePath = $this->getPathFile($mediaDirectory, $transactionId);
             $generate = $this->createImageQrCode($mediaDirectory, $filePath, $qrCode);
@@ -180,7 +178,7 @@ class ConfigWallet extends PaymentConfig
      */
     public function getPathFile($mediaDirectory, $transactionId): string
     {
-        $filePath = $mediaDirectory->getAbsolutePath('getnet/wallet/'.$transactionId.'.svg');
+        $filePath = $mediaDirectory->getAbsolutePath('getnet/pix/'.$transactionId.'.png');
 
         return $filePath;
     }
@@ -198,16 +196,20 @@ class ConfigWallet extends PaymentConfig
      */
     public function createImageQrCode(WriteInterface $writeDirectory, $filePath, $qrCode): bool
     {
+        $qrCode = new QrCode($qrCode);
+        $qrCode->setSize(150);
+        $qrCode->setErrorCorrectionLevel('high');
+        $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
+        $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
+        $qrCode->setLabelFontSize(16);
+        $qrCode->setEncoding('UTF-8');
+        $writer = new PngWriter();
+        $pngData = $writer->writeString($qrCode);
+
         try {
             $stream = $writeDirectory->openFile($filePath, 'w+');
             $stream->lock();
-            $renderer = new ImageRenderer(
-                new RendererStyle(200),
-                new SvgImageBackEnd()
-            );
-            $writer = new Writer($renderer);
-            $image = $writer->writeString($qrCode);
-            $stream->write($image);
+            $stream->write($pngData);
             $stream->unlock();
             $stream->close();
         } catch (FileSystemException $ex) {
@@ -226,8 +228,8 @@ class ConfigWallet extends PaymentConfig
      */
     public function hasPathDir(): bool
     {
-        $walletPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath('/getnet/wallet');
+        $pixPath = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath('/getnet/pix');
 
-        return $this->fileIo->checkAndCreateFolder($walletPath);
+        return $this->fileIo->checkAndCreateFolder($pixPath);
     }
 }

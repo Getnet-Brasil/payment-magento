@@ -13,7 +13,7 @@
 $code = $block->escapeHtml($block->getMethodCode());
 $ccInstallment = $block->getInfoData('cc_installment');
 ?>
-<fieldset class="admin__fieldset payment-method" id="payment_form_<?= $block->escapeHtml($block->getMethodCode()) ?>" >
+<fieldset class="admin__fieldset payment-method" id="payment_form_<?= $block->escapeHtml($block->getMethodCode()) ?>"  style="display: none;">
     <div class="field-number admin__field _required">
         <label class="admin__field-label" for="<?= /* @noEscape */ $code ?>_method_type">
             <span><?= $block->escapeHtml(__('Select card type')) ?></span>
@@ -66,8 +66,3 @@ $ccInstallment = $block->getInfoData('cc_installment');
         </div>
     </div>
 </fieldset>
-
-<?= /* @noEscape */ $secureRenderer->renderStyleAsTag(
-    "display:none",
-    'fieldset#payment_form_' . $block->escapeJs($block->getMethodCode())
-) ?>
