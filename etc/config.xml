@@ -96,6 +96,7 @@
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>10</sort_order>
             </getnet_paymentmagento_cc>
             <getnet_paymentmagento_cc_vault>
                 <active>1</active>
@@ -135,6 +136,7 @@ Não parcelamos no boleto.]]></instruction_checkout>
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>12</sort_order>
             </getnet_paymentmagento_boleto>
             <getnet_paymentmagento_pix>
                 <active>1</active>
@@ -164,7 +166,41 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>11</sort_order>
             </getnet_paymentmagento_pix>
+            <getnet_paymentmagento_wallet>
+                <active>1</active>
+                <model>PaymentMagentoWalletFacade</model>
+                <order_status>pending</order_status>
+                <title>Wallet</title>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>qr_code_image,qr_code,wallet_method_type,wallet_installments,wallet_payer_phone</paymentInfoKeys>
+                <privateInfoKeys></privateInfoKeys>
+                <payment_action>order</payment_action>
+                <can_initialize>1</can_initialize>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture>0</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>0</can_refund>
+                <can_void>0</can_void>
+                <can_cancel>1</can_cancel>
+                <can_fetch_transaction_information>1</can_fetch_transaction_information>
+                <can_fetch_transaction_info>1</can_fetch_transaction_info>
+                <group>getnet_group</group>
+                <expiration>30</expiration>
+                <instruction_checkout><![CDATA[Realize o pagamento usando sua carteira digital predileta, Mercado Pago, PicPay, AME, Visa, Mastercard...
+O prazo de pagamento é de até 1 minuto e 50 segundos.
+O QrCode para pagamento será exibido ao finalizar o pedido.
+A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruction_checkout>
+                <min_order_total>1</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+                <sort_order>13</sort_order>
+            </getnet_paymentmagento_wallet>
             <getnet_paymentmagento_getpay>
                 <active>1</active>
                 <model>PaymentMagentoGetpayFacade</model>
@@ -195,6 +231,7 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>14</sort_order>
             </getnet_paymentmagento_getpay>
         </payment>
     </default>

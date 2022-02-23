@@ -12,7 +12,7 @@ Status Atual
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/badges/quality-score.png?b=main&s=c9c4d8417a960a4cb2de61217f3e8c6948f74036)](https://scrutinizer-ci.com/g/getnet-adquirencia/payment-magento/)
 [![Build Status](https://app.travis-ci.com/getnet-adquirencia/payment-magento.svg?branch=Magento%402.3)](https://app.travis-ci.com/getnet-adquirencia/payment-magento)
-[![StyleCI](https://github.styleci.io/repos/457461565/shield?branch=Magento@2.4)](https://github.styleci.io/repos/457461565?branch=Magento@2.4)
+[![StyleCI](https://github.styleci.io/repos/457461565/shield?branch=Magento@2.4)](https://github.styleci.io/repos/457461565?branch=Magento@2.3)
 [![Magento Coding Quality](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml)
 [![Magento Mess Detector](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml)
 
@@ -78,6 +78,20 @@ Principais Recursos:
 - Código digitável na instrução de pagamento
 - Definição vencimento
 - Definição de instrução para o pagamento
+- Reembolso off-line
+- Consolidação de status (cancelamento e confirmação de pagamento automática)
+
+<img src="view/base/web/images/wallet/logo.svg" align="right" width="35"/>
+
+### QrCode (Carteiras digitais)
+
+Ofereça pagamentos por carteiras digitais em diversos serviços.
+
+Principais Recursos:
+- Mercado Pago
+- PicPay
+- Ame
+- App's do seu banco
 - Reembolso off-line
 - Consolidação de status (cancelamento e confirmação de pagamento automática)
 

@@ -85,6 +85,16 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PaymentMagentoWalletFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Getnet\PaymentMagento\Model\Ui\ConfigProviderWallet::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Getnet\PaymentMagento\Block\Sales\Form\Wallet</argument>
+            <argument name="infoBlockType" xsi:type="string">Getnet\PaymentMagento\Block\Sales\Info\Wallet</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PaymentMagentoWalletValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoWalletCommandPool</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PaymentMagentoGetpayFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Getnet\PaymentMagento\Model\Ui\ConfigProviderGetpay::CODE</argument>
@@ -94,7 +104,7 @@
             <argument name="commandPool" xsi:type="object">PaymentMagentoGetpayCommandPool</argument>
         </arguments>
     </virtualType>
-
+    <!-- Executors -->
     <type name="Magento\Payment\Gateway\Command\CommandManagerPool">
         <arguments>
             <argument name="executors" xsi:type="array">
@@ -102,6 +112,7 @@
                 <item name="getnet_paymentmagento_cc_vault" xsi:type="string">PaymentMagentoCcCommandManager</item>
                 <item name="getnet_paymentmagento_boleto" xsi:type="string">PaymentMagentoBoletoCommandManager</item>
                 <item name="getnet_paymentmagento_pix" xsi:type="string">PaymentMagentoPixCommandManager</item>
+                <item name="getnet_paymentmagento_wallet" xsi:type="string">PaymentMagentoWalletCommandManager</item>
                 <item name="getnet_paymentmagento_getpay" xsi:type="string">PaymentMagentoGetpayCommandManager</item>
             </argument>
         </arguments>
@@ -138,6 +149,12 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PaymentMagentoWalletConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\Getnet\PaymentMagento\Model\Ui\ConfigProviderWallet::CODE</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PaymentMagentoGetpayConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\Getnet\PaymentMagento\Model\Ui\ConfigProviderGetpay::CODE</argument>
@@ -162,6 +179,13 @@
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Pix">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoPixConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Wallet - Block Info -->
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Wallet">
+        <arguments>
+            <argument name="config" xsi:type="object">PaymentMagentoWalletConfig</argument>
         </arguments>
     </type>
 
@@ -264,6 +288,85 @@
         </arguments>
     </virtualType>
     
+    <!-- Wallet - Commands infrastructure -->
+    <virtualType name="PaymentMagentoWalletCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">PaymentMagentoWalletOrderCommand</item>
+                <item name="fetch_transaction_information" xsi:type="string">WalletFetchTransactionInfoCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Wallet - Order Commands -->
+    <virtualType name="PaymentMagentoWalletOrderCommand" type="Getnet\PaymentMagento\Gateway\Command\PaymentCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoWalletCommandPool</argument>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoWalletOrderRequest</argument>
+            <argument name="handler" xsi:type="object">PaymentMagentoWalletOrderResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentWalletClient</argument>
+            <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Wallet - Order Request -->
+    <virtualType name="PaymentMagentoWalletOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndInterestDataRequest</item>
+                <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
+                <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataRequest</item>
+                <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CustomerDataRequest</item>
+                <item name="customerBillingAddress" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CustomerBillingAddressDataRequest</item>
+                <item name="shippings" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\ShippingsDataRequest</item>
+                <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TaxDocumentDataRequest</item>
+                <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DeviceDataRequest</item>
+                <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\WalletPaymentDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Wallet - Order Payment Response handlers -->
+    <virtualType name="PaymentMagentoWalletOrderResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="extOrdId" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\ExtOrdIdHandler</item>
+                <item name="txnIdWallet" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\TxnIdWalletHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Wallet - Fetch Transaction Info Command -->
+    <virtualType name="WalletFetchTransactionInfoCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">WalletFetchTransactionInfoRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\WalletFetchTransactionInfoClient</argument>
+            <argument name="handler" xsi:type="object">WalletFetchTransactionInfoResponseHandlerComposite</argument>
+            <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Wallet - Fetch Transaction Info Request -->
+    <virtualType name="WalletFetchTransactionInfoRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\WalletFetchTransactionInfoRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    
+    <!-- Wallet - Fetch Transaction Info handlers -->
+    <virtualType name="WalletFetchTransactionInfoResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="accept" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\WalletFetchTransactionInfoHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <!-- Getpay - Commands infrastructure -->
     <virtualType name="PaymentMagentoGetpayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
@@ -702,6 +805,26 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PaymentMagentoWalletCommandManager" type="Magento\Payment\Gateway\Command\CommandManager">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoWalletCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoWalletValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PaymentMagentoWalletConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoWalletConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">PaymentMagentoWalletConfig</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PaymentMagentoGetpayCommandManager" type="Magento\Payment\Gateway\Command\CommandManager">
         <arguments>
             <argument name="commandPool" xsi:type="object">PaymentMagentoGetpayCommandPool</argument>
@@ -770,6 +893,12 @@
         </arguments>
     </type>
 
+    <type name="Getnet\PaymentMagento\Gateway\Request\WalletFetchTransactionInfoRequest">
+        <arguments>
+            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
+        </arguments>
+    </type>
+
     <type name="Getnet\PaymentMagento\Gateway\Request\GetpayFetchTransactionInfoRequest">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
@@ -813,6 +942,12 @@
         </arguments>
     </type>
 
+    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentWalletClient">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
     <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentGetpayClient">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
@@ -830,14 +965,14 @@
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
     </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\AcceptPaymentClient">
+    
+    <type name="Getnet\PaymentMagento\Gateway\Http\Client\RefundClient">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
     </type>
-    
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\RefundClient">
+
+    <type name="Getnet\PaymentMagento\Gateway\Http\Client\WalletFetchTransactionInfoClient">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
@@ -849,8 +984,6 @@
         </arguments>
     </type>
 
-    
-
     <type name="Getnet\PaymentMagento\Controller\Notification\All">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
@@ -858,6 +991,18 @@
     </type>
 
     <type name="Getnet\PaymentMagento\Cron\RefreshToken">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Cron\FetchTransactionOrderWallet">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Cron\FetchTransactionOrderGetpay">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
