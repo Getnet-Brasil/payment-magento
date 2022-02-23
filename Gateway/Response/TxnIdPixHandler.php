@@ -122,7 +122,7 @@ class TxnIdPixHandler implements HandlerInterface
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_EXPIRATION_DATE_QRCODE,
-            $payPix[self::PAYMENT_INFO_EXPIRATION_DATE_QRCODE]
+            str_replace($payPix[self::PAYMENT_INFO_EXPIRATION_DATE_QRCODE], 'Z', '')
         );
 
         $payment->setAdditionalInformation(

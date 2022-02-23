@@ -94,7 +94,7 @@ class TxnIdGetpayHandler implements HandlerInterface
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_GETPAY_EXPIRATION_DATE,
-            $response[self::RESPONSE_GETPAY_EXPIRATION]
+            str_replace($response[self::RESPONSE_GETPAY_EXPIRATION], 'Z', '')
         );
 
         $transactionId = $response[self::RESPONSE_LINK_ID];

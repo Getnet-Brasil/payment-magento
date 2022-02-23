@@ -12,6 +12,16 @@
 @getnet-checkout__margin-adjust: 21px;
 
 & when (@media-common =true) {
+    .checkout-payment-method {
+        .payment-method-title {
+            display: table;
+
+            .label {
+                display: table-cell;
+                width: 100%;
+            }
+        }
+    }
 
     .form-getnet {
         .payment-method-label {

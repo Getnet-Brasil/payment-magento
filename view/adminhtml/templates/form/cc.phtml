@@ -8,7 +8,6 @@
 
 /**
  * @var \Magento\Payment\Block\Adminhtml\Transparent\Form $block
- * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
 $code = $block->escapeHtml($block->getMethodCode());
 $ccType = $block->getInfoData('cc_type');
@@ -18,7 +17,7 @@ $ccInstallment = $block->getInfoData('cc_installment');
 ?>
 <fieldset class="admin__fieldset payment-method" 
     id="payment_form_<?= /* @noEscape */ $code ?>" 
-    data-url-to-tokenize="<?= $block->escapeHtml($block->getUrlForTokenize()); ?>">
+    data-url-to-tokenize="<?= $block->escapeHtml($block->getUrlForTokenize()); ?>" style="display: none;">
     <input type="hidden"
         name="payment[is_active_payment_token_enabler]" />
     <input type="hidden" 
@@ -156,16 +155,10 @@ $ccInstallment = $block->getInfoData('cc_installment');
         </div>
     </div>
 </fieldset>
-<?= /* @noEscape */ $secureRenderer->renderStyleAsTag(
-    "display:none",
-    'fieldset#payment_form_' . /* @noEscape */ $code
-) ?>
-<?php $scriptString = <<<script
+<script>
     require(["Magento_Sales/order/create/form"], function () {
         order.addExcludedPaymentMethod('{$code}');
     });
     require(["Getnet_PaymentMagento/js/tokenize"], function () {
     });
-script;
-?>
-<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+</script>
