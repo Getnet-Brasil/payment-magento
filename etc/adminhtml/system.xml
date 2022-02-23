@@ -130,7 +130,7 @@
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/getnet_paymentmagento_cc/specificcountry</config_path>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_cc/sort_order</config_path>
@@ -265,7 +265,7 @@
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/getnet_paymentmagento_pix/specificcountry</config_path>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_pix/sort_order</config_path>
@@ -324,7 +324,7 @@
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/getnet_paymentmagento_boleto/specificcountry</config_path>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_boleto/sort_order</config_path>
@@ -386,7 +386,7 @@
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/getnet_paymentmagento_wallet/specificcountry</config_path>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_wallet/sort_order</config_path>
@@ -444,7 +444,7 @@
                         <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                         <config_path>payment/getnet_paymentmagento_getpay/specificcountry</config_path>
                     </field>
-                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_getpay/sort_order</config_path>

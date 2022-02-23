@@ -96,6 +96,7 @@
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>10</sort_order>
             </getnet_paymentmagento_cc>
             <getnet_paymentmagento_cc_vault>
                 <active>1</active>
@@ -135,6 +136,7 @@ Não parcelamos no boleto.]]></instruction_checkout>
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>12</sort_order>
             </getnet_paymentmagento_boleto>
             <getnet_paymentmagento_pix>
                 <active>1</active>
@@ -164,6 +166,7 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>11</sort_order>
             </getnet_paymentmagento_pix>
             <getnet_paymentmagento_wallet>
                 <active>1</active>
@@ -196,6 +199,7 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>13</sort_order>
             </getnet_paymentmagento_wallet>
             <getnet_paymentmagento_getpay>
                 <active>1</active>
@@ -227,6 +231,7 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>
                 <specificcountry>BR</specificcountry>
+                <sort_order>14</sort_order>
             </getnet_paymentmagento_getpay>
         </payment>
     </default>
