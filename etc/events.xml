@@ -17,7 +17,4 @@
     <event name="payment_method_assign_data_getnet_paymentmagento_boleto">
         <observer name="getnet_paymentmagento_boleto_data_assign" instance="Getnet\PaymentMagento\Observer\DataAssignBoletoObserver" />
     </event>
-    <event name="payment_method_assign_data_getnet_paymentmagento_wallet">
-        <observer name="getnet_paymentmagento_wallet_data_assign" instance="Getnet\PaymentMagento\Observer\DataAssignObserverWallet" />
-    </event>
 </config>
