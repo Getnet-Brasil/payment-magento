@@ -75,6 +75,20 @@
         </p>
     </div>
 <?php endif; ?>
+<?php if ($block->getMethodCode() === 'getnet_paymentmagento_wallet'): ?>
+    <?php 
+        $qrCodeImage = $block->getInfo('qr_code_image');
+        $qrCodeImageUrl = $block->getImageQrCode($qrCodeImage); 
+    ?>
+    <div class="getnet-payment-success-details">
+        <p>
+            <?= /* @noEscape */ __('To pay, read the QRCode') ?> 
+            <div class="qrcode-image">
+                <img src="<?=  $block->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $block->escapeHtml(__('QrCode')); ?>" />
+            </div>
+        </p>
+    </div>
+<?php endif; ?>
 <?php if ($block->getMethodCode() === 'getnet_paymentmagento_pix' || $block->getMethodCode() === 'getnet_paymentmagento_boleto'): ?>
     <script type="text/x-magento-init">
         {
