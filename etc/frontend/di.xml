@@ -16,24 +16,39 @@
                 <item name="getnet_paymentmagento_cc_vault_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\Vault\ConfigProvider</item>
                 <item name="getnet_paymentmagento_boleto_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderBoleto</item>
                 <item name="getnet_paymentmagento_pix_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderPix</item>
+                <item name="getnet_paymentmagento_wallet_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderWallet</item>
             </argument>
         </arguments>
     </type>
-    <type name="Getnet\PaymentMagento\Block\InfoCc">
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Cc">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item xsi:type="string" name="is_secure_mode">1</item>
             </argument>
         </arguments>
     </type>
-    <type name="Getnet\PaymentMagento\Block\InfoBoleto">
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Boleto">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item xsi:type="string" name="is_secure_mode">1</item>
             </argument>
         </arguments>
     </type>
-    <type name="Getnet\PaymentMagento\Block\InfoPix">
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Pix">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Wallet">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\Getpay">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item xsi:type="string" name="is_secure_mode">1</item>
