@@ -10,7 +10,7 @@ define([
     'Magento_Payment/js/view/payment/cc-form',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
     'Magento_Payment/js/model/credit-card-validation/credit-card-data'
-], function (_, $, Component, mask, boletoData) {
+], function (_, $, Component, _mask, boletoData) {
     'use strict';
 
     return Component.extend({

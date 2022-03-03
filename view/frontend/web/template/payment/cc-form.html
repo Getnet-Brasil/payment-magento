@@ -225,7 +225,7 @@
                         class="select select-year"
                         data-bind="attr: {autocomplete: 'off', id: getCode() + '_installments', 'data-container': getCode() + '-installments', 'data-validate': JSON.stringify({required:true})},
                                    enable: isActive($parents),
-                                   options: getInstallments(),
+                                   options: getCalculeteInstallments(),
                                    optionsValue: 'value',
                                    optionsText: 'installments',
                                    optionsCaption: $t('Select Instalmment'),
