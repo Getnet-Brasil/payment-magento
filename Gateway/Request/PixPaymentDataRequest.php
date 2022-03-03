@@ -9,7 +9,7 @@
 namespace Getnet\PaymentMagento\Gateway\Request;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigBoleto;
+use Getnet\PaymentMagento\Gateway\Config\ConfigPix;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
@@ -17,14 +17,14 @@ use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Pix Payment Data Request - Payment data structure for boleto.
+ * Class Pix Payment Data Request - Payment data structure for pix.
  */
 class PixPaymentDataRequest implements BuilderInterface
 {
     /**
      * Method - Block Name.
      */
-    public const METHOD = 'boleto';
+    public const METHOD = 'pix';
 
     /**
      * Installment count - Number of payment installments.
@@ -32,14 +32,14 @@ class PixPaymentDataRequest implements BuilderInterface
     public const DOCUMENT_NUMBER = 'document_number';
 
     /**
-     * Boleto expiration date - Due date.
+     * Pix expiration date - Due date.
      */
-    public const BOLETO_EXPIRATION_DATE = 'expiration_date';
+    public const PIX_EXPIRATION_DATE = 'expiration_date';
 
     /**
-     * Boleto Instruction - Block name.
+     * Pix Instruction - Block name.
      */
-    public const BOLETO_INSTRUCTION = 'instructions';
+    public const PIX_INSTRUCTION = 'instructions';
 
     /**
      * @var SubjectReader
@@ -52,23 +52,23 @@ class PixPaymentDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var Config Boleto
+     * @var ConfigPix
      */
-    protected $configBoleto;
+    protected $configPix;
 
     /**
      * @param SubjectReader $subjectReader
      * @param Config        $config
-     * @param ConfigBoleto  $configBoleto
+     * @param ConfigPix     $configPix
      */
     public function __construct(
         SubjectReader $subjectReader,
         Config $config,
-        ConfigBoleto $configBoleto
+        ConfigPix $configPix
     ) {
         $this->subjectReader = $subjectReader;
         $this->config = $config;
-        $this->configBoleto = $configBoleto;
+        $this->configPix = $configPix;
     }
 
     /**
@@ -104,9 +104,9 @@ class PixPaymentDataRequest implements BuilderInterface
     {
         $instruction = [];
         $instruction[self::METHOD] = [
-            self::DOCUMENT_NUMBER          => $order->getOrderIncrementId(),
-            self::BOLETO_INSTRUCTION       => $this->configBoleto->getInstructionLine($storeId),
-            self::BOLETO_EXPIRATION_DATE   => $this->configBoleto->getExpiration($storeId),
+            self::DOCUMENT_NUMBER       => $order->getOrderIncrementId(),
+            self::PIX_INSTRUCTION       => $this->configPix->getInstructionLine($storeId),
+            self::PIX_EXPIRATION_DATE   => $this->configPix->getExpiration($storeId),
         ];
 
         return $instruction;
