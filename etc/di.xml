@@ -104,7 +104,8 @@
             <argument name="commandPool" xsi:type="object">PaymentMagentoGetpayCommandPool</argument>
         </arguments>
     </virtualType>
-    <!-- Executors -->
+
+    <!-- All - Executors -->
     <type name="Magento\Payment\Gateway\Command\CommandManagerPool">
         <arguments>
             <argument name="executors" xsi:type="array">
@@ -118,7 +119,7 @@
         </arguments>
     </type>
 
-    <!-- Configuration reader -->
+    <!-- All - Configuration reader -->
     <virtualType name="PaymentMagentoBaseConfig" type="Magento\Payment\Gateway\Config\Config">
         <arguments>
             <argument name="methodCode" xsi:type="const">\Getnet\PaymentMagento\Model\Ui\ConfigProviderBase::CODE</argument>
@@ -161,35 +162,31 @@
         </arguments>
     </virtualType>
 
-    <!-- Cc - Block Info -->
+    <!-- All - Block Info -->
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Cc">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoCcConfig</argument>
         </arguments>
     </type>
 
-    <!-- Boleto - Block Info -->
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Boleto">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoBoletoConfig</argument>
         </arguments>
     </type>
 
-    <!-- Pix - Block Info -->
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Pix">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoPixConfig</argument>
         </arguments>
     </type>
 
-    <!-- Wallet - Block Info -->
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Wallet">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoWalletConfig</argument>
         </arguments>
     </type>
 
-    <!-- Getpay - Block Info -->
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Getpay">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoGetpayConfig</argument>
@@ -739,6 +736,7 @@
             </argument>
         </arguments>
     </virtualType>
+
     <virtualType name="PaymentMagentoCcConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
         <arguments>
             <argument name="configInterface" xsi:type="object">PaymentMagentoCcConfig</argument>
@@ -845,6 +843,7 @@
         </arguments>
     </virtualType>
 
+    <!-- All - Implements Config -->
     <virtualType name="PaymentMagentoLogger" type="Magento\Payment\Model\Method\Logger">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
@@ -905,7 +904,7 @@
         </arguments>
     </type>
 
-    <!-- All - Implements Config Value Handler -->
+    <!-- All - Implements Logger -->
     <type name="Getnet\PaymentMagento\Gateway\Validator\GeneralResponseValidator">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
