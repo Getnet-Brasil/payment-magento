@@ -24,6 +24,15 @@
             <parameter name="cartId" force="true">%cart_id%</parameter>
         </data>
     </route>
+    <route url="/V1/carts/mine/create-vault" method="POST">
+        <service class="Getnet\PaymentMagento\Api\CreateVaultManagementInterface" method="createVault"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
     <route url="/V1/carts/mine/get-detatails-card-id" method="POST">
         <service class="Getnet\PaymentMagento\Api\CardIdManagementInterface" method="getDetailsCardId"/>
         <resources>

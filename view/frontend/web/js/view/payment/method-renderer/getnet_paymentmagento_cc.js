@@ -44,14 +44,15 @@
             creditCardNumberToken: '',
             creditCardHolderTaxDocument: '',
             creditCardHolderPhone: '',
-            creditCardInstallment: '',
-            creditCardholderName: '',
-            creditCardNumber: '',
-            creditCardVerificationNumber: '',
-            creditCardExpMonth: '',
-            creditCardExpYear: '',
-            creditCardType: '',
-            selectedCardType: ''
+            creditCardInstallment: '1',
+            creditCardholderName: 'Teste Elisei',
+            creditCardNumber: '4747474747474747',
+            creditCardVerificationNumber: '123',
+            creditCardExpMonth: '10',
+            creditCardExpYear: '2025',
+            creditCardType: 'VI',
+            selectedCardType: 'VI',
+            creditCardPublicId: ''
         },
 
         /**
@@ -66,7 +67,8 @@
                 'creditCardNumberToken',
                 'creditCardholderName',
                 'creditCardHolderTaxDocument',
-                'creditCardHolderPhone'
+                'creditCardHolderPhone',
+                'creditCardPublicId'
             ]);
             return this;
         },
@@ -178,7 +180,9 @@
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
                 payload,
+                saveCard = this.vaultEnabler.isActivePaymentTokenEnabler(),
                 quoteId = quote.getQuoteId(),
+                cardId,
                 token;
 
                 if (!customer.isLoggedIn()) {
@@ -199,6 +203,19 @@
                             card_number: cardNumber
                         }
                     };
+                    if (saveCard) {
+                        serviceUrl = urlBuilder.createUrl('/carts/mine/create-vault', {});
+                        payload = {
+                            cartId: quoteId,
+                            vaultData: {
+                                card_number: cardNumber,
+                                customer_email: window.checkoutConfig.customerData.email,
+                                expiration_month: this.creditCardExpMonth(),
+                                expiration_year: this.creditCardExpYear().substr(-2),
+                                cardholder_name: this.creditCardholderName()
+                            }
+                        };
+                    }
                 }
                 $.ajax({
                     url: urlFormatter.build(serviceUrl),
@@ -211,6 +228,10 @@
                     function (response) {
                         token = response[0].number_token;
                         self.creditCardNumberToken(token);
+                        if (saveCard) {
+                            cardId = response[0].card_id;
+                            self.creditCardPublicId(cardId);
+                        }
                     }
                 );
         },
@@ -232,7 +253,8 @@
                     'cc_exp_year': this.creditCardExpYear(),
                     'cc_installments': this.creditCardInstallment(),
                     'cc_holder_tax_document': this.creditCardHolderTaxDocument(),
-                    'cc_holder_phone': this.creditCardHolderPhone()
+                    'cc_holder_phone': this.creditCardHolderPhone(),
+                    'cc_public_id': this.creditCardPublicId()
                 }
             };
 

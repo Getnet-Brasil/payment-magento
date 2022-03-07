@@ -121,10 +121,11 @@ class VaultDetailsHandler implements HandlerInterface
      */
     protected function getVaultPaymentToken($payment, $response)
     {
-        $ccNumberToken = $payment->getAdditionalInformation('cc_number_token');
+        $ccNumberToken = $payment->getAdditionalInformation('cc_public_id');
         $ccLast4 = $payment->getAdditionalInformation('cc_number');
         $ccType = $payment->getAdditionalInformation('cc_type');
         $ccExpMonth = $payment->getAdditionalInformation('cc_exp_month');
+
         $ccExpYear = $payment->getAdditionalInformation('cc_exp_year');
         if (empty($ccNumberToken)) {
             return null;
@@ -137,6 +138,7 @@ class VaultDetailsHandler implements HandlerInterface
 
         $ccLast4 = preg_replace('/[^0-9]/', '', $ccLast4);
         $paymentToken = $this->paymentTokenFactory->create();
+        $paymentToken->setPublicHash($ccNumberToken);
         $paymentToken->setGatewayToken($ccNumberToken);
         $paymentToken->setExpiresAt(strtotime('+1 year'));
         $paymentToken->setType(PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD);
