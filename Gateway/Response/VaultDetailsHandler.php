@@ -121,10 +121,11 @@ class VaultDetailsHandler implements HandlerInterface
      */
     protected function getVaultPaymentToken($payment, $response)
     {
-        $ccNumberToken = $payment->getAdditionalInformation('cc_number_token');
+        $ccNumberToken = $payment->getAdditionalInformation('cc_public_id');
         $ccLast4 = $payment->getAdditionalInformation('cc_number');
         $ccType = $payment->getAdditionalInformation('cc_type');
         $ccExpMonth = $payment->getAdditionalInformation('cc_exp_month');
+
         $ccExpYear = $payment->getAdditionalInformation('cc_exp_year');
         if (empty($ccNumberToken)) {
             return null;

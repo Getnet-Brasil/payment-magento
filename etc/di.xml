@@ -29,6 +29,9 @@
     <preference for="Getnet\PaymentMagento\Api\NumberTokenManagementInterface" type="Getnet\PaymentMagento\Model\NumberTokenManagement" />
     <preference for="Getnet\PaymentMagento\Api\GuestNumberTokenManagementInterface" type="Getnet\PaymentMagento\Model\GuestNumberTokenManagement" />
     
+    <!-- API - Create Vault -->
+    <preference for="Getnet\PaymentMagento\Api\CreateVaultManagementInterface" type="Getnet\PaymentMagento\Model\CreateVaultManagement" />
+
     <!-- API - Card Id Details -->
     <preference for="Getnet\PaymentMagento\Api\Data\CardIdInterface" type="Getnet\PaymentMagento\Model\Data\CardId" />
     <preference for="Getnet\PaymentMagento\Api\CardIdManagementInterface" type="Getnet\PaymentMagento\Model\CardIdManagement" />
@@ -868,6 +871,12 @@
         </arguments>
     </type>
 
+    <type name="Getnet\PaymentMagento\Model\CreateVaultManagement">
+        <arguments>
+            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
+        </arguments>
+    </type>
+
     <type name="Getnet\PaymentMagento\Model\CardIdManagement">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
@@ -912,6 +921,12 @@
     </type>
     
     <type name="Getnet\PaymentMagento\Model\NumberTokenManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Model\CreateVaultManagement">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
