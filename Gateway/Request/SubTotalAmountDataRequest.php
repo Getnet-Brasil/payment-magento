@@ -82,13 +82,12 @@ class SubTotalAmountDataRequest implements BuilderInterface
         );
 
         $grandTotal = $order->getGrandTotalAmount();
-        $shippingAmount = $orderAdapter->getShippingAmount();
         $tax = $orderAdapter->getTaxAmount();
 
         $total = $grandTotal - $tax;
 
-        $result[self::AMOUNT] = ceil($this->config->formatPrice($total));
-
+        $result[self::AMOUNT] = $this->config->formatPrice($total);
+        
         return $result;
     }
 }
