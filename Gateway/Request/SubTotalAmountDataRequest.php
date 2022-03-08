@@ -87,7 +87,7 @@ class SubTotalAmountDataRequest implements BuilderInterface
         $total = $grandTotal - $tax;
 
         $result[self::AMOUNT] = $this->config->formatPrice($total);
-        
+
         return $result;
     }
 }
