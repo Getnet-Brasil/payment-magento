@@ -41,9 +41,9 @@ class SubTotalAmountDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @param SubjectReader         $subjectReader
-     * @param OrderAdapterFactory   $orderAdapterFactory
-     * @param Config                $config
+     * @param SubjectReader       $subjectReader
+     * @param OrderAdapterFactory $orderAdapterFactory
+     * @param Config              $config
      */
     public function __construct(
         SubjectReader $subjectReader,
