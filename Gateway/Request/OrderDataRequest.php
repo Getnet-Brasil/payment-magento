@@ -102,7 +102,7 @@ class OrderDataRequest implements BuilderInterface
         $result = [
             self::ORDER => [
                 self::ORDER_ID  => $order->getOrderIncrementId(),
-                self::SALES_TAX => $orderAdapter->getTaxAmount(),
+                self::SALES_TAX => $this->config->formatPrice($orderAdapter->getTaxAmount()),
             ],
         ];
 
