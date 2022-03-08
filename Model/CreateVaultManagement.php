@@ -145,7 +145,6 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                 'success' => 0,
             ];
             if (isset($data['number_token'])) {
-
                 $month = $vaultData['expiration_month'];
                 if (strlen($month) === 1) {
                     $month = '0'.$month;
@@ -164,7 +163,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                 $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
                 $client->setRawData($this->json->serialize($saveCardData), 'application/json');
                 $client->setMethod(ZendClient::POST);
-    
+
                 $responseBody = $client->request()->getBody();
                 $data = $this->json->unserialize($responseBody);
 
@@ -182,7 +181,6 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                     ]
                 );
             }
-           
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [

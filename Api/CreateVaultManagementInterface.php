@@ -20,7 +20,7 @@ interface CreateVaultManagementInterface
     /**
      * Create Vault.
      *
-     * @param int $cartId
+     * @param int   $cartId
      * @param mixed $vaultData
      *
      * @return mixed

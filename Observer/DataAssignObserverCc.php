@@ -92,7 +92,7 @@ class DataAssignObserverCc extends AbstractDataAssignObserver
         self::PAYMENT_INFO_CC_SAVE,
         self::PAYMENT_INFO_HOLDER_TAX_DOCUMENT,
         self::PAYMENT_INFO_HOLDER_PHONE,
-        self::PAYMENT_INFO_CC_PUBLIC_ID
+        self::PAYMENT_INFO_CC_PUBLIC_ID,
     ];
 
     /**

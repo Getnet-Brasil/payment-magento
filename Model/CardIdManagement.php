@@ -122,7 +122,7 @@ class CardIdManagement implements CardIdManagementInterface
         $storeId = $quote->getData(QuoteCartInterface::KEY_STORE_ID);
 
         $customerId = $quote->getCustomer()->getId();
-        
+
         /** @var PaymentTokenManagement $paymentToken */
         $paymentToken = $this->tokenManagement->getByPublicHash($hash, $customerId);
 
@@ -146,7 +146,7 @@ class CardIdManagement implements CardIdManagementInterface
         $client = $this->httpClientFactory->create();
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
-       
+
         try {
             $client->setUri($url.'v1/cards/'.$cardId);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
