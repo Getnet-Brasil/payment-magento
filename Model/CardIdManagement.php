@@ -23,9 +23,12 @@ use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
+use Magento\Vault\Model\PaymentTokenManagement;
 
 /**
  * Class Card Id Management - Get Details Card Id.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CardIdManagement implements CardIdManagementInterface
 {
@@ -60,6 +63,11 @@ class CardIdManagement implements CardIdManagementInterface
     private $json;
 
     /**
+     * @var PaymentTokenManagement
+     */
+    private $tokenManagement;
+
+    /**
      * CardIdManagement constructor.
      *
      * @param Logger                  $logger
@@ -68,6 +76,7 @@ class CardIdManagement implements CardIdManagementInterface
      * @param ConfigBase              $configBase
      * @param ZendClientFactory       $httpClientFactory
      * @param Json                    $json
+     * @param PaymentTokenManagement  $tokenManagement
      */
     public function __construct(
         Logger $logger,
@@ -75,7 +84,8 @@ class CardIdManagement implements CardIdManagementInterface
         ConfigInterface $config,
         ConfigBase $configBase,
         ZendClientFactory $httpClientFactory,
-        Json $json
+        Json $json,
+        PaymentTokenManagement $tokenManagement
     ) {
         $this->logger = $logger;
         $this->quoteRepository = $quoteRepository;
@@ -83,13 +93,14 @@ class CardIdManagement implements CardIdManagementInterface
         $this->configBase = $configBase;
         $this->httpClientFactory = $httpClientFactory;
         $this->json = $json;
+        $this->tokenManagement = $tokenManagement;
     }
 
     /**
      * Generate Number Token by Card Number.
      *
-     * @param int             $cartId
-     * @param CardIdInterface $cardId
+     * @param int                                             $cartId
+     * @param \Getnet\PaymentMagento\Api\Data\CardIdInterface $cardId
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
@@ -106,11 +117,18 @@ class CardIdManagement implements CardIdManagementInterface
         }
         $data = [];
 
-        $cardId = $cardId->getCardId();
+        $hash = $cardId->getCardId();
 
         $storeId = $quote->getData(QuoteCartInterface::KEY_STORE_ID);
 
-        $data['details'] = $this->getCardId($storeId, $cardId);
+        $customerId = $quote->getCustomer()->getId();
+
+        /** @var PaymentTokenManagement $paymentToken */
+        $paymentToken = $this->tokenManagement->getByPublicHash($hash, $customerId);
+
+        $gatawayToken = $paymentToken->getGatewayToken();
+
+        $data['details'] = $this->getCardId($storeId, $gatawayToken);
 
         return $data;
     }

@@ -23,7 +23,7 @@ interface NumberTokenManagementInterface
      * @param int                                                  $cartId
      * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
      *
-     * @return array
+     * @return mixed
      */
     public function generateNumberToken(
         $cartId,

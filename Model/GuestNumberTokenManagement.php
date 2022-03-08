@@ -45,8 +45,8 @@ class GuestNumberTokenManagement implements GuestNumberTokenManagementInterface
     /**
      * Save Getnet Interest.
      *
-     * @param string               $cartId
-     * @param NumberTokenInterface $cardNumber
+     * @param string                                               $cartId
+     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
      *
      * @return array
      */
