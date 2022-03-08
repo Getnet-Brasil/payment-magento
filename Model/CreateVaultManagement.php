@@ -109,31 +109,96 @@ class CreateVaultManagement implements CreateVaultManagementInterface
 
         $storeId = $quote->getData(QuoteCartInterface::KEY_STORE_ID);
 
-        $numberToken = $this->getVaultDetails($storeId, $vaultData);
+        $numberToken = $this->getTokenCcNumber($storeId, $vaultData);
 
-        $token['tokenize'] = $numberToken;
+        if ($numberToken) {
+            $vaultDetails = $this->getVaultDetails($storeId, $numberToken, $vaultData);
+            $token['tokenize'] = $vaultDetails;
+        }
 
         return $token;
     }
 
     /**
-     * Get Vault Details.
+     * Get Token Cc Number.
      *
      * @param int   $storeId
      * @param array $vaultData
      *
      * @return array
      */
-    public function getVaultDetails($storeId, $vaultData)
+    public function getTokenCcNumber($storeId, $vaultData)
     {
         /** @var ZendClient $client */
         $client = $this->httpClientFactory->create();
         $request = ['card_number' => $vaultData['card_number']];
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
-
+        $response = null;
         try {
             $client->setUri($url.'/v1/tokens/card');
+            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setRawData($this->json->serialize($request), 'application/json');
+            $client->setMethod(ZendClient::POST);
+
+            $responseBody = $client->request()->getBody();
+            $data = $this->json->unserialize($responseBody);
+            
+            if (isset($data['number_token'])) {
+                $response =  $data['number_token'];
+            }
+            $this->logger->debug(
+                [
+                    'url'      => $url.'v1/tokens/card',
+                    'response' => $responseBody,
+                ]
+            );
+        } catch (InvalidArgumentException $e) {
+            $this->logger->debug(
+                [
+                    'url'      => $url.'v1/tokens/card',
+                    'response' => $responseBody,
+                ]
+            );
+            // phpcs:ignore Magento2.Exceptions.DirectThrow
+            throw new Exception('Invalid JSON was returned by the gateway');
+        }
+
+        return $response;
+    }
+
+    /**
+     * Get Vault Details.
+     *
+     * @param int    $storeId
+     * @param string $numberToken
+     * @param array  $vaultData
+     *
+     * @return array
+     */
+    public function getVaultDetails($storeId, $numberToken, $vaultData)
+    {
+        /** @var ZendClient $client */
+        $client = $this->httpClientFactory->create();
+        $url = $this->configBase->getApiUrl($storeId);
+        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        
+        $month = $vaultData['expiration_month'];
+        if (strlen($month) === 1) {
+            $month = '0'.$month;
+        }
+
+        $request = [
+            'number_token'      => $numberToken,
+            'expiration_month'  => $month,
+            'expiration_year'   => $vaultData['expiration_year'],
+            'customer_id'       => $vaultData['customer_email'],
+            'cardholder_name'   => $vaultData['cardholder_name'],
+        ];
+
+        try {
+            $client->setUri($url.'/v1/cards');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
             $client->setRawData($this->json->serialize($request), 'application/json');
@@ -144,47 +209,25 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             $response = [
                 'success' => 0,
             ];
-            if (isset($data['number_token'])) {
-                $month = $vaultData['expiration_month'];
-                if (strlen($month) === 1) {
-                    $month = '0'.$month;
-                }
-
-                $saveCardData = [
-                    'number_token'      => $data['number_token'],
-                    'expiration_month'  => $month,
-                    'expiration_year'   => $vaultData['expiration_year'],
-                    'customer_id'       => $vaultData['customer_email'],
-                    'cardholder_name'   => $vaultData['cardholder_name'],
+            if (isset($data['card_id'])) {
+                $response = [
+                    'success'      => 1,
+                    'card_id'      => $data['card_id'],
+                    'number_token' => $data['number_token'],
                 ];
-
-                $client->setUri($url.'/v1/cards');
-                $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-                $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
-                $client->setRawData($this->json->serialize($saveCardData), 'application/json');
-                $client->setMethod(ZendClient::POST);
-
-                $responseBody = $client->request()->getBody();
-                $data = $this->json->unserialize($responseBody);
-
-                if (isset($data['card_id'])) {
-                    $response = [
-                        'success'      => 1,
-                        'card_id'      => $data['card_id'],
-                        'number_token' => $data['number_token'],
-                    ];
-                }
-                $this->logger->debug(
-                    [
-                        'url'      => $url.'v1/cards',
-                        'response' => $data,
-                    ]
-                );
             }
+            $this->logger->debug(
+                [
+                    'url'      => $url.'v1/cards',
+                    'request'  => $this->json->serialize($request),
+                    'response' => $responseBody,
+                ]
+            );
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/cards',
+                    'request'  => $request,
                     'response' => $responseBody,
                 ]
             );
