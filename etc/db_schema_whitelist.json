@@ -1,0 +1,7 @@
+{
+    "sales_order": {
+        "column": {
+            "ext_order_id": true
+        }
+    }
+}

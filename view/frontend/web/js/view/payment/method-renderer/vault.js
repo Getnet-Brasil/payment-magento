@@ -163,8 +163,7 @@ define([
                 quoteId = quote.getQuoteId(),
                 cardDetails;
 
-                cardId = '514886d5-6063-4ab4-9a45-1468f0559634';
-                serviceUrl = urlBuilder.createUrl('/carts/mine/get-detatails-card-id', {});
+                serviceUrl = urlBuilder.createUrl('/carts/mine/get-details-card-id', {});
                 payload = {
                     cartId: quoteId,
                     cardId: {
