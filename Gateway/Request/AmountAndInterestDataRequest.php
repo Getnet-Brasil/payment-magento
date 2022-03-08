@@ -100,13 +100,13 @@ class AmountAndInterestDataRequest implements BuilderInterface
 
         $total = $grandTotal - $shipping - $tax;
 
-        $result[self::AMOUNT] = ceil($this->config->formatPrice($total));
+        $result[self::AMOUNT] = $this->config->formatPrice($total);
 
         if ($installment > 1) {
             $storeId = $order->getStoreId();
             $amountInterest = $this->configCc->getInterestToAmount($installment, $grandTotal, $storeId);
             $total = $grandTotal - $shipping - $tax + $amountInterest;
-            $result[self::AMOUNT] = ceil($this->config->formatPrice($total));
+            $result[self::AMOUNT] = $this->config->formatPrice($total);
         }
 
         return $result;
