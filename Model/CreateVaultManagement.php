@@ -125,7 +125,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
      * @param int   $storeId
      * @param array $vaultData
      *
-     * @return array
+     * @return null|string
      */
     public function getTokenCcNumber($storeId, $vaultData)
     {
@@ -135,6 +135,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
         $response = null;
+
         try {
             $client->setUri($url.'/v1/tokens/card');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
@@ -146,7 +147,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             $data = $this->json->unserialize($responseBody);
             
             if (isset($data['number_token'])) {
-                $response =  $data['number_token'];
+                $response = $data['number_token'];
             }
             $this->logger->debug(
                 [
@@ -183,7 +184,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         $client = $this->httpClientFactory->create();
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
-        
+
         $month = $vaultData['expiration_month'];
         if (strlen($month) === 1) {
             $month = '0'.$month;
