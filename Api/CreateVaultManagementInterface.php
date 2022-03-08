@@ -23,7 +23,7 @@ interface CreateVaultManagementInterface
      * @param int $cartId
      * @param mixed $vaultData
      *
-     * @return array
+     * @return mixed
      */
     public function createVault(
         $cartId,

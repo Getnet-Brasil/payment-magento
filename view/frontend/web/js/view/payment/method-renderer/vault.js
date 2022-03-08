@@ -163,7 +163,7 @@ define([
                 quoteId = quote.getQuoteId(),
                 cardDetails;
 
-                serviceUrl = urlBuilder.createUrl('/carts/mine/get-detatails-card-id', {});
+                serviceUrl = urlBuilder.createUrl('/carts/mine/get-details-card-id', {});
                 payload = {
                     cartId: quoteId,
                     cardId: {
@@ -206,8 +206,7 @@ define([
                     'cc_cardholder_name': this.creditCardholderName(),
                     'cc_number': this.creditCardNumber(),
                     'cc_exp_month': this.creditCardExpMonth(),
-                    'cc_exp_year': this.creditCardExpYear(),
-                    'public_hash': this.getToken()
+                    'cc_exp_year': this.creditCardExpYear()
                 }
 
             };

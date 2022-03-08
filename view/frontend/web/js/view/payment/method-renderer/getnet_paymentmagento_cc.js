@@ -185,55 +185,56 @@
                 cardId,
                 token;
 
-                if (!customer.isLoggedIn()) {
-                    serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/generate-credit-card-number-token', {
-                        cartId: quoteId
-                    });
-                    payload = {
-                        cartId: quoteId,
-                        cardNumber: {
-                            card_number: cardNumber
-                        }
-                    };
-                } else {
-                    serviceUrl = urlBuilder.createUrl('/carts/mine/generate-credit-card-number-token', {});
-                    payload = {
-                        cartId: quoteId,
-                        cardNumber: {
-                            card_number: cardNumber
-                        }
-                    };
+            serviceUrl = urlBuilder.createUrl('/carts/mine/generate-credit-card-number-token', {});
+            payload = {
+                cartId: quoteId,
+                cardNumber: {
+                    card_number: cardNumber
+                }
+            };
+
+            if (saveCard) {
+                serviceUrl = urlBuilder.createUrl('/carts/mine/create-vault', {});
+                payload = {
+                    cartId: quoteId,
+                    vaultData: {
+                        card_number: cardNumber,
+                        customer_email: window.checkoutConfig.customerData.email,
+                        expiration_month: this.creditCardExpMonth(),
+                        expiration_year: this.creditCardExpYear().substr(-2),
+                        cardholder_name: this.creditCardholderName()
+                    }
+                };
+            }
+            if (!customer.isLoggedIn()) {
+                serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/generate-credit-card-number-token', {
+                    cartId: quoteId
+                });
+                payload = {
+                    cartId: quoteId,
+                    cardNumber: {
+                        card_number: cardNumber
+                    }
+                };
+            }
+
+            $.ajax({
+                url: urlFormatter.build(serviceUrl),
+                data: JSON.stringify(payload),
+                global: false,
+                contentType: 'application/json',
+                type: 'POST',
+                async: false
+            }).done(
+                function (response) {
+                    token = response[0].number_token;
+                    self.creditCardNumberToken(token);
                     if (saveCard) {
-                        serviceUrl = urlBuilder.createUrl('/carts/mine/create-vault', {});
-                        payload = {
-                            cartId: quoteId,
-                            vaultData: {
-                                card_number: cardNumber,
-                                customer_email: window.checkoutConfig.customerData.email,
-                                expiration_month: this.creditCardExpMonth(),
-                                expiration_year: this.creditCardExpYear().substr(-2),
-                                cardholder_name: this.creditCardholderName()
-                            }
-                        };
+                        cardId = response[0].card_id;
+                        self.creditCardPublicId(cardId);
                     }
                 }
-                $.ajax({
-                    url: urlFormatter.build(serviceUrl),
-                    data: JSON.stringify(payload),
-                    global: false,
-                    contentType: 'application/json',
-                    type: 'POST',
-                    async: false
-                }).done(
-                    function (response) {
-                        token = response[0].number_token;
-                        self.creditCardNumberToken(token);
-                        if (saveCard) {
-                            cardId = response[0].card_id;
-                            self.creditCardPublicId(cardId);
-                        }
-                    }
-                );
+            );
         },
 
         /**

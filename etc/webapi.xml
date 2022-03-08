@@ -33,7 +33,7 @@
             <parameter name="cartId" force="true">%cart_id%</parameter>
         </data>
     </route>
-    <route url="/V1/carts/mine/get-detatails-card-id" method="POST">
+    <route url="/V1/carts/mine/get-details-card-id" method="POST">
         <service class="Getnet\PaymentMagento\Api\CardIdManagementInterface" method="getDetailsCardId"/>
         <resources>
             <resource ref="self" />

@@ -90,8 +90,8 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     /**
      * Generate Number Token by Card Number.
      *
-     * @param int                  $cartId
-     * @param NumberTokenInterface $cardNumber
+     * @param int                                                  $cartId
+     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
@@ -122,8 +122,8 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     /**
      * Generate Number Token by Card Number for Adminhtml.
      *
-     * @param int                  $storeId
-     * @param NumberTokenInterface $cardNumber
+     * @param int                                                  $storeId
+     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
