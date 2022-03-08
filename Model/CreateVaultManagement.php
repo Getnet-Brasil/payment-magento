@@ -145,7 +145,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
 
             $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
-            
+
             if (isset($data['number_token'])) {
                 $response = $data['number_token'];
             }
