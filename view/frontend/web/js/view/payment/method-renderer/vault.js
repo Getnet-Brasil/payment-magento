@@ -206,7 +206,8 @@ define([
                     'cc_cardholder_name': this.creditCardholderName(),
                     'cc_number': this.creditCardNumber(),
                     'cc_exp_month': this.creditCardExpMonth(),
-                    'cc_exp_year': this.creditCardExpYear()
+                    'cc_exp_year': this.creditCardExpYear(),
+                    'public_hash': this.getToken()
                 }
 
             };

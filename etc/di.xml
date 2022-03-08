@@ -223,7 +223,7 @@
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="sellerId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SellerIdDataRequest</item>
-                <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDataRequest</item>
+                <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SubTotalAmountDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataRequest</item>
                 <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CustomerDataRequest</item>
@@ -238,7 +238,7 @@
     <virtualType name="PaymentMagentoBoletoOrderResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
-                <item name="extOrdId" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\ExtOrdIdHandler</item>
+                <item name="extOrdId" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\ExtOrdIdBoletoHandler</item>
                 <item name="txnIdBoleto" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\TxnIdBoletoHandler</item>
             </argument>
         </arguments>

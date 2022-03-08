@@ -9,7 +9,6 @@
 namespace Getnet\PaymentMagento\Gateway\Request;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
@@ -17,9 +16,9 @@ use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Amount And Interest Data Request - Payment amount structure.
+ * Class Subtotal Amount Data Request - Payment amount structure.
  */
-class AmountAndInterestDataRequest implements BuilderInterface
+class SubTotalAmountDataRequest implements BuilderInterface
 {
     /**
      * Amount block name.
@@ -42,26 +41,18 @@ class AmountAndInterestDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var ConfigCc
-     */
-    protected $configCc;
-
-    /**
      * @param SubjectReader       $subjectReader
      * @param OrderAdapterFactory $orderAdapterFactory
      * @param Config              $config
-     * @param ConfigCc            $configCc
      */
     public function __construct(
         SubjectReader $subjectReader,
         OrderAdapterFactory $orderAdapterFactory,
-        Config $config,
-        ConfigCc $configCc
+        Config $config
     ) {
         $this->subjectReader = $subjectReader;
         $this->orderAdapterFactory = $orderAdapterFactory;
         $this->config = $config;
-        $this->configCc = $configCc;
     }
 
     /**
@@ -83,8 +74,6 @@ class AmountAndInterestDataRequest implements BuilderInterface
 
         $order = $paymentDO->getOrder();
 
-        $grandTotal = $order->getGrandTotalAmount();
-
         $payment = $paymentDO->getPayment();
 
         /** @var OrderAdapterFactory $orderAdapter * */
@@ -92,22 +81,13 @@ class AmountAndInterestDataRequest implements BuilderInterface
             ['order' => $payment->getOrder()]
         );
 
-        $shipping = $orderAdapter->getShippingAmount();
-
+        $grandTotal = $order->getGrandTotalAmount();
+        $shippingAmount = $orderAdapter->getShippingAmount();
         $tax = $orderAdapter->getTaxAmount();
 
-        $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
-
-        $total = $grandTotal - $shipping - $tax;
+        $total = $grandTotal - $shippingAmount - $tax;
 
         $result[self::AMOUNT] = ceil($this->config->formatPrice($total));
-
-        if ($installment > 1) {
-            $storeId = $order->getStoreId();
-            $amountInterest = $this->configCc->getInterestToAmount($installment, $grandTotal, $storeId);
-            $total = $grandTotal - $shipping - $tax + $amountInterest;
-            $result[self::AMOUNT] = ceil($this->config->formatPrice($total));
-        }
 
         return $result;
     }
