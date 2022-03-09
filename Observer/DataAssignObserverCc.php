@@ -74,6 +74,10 @@ class DataAssignObserverCc extends AbstractDataAssignObserver
     public const PAYMENT_INFO_CC_CID = 'cc_cid';
 
     /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_PUBLIC_ID = 'cc_public_id';
+    /**
      * @var array
      */
     protected $addInformationList = [
@@ -88,6 +92,7 @@ class DataAssignObserverCc extends AbstractDataAssignObserver
         self::PAYMENT_INFO_CC_SAVE,
         self::PAYMENT_INFO_HOLDER_TAX_DOCUMENT,
         self::PAYMENT_INFO_HOLDER_PHONE,
+        self::PAYMENT_INFO_CC_PUBLIC_ID,
     ];
 
     /**

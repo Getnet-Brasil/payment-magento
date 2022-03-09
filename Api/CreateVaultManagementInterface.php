@@ -15,18 +15,18 @@ namespace Getnet\PaymentMagento\Api;
  *
  * @api
  */
-interface GuestNumberTokenManagementInterface
+interface CreateVaultManagementInterface
 {
     /**
-     * Generate the token number by credit card number.
+     * Create Vault.
      *
-     * @param string                                               $cartId
-     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
+     * @param int   $cartId
+     * @param mixed $vaultData
      *
      * @return mixed
      */
-    public function generateNumberToken(
+    public function createVault(
         $cartId,
-        \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
+        $vaultData
     );
 }

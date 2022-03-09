@@ -11,8 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Model;
 
 use Exception;
-use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
-use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
+use Getnet\PaymentMagento\Api\CreateVaultManagementInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -25,11 +24,11 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
 
 /**
- * Class Number Token Management - Generate number token by card number.
+ * Class Create Vault Management - Generate number token by card number in API Cofre.
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class NumberTokenManagement implements NumberTokenManagementInterface
+class CreateVaultManagement implements CreateVaultManagementInterface
 {
     /**
      * @var Logger
@@ -62,7 +61,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     private $json;
 
     /**
-     * NumberTokenManagement constructor.
+     * CreateVaultManagement constructor.
      *
      * @param Logger                  $logger
      * @param CartRepositoryInterface $quoteRepository
@@ -88,19 +87,19 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     }
 
     /**
-     * Generate Number Token by Card Number.
+     * Create Vault Card Id.
      *
-     * @param int                                                  $cartId
-     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
+     * @param int   $cartId
+     * @param array $vaultData
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
      *
      * @return array
      */
-    public function generateNumberToken(
+    public function createVault(
         $cartId,
-        NumberTokenInterface $cardNumber
+        $vaultData
     ) {
         $token = [];
         $quote = $this->quoteRepository->getActive($cartId);
@@ -108,58 +107,34 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             throw new NoSuchEntityException(__('Cart %1 doesn\'t contain products', $cartId));
         }
 
-        $cardNumber = $cardNumber->getCardNumber();
-
         $storeId = $quote->getData(QuoteCartInterface::KEY_STORE_ID);
 
-        $numberToken = $this->getNumberToken($storeId, $cardNumber);
+        $numberToken = $this->getTokenCcNumber($storeId, $vaultData);
 
-        $token['tokenize'] = $numberToken;
-
-        return $token;
-    }
-
-    /**
-     * Generate Number Token by Card Number for Adminhtml.
-     *
-     * @param int                                                  $storeId
-     * @param \Getnet\PaymentMagento\Api\Data\NumberTokenInterface $cardNumber
-     *
-     * @throws CouldNotSaveException
-     * @throws NoSuchEntityException
-     *
-     * @return array
-     */
-    public function generateNumberTokenForAdmin(
-        $storeId,
-        NumberTokenInterface $cardNumber
-    ) {
-        $token = [];
-
-        $cardNumber = $cardNumber->getCardNumber();
-
-        $numberToken = $this->getNumberToken($storeId, $cardNumber);
-
-        $token['tokenize'] = $numberToken;
+        if ($numberToken) {
+            $vaultDetails = $this->getVaultDetails($storeId, $numberToken, $vaultData);
+            $token['tokenize'] = $vaultDetails;
+        }
 
         return $token;
     }
 
     /**
-     * Get Number Token.
+     * Get Token Cc Number.
      *
-     * @param int    $storeId
-     * @param string $cardNumber
+     * @param int   $storeId
+     * @param array $vaultData
      *
-     * @return array
+     * @return null|string
      */
-    public function getNumberToken($storeId, $cardNumber)
+    public function getTokenCcNumber($storeId, $vaultData)
     {
         /** @var ZendClient $client */
         $client = $this->httpClientFactory->create();
-        $request = ['card_number' => $cardNumber];
+        $request = ['card_number' => $vaultData['card_number']];
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        $response = null;
 
         try {
             $client->setUri($url.'/v1/tokens/card');
@@ -170,14 +145,9 @@ class NumberTokenManagement implements NumberTokenManagementInterface
 
             $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
-            $response = [
-                'success' => 0,
-            ];
+
             if (isset($data['number_token'])) {
-                $response = [
-                    'success'      => 1,
-                    'number_token' => $data['number_token'],
-                ];
+                $response = $data['number_token'];
             }
             $this->logger->debug(
                 [
@@ -189,6 +159,76 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/tokens/card',
+                    'response' => $responseBody,
+                ]
+            );
+            // phpcs:ignore Magento2.Exceptions.DirectThrow
+            throw new Exception('Invalid JSON was returned by the gateway');
+        }
+
+        return $response;
+    }
+
+    /**
+     * Get Vault Details.
+     *
+     * @param int    $storeId
+     * @param string $numberToken
+     * @param array  $vaultData
+     *
+     * @return array
+     */
+    public function getVaultDetails($storeId, $numberToken, $vaultData)
+    {
+        /** @var ZendClient $client */
+        $client = $this->httpClientFactory->create();
+        $url = $this->configBase->getApiUrl($storeId);
+        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+
+        $month = $vaultData['expiration_month'];
+        if (strlen($month) === 1) {
+            $month = '0'.$month;
+        }
+
+        $request = [
+            'number_token'      => $numberToken,
+            'expiration_month'  => $month,
+            'expiration_year'   => $vaultData['expiration_year'],
+            'customer_id'       => $vaultData['customer_email'],
+            'cardholder_name'   => $vaultData['cardholder_name'],
+        ];
+
+        try {
+            $client->setUri($url.'/v1/cards');
+            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setRawData($this->json->serialize($request), 'application/json');
+            $client->setMethod(ZendClient::POST);
+
+            $responseBody = $client->request()->getBody();
+            $data = $this->json->unserialize($responseBody);
+            $response = [
+                'success' => 0,
+            ];
+            if (isset($data['card_id'])) {
+                $response = [
+                    'success'      => 1,
+                    'card_id'      => $data['card_id'],
+                    'number_token' => $data['number_token'],
+                ];
+            }
+            $this->logger->debug(
+                [
+                    'url'      => $url.'v1/cards',
+                    'request'  => $this->json->serialize($request),
+                    'response' => $responseBody,
+                ]
+            );
+        } catch (InvalidArgumentException $e) {
+            $this->logger->debug(
+                [
+                    'url'      => $url.'v1/cards',
+                    'request'  => $request,
                     'response' => $responseBody,
                 ]
             );
