@@ -131,6 +131,14 @@ define([
         },
 
         /**
+         * Is Button Active
+         * @returns {Boolean}
+         */
+        isButtonActive() {
+            return this.isActive();
+        },
+
+        /**
          * Init Form Element
          * @returns {void}
          */
