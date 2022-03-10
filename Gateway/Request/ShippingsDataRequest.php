@@ -119,9 +119,9 @@ class ShippingsDataRequest implements BuilderInterface
                 self::NAME              => $name,
                 self::EMAIL             => $shippingAddress->getEmail(),
                 self::PHONE_NUMBER      => preg_replace('/[^0-9]/', '', $shippingAddress->getTelephone()),
-                self::SHIPPING_AMOUNT   => ceil($this->config->formatPrice(
+                self::SHIPPING_AMOUNT   => $this->config->formatPrice(
                     $orderAdapter->getShippingAmount()
-                )),
+                ),
                 self::ADDRESS           => [
                     AddressDataRequest::POSTAL_CODE   => preg_replace('/[^0-9]/', '', $shippingAddress->getPostcode()),
                     // phpcs:ignore Generic.Files.LineLength
