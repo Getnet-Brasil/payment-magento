@@ -67,7 +67,7 @@ class AmountDataRequest implements BuilderInterface
 
         $grandTotal = $order->getGrandTotalAmount();
 
-        $result[self::AMOUNT] = ceil($this->config->formatPrice($grandTotal));
+        $result[self::AMOUNT] = $this->config->formatPrice($grandTotal);
 
         return $result;
     }
