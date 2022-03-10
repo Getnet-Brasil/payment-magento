@@ -87,25 +87,16 @@ class AmountAndInterestDataRequest implements BuilderInterface
 
         $payment = $paymentDO->getPayment();
 
-        /** @var OrderAdapterFactory $orderAdapter * */
-        $orderAdapter = $this->orderAdapterFactory->create(
-            ['order' => $payment->getOrder()]
-        );
-
-        $shipping = $orderAdapter->getShippingAmount();
-
-        $tax = $orderAdapter->getTaxAmount();
-
         $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
 
-        $total = $grandTotal - $shipping - $tax;
+        $total = $grandTotal;
 
         $result[self::AMOUNT] = $this->config->formatPrice($total);
 
         if ($installment > 1) {
             $storeId = $order->getStoreId();
             $amountInterest = $this->configCc->getInterestToAmount($installment, $grandTotal, $storeId);
-            $total = $grandTotal - $shipping - $tax + $amountInterest;
+            $total = $grandTotal + $amountInterest;
             $result[self::AMOUNT] = $this->config->formatPrice($total);
         }
 

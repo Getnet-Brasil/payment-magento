@@ -80,7 +80,7 @@ class AmountDenyDataRequest implements BuilderInterface
 
         $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
 
-        $result[self::CANCEL_AMOUNT] = ceil($this->config->formatPrice($grandTotal));
+        $result[self::CANCEL_AMOUNT] = $this->config->formatPrice($grandTotal);
 
         if ($installment > 1) {
             $order = $paymentDO->getOrder();
