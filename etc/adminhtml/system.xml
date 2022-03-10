@@ -344,9 +344,9 @@
                         </field>
                     </group>
                 </group>
-                <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <!-- <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Wallet</label>
-                    <comment>Instant payment with automatic status consolidation, offer a fast and convenient method.</comment>
+                    <comment>Offer instant payment across multiple wallets.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -391,7 +391,7 @@
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_wallet/sort_order</config_path>
                     </field>
-                </group>
+                </group> -->
                 <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Getpay</label>
                     <comment>Offer sales via external link, keeping your inventory and order status in sync.</comment>

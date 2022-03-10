@@ -144,12 +144,12 @@ class OrderDataGetpayRequest implements BuilderInterface
                 self::ORDER_TITLE           => __('Payment for order #%1', $order->getOrderIncrementId()),
                 self::ORDER_DESCRIPTION     => __('Payment link'),
                 self::ORDER_PREFIX          => $order->getOrderIncrementId(),
-                self::ORDER_SHIPPING_AMOUNT => ceil($this->config->formatPrice(
+                self::ORDER_SHIPPING_AMOUNT => $this->config->formatPrice(
                     $orderAdapter->getShippingAmount()
-                )),
-                self::ORDER_AMOUNT          => ceil($this->config->formatPrice(
+                ),
+                self::ORDER_AMOUNT          => $this->config->formatPrice(
                     $orderAdapter->getSubTotal()
-                )),
+                ),
             ],
         ];
 
