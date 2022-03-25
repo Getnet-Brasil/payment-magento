@@ -423,7 +423,7 @@ class ConfigCc extends PaymentConfig
     {
         $valueInterest = $this->getCalcInterest($installment, $amount, $storeId);
 
-        return $valueInterest;
+        return round($valueInterest, 2);
     }
 
     /**
@@ -443,7 +443,7 @@ class ConfigCc extends PaymentConfig
             $interest = $this->getInterestSimple($amount, $interestByInstall[$installment]);
         }
 
-        return $interest;
+        return round($interest, 2);
     }
 
     /**
@@ -463,6 +463,6 @@ class ConfigCc extends PaymentConfig
             $valinterest = $amount * $taxa;
         }
 
-        return $valinterest;
+        return round($valinterest, 2);
     }
 }

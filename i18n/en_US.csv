@@ -101,17 +101,23 @@ Waiting...,Waiting...
 "A 3-digit number in italics on the back of your credit card.","A 3-digit number in italics on the back of your credit card."
 Month,Month
 Year,Year
+"How do you want to split?","How do you want to split?"
+"Payment Amount on the First Card","Payment Amount on the First Card"
+"1º Credit Card","1º Credit Card"
+"2º Credit Card","2º Credit Card"
+"Minimum value","Minimum value"
+"Maximum value","Maximum value"
+"Wallet Information","Wallet Information"
 "Select Card type","Select Card type"
 "Payer Phone","Payer Phone"
+"%1x of %2 in the total value of %3","%1x of %2 in the total value of %3"
+"%1x of %2 not interest","%1x of %2 not interest"
 "Credit card number does not match credit card type.","Credit card number does not match credit card type."
 "Please enter a valid credit card type number.","Please enter a valid credit card type number."
 "Please enter a valid credit card number.","Please enter a valid credit card number."
 "Incorrect credit card expiration month.","Incorrect credit card expiration month."
 "Please enter a valid credit card verification number.","Please enter a valid credit card verification number."
 "Incorrect credit card expiration year.","Incorrect credit card expiration year."
-"%1x of %2 not interest","%1x of %2 not interest"
-"%1% of discount cash with total of %2","%1% of discount cash with total of %2"
-"%1x of %2 in the total value of %3","%1x of %2 in the total value of %3"
 "Credit Card","Credit Card"
 "Debit Card","Debit Card"
 "Payment Services","Payment Services"
@@ -124,6 +130,7 @@ Actions,Actions
 Credentials,Credentials
 "Configure the settings for your store.","Configure the settings for your store."
 "Statement Descriptor","Statement Descriptor"
+"Dynamic Mcc","Dynamic Mcc"
 Environment,Environment
 "Seller Id - production","Seller Id - production"
 "Client Id - production","Client Id - production"
@@ -163,6 +170,7 @@ Title,Title
 "Interest on the 10nd tranche","Interest on the 10nd tranche"
 "Interest on the 11nd tranche","Interest on the 11nd tranche"
 "Interest on the 12nd tranche","Interest on the 12nd tranche"
+"2 Cartões de Crédito","2 Cartões de Crédito"
 "Instant payment with automatic status consolidation, offer a fast and convenient method.","Instant payment with automatic status consolidation, offer a fast and convenient method."
 "Instruction during checkout","Instruction during checkout"
 "Boleto Bancário","Boleto Bancário"
@@ -172,7 +180,6 @@ Title,Title
 "Information displayed at checkout.","Information displayed at checkout."
 "Information will be printed on the boleto.","Information will be printed on the boleto."
 "Capture name in the payment form?","Capture name in the payment form?"
-Wallet,Wallet
 Getpay,Getpay
 "Offer sales via external link, keeping your inventory and order status in sync.","Offer sales via external link, keeping your inventory and order status in sync."
 "Product Type","Product Type"
@@ -189,7 +196,7 @@ Notification,Notification
 "The address district is","The address district is"
 "The address complement is","The address complement is"
 "Erro genérico.","Erro genérico."
-"O pagamento por boleto não está habilitado para esse estabelecimento.","O pagamento por boleto não está habilitado para esse estabelecimento."
+"Essa forma de pagamento não está habilitada para esse estabelecimento.","Essa forma de pagamento não está habilitada para esse estabelecimento."
 "Valor da entrada maior ou igual ao valor da transação.","Valor da entrada maior ou igual ao valor da transação."
 "Valor da parcela inválido.","Valor da parcela inválido."
 "Contatar emissor.","Contatar emissor."
@@ -297,6 +304,7 @@ Timeout.,Timeout.
 "Verifique os dados do Cartão.","Verifique os dados do Cartão."
 "Entrar em contato com a Getnet.","Entrar em contato com a Getnet."
 "Transação negada. Cód: 200.","Transação negada. Cód: 200."
+"Transação negada. Cód: 402.","Transação negada. Cód: 402."
 "Transação negada. Cód: 250.","Transação negada. Cód: 250."
 "Transação negada. Cód: 0700.","Transação negada. Cód: 0700."
 "Transação negada. Cód: 2000.","Transação negada. Cód: 2000."
@@ -333,3 +341,15 @@ terminal_nsu,Terminal NSU
 authorization_code,Authorization Code
 acquirer_transaction_id,Acquirer Transaction Id
 transaction_id,Transaction Id
+payment_id,Payment Id
+cc_payment_first_amount,First Amount
+payment_id_secondary,Payment Id Secondary
+cc_payment_secondary_amount,Amount Secondary
+cc_secondary_installments,Installments Secondary
+cc_secondary_type,Type Secondary
+cc_secondary_number,Number Secundário
+cc_secondary_cardholder_name,Holder Secondary
+terminal_nsu_secondary,Terminal NSU Secondary
+authorization_code_secondary,Authorization Code Secondary
+acquirer_transaction_id_secondary,Acquirer Transaction Id Secondary
+transaction_id_secondary,Transaction Id Secondary

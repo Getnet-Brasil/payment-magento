@@ -56,24 +56,68 @@ define([
             }
         },
         {
-            title: 'Hipercard',
-            type: 'HC',
-            pattern: '^(606282|3841)[0-9]{5,}$',
+            title: 'Discover',
+            type: 'DI',
+            pattern: '^(6011(0|[2-4]|74|7[7-9]|8[6-9]|9)|6(4[4-9]|5))\\d*$',
             gaps: [4, 8, 12],
-            lengths: [13, 16],
+            lengths: [16, 17, 18, 19],
+            code: {
+                name: 'CID',
+                size: 3
+            }
+        },
+        {
+            title: 'JCB',
+            type: 'JCB',
+            pattern: '^35(2[8-9]|[3-8])\\d*$',
+            gaps: [4, 8, 12],
+            lengths: [16, 17, 18, 19],
+            code: {
+                name: 'CVV',
+                size: 3
+            }
+        },
+        {
+            title: 'UnionPay',
+            type: 'UN',
+            pattern: '^(622(1(2[6-9]|[3-9])|[3-8]|9([[0-1]|2[0-5]))|62[4-6]|628([2-8]))\\d*?$',
+            gaps: [4, 8, 12],
+            lengths: [16, 17, 18, 19],
+            code: {
+                name: 'CVN',
+                size: 3
+            }
+        },
+        {
+            title: 'Maestro International',
+            type: 'MI',
+            pattern: '^(5(0|[6-9])|63|67(?!59|6770|6774))\\d*$',
+            gaps: [4, 8, 12],
+            lengths: [12, 13, 14, 15, 16, 17, 18, 19],
             code: {
                 name: 'CVC',
                 size: 3
             }
         },
         {
-            title: 'Hiper',
-            type: 'HI',
-            pattern: '^(637095|637612|637599|637609|637568)',
+            title: 'Maestro Domestic',
+            type: 'MD',
+            pattern: '^6759(?!24|38|40|6[3-9]|70|76)|676770|676774\\d*$',
             gaps: [4, 8, 12],
             lengths: [12, 13, 14, 15, 16, 17, 18, 19],
             code: {
-                name: 'CVV',
+                name: 'CVC',
+                size: 3
+            }
+        },
+        {
+            title: 'Hipercard',
+            type: 'HC',
+            pattern: '^((606282)|(637095)|(637568)|(637599)|(637609)|(637612))\\d*$',
+            gaps: [4, 8, 12],
+            lengths: [13, 16],
+            code: {
+                name: 'CVC',
                 size: 3
             }
         },
@@ -96,6 +140,17 @@ define([
                 name: 'CVC',
                 size: 3
             }
+        },
+        {
+            title: 'Aura',
+            type: 'AU',
+            pattern: '^5078\\d*$',
+            gaps: [4, 8, 12],
+            lengths: [19],
+            code: {
+                name: 'CVC',
+                size: 3
+            }
         }
     ];
 
@@ -114,6 +169,7 @@ define([
             for (i = 0; i < typesGetnet.length; i++) {
                 value = typesGetnet[i];
                 if (new RegExp(value.pattern).test(cardNumber)) {
+                    result = [];
                     result.push($.extend(true, {}, value));
                 }
             }

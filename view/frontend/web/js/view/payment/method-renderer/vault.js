@@ -9,6 +9,7 @@ define([
     'jquery',
     'ko',
     'Magento_Vault/js/view/payment/method-renderer/vault',
+    'Magento_Checkout/js/model/full-screen-loader',
     'Magento_Payment/js/model/credit-card-validation/credit-card-data',
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/url-builder',
@@ -19,6 +20,7 @@ define([
     $,
     _ko,
     VaultComponent,
+    fullScreenLoader,
     creditCardData,
     quote,
     urlBuilder,
@@ -163,33 +165,37 @@ define([
                 quoteId = quote.getQuoteId(),
                 cardDetails;
 
-                serviceUrl = urlBuilder.createUrl('/carts/mine/get-details-card-id', {});
-                payload = {
-                    cartId: quoteId,
-                    cardId: {
-                        card_id: cardId
+            fullScreenLoader.startLoader();
+
+            serviceUrl = urlBuilder.createUrl('/carts/mine/get-details-card-id', {});
+            payload = {
+                cartId: quoteId,
+                cardId: {
+                    card_id: cardId
+                }
+            };
+            $.ajax({
+                url: urlFormatter.build(serviceUrl),
+                data: JSON.stringify(payload),
+                global: false,
+                contentType: 'application/json',
+                type: 'POST',
+                async: false
+            }).done(
+                function (response) {
+                    if (response[0].success) {
+                        cardDetails = response[0].card;
+                        self.creditCardNumberToken(cardDetails.number_token);
+                        self.creditCardNumber(cardDetails.last_four_digits);
+                        self.creditCardholderName(cardDetails.cardholder_name);
+                        self.creditCardExpMonth(cardDetails.expiration_month);
+                        self.creditCardExpYear(cardDetails.expiration_year);
+                        self.creditCardType(cardDetails.brand);
                     }
-                };
-                $.ajax({
-                    url: urlFormatter.build(serviceUrl),
-                    data: JSON.stringify(payload),
-                    global: false,
-                    contentType: 'application/json',
-                    type: 'POST',
-                    async: false
-                }).done(
-                    function (response) {
-                        if (response[0].success) {
-                            cardDetails = response[0].card;
-                            self.creditCardNumberToken(cardDetails.number_token);
-                            self.creditCardNumber(cardDetails.last_four_digits);
-                            self.creditCardholderName(cardDetails.cardholder_name);
-                            self.creditCardExpMonth(cardDetails.expiration_month);
-                            self.creditCardExpYear(cardDetails.expiration_year);
-                            self.creditCardType(cardDetails.brand);
-                        }
-                    }
-                );
+                    fullScreenLoader.stopLoader(true);
+                }
+            );
+            fullScreenLoader.stopLoader(true);
         },
 
         /**
@@ -206,13 +212,33 @@ define([
                     'cc_cardholder_name': this.creditCardholderName(),
                     'cc_number': this.creditCardNumber(),
                     'cc_exp_month': this.creditCardExpMonth(),
-                    'cc_exp_year': this.creditCardExpYear(),
+                    'cc_exp_year': '20' + this.creditCardExpYear(),
+                    'cc_type': this.getCodeCcType(),
                     'public_hash': this.getToken()
                 }
-
             };
 
             return data;
+        },
+
+        /**
+         * Get Code Cc Type
+         * @returns {String}
+         */
+        getCodeCcType() {
+            let ccType = this.creditCardType();
+
+            if (ccType === 'Visa') {
+                return 'VI';
+            } else if (ccType === 'Mastercard') {
+                return 'MC';
+            } else if (ccType === 'Amex') {
+                return 'AE';
+            } else if (ccType === 'Elo') {
+                return 'ELO';
+            } else if (ccType === 'Hipercard') {
+                return 'HC';
+            }
         },
 
         /**

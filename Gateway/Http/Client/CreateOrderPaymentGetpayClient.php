@@ -55,7 +55,7 @@ class CreateOrderPaymentGetpayClient implements ClientInterface
     /**
      * @var Json
      */
-    private $json;
+    protected $json;
 
     /**
      * @param Logger            $logger
