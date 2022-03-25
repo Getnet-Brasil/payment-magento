@@ -85,11 +85,11 @@ class Config extends PaymentConfig
     /**
      * Formant Price.
      *
-     * @param double $amount
+     * @param float $amount
      *
-     * @return float
+     * @return int
      */
-    public function formatPrice($amount): float
+    public function formatPrice($amount): int
     {
         return $amount * self::ROUND_UP;
     }
