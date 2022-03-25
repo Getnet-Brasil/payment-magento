@@ -227,6 +227,18 @@ class Config extends PaymentConfig
     }
 
     /**
+     * Gets the Merchant Gateway Dynamic Mcc.
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getMerchantGatewayDynamicMcc($storeId = null): ?string
+    {
+        return $this->getAddtionalValue('dynamic_mcc', $storeId);
+    }
+
+    /**
      * Gets the AddtionalValues.
      *
      * @param string   $field

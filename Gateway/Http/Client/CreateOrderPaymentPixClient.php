@@ -40,22 +40,22 @@ class CreateOrderPaymentPixClient implements ClientInterface
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
      * @var ZendClientFactory
      */
-    private $httpClientFactory;
+    protected $httpClientFactory;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var Json
      */
-    private $json;
+    protected $json;
 
     /**
      * @param Logger            $logger

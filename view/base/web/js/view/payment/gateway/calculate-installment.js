@@ -27,9 +27,10 @@
 
         /**
          * Get instalments values
+         * @param   {Float|null} calcBy
          * @returns {Object}
          */
-        getInstalmentsValues() {
+        getInstalmentsValues(calcBy = null) {
             var grandTotal,
                 info_interest,
                 min_installment,
@@ -43,8 +44,10 @@
                 totalInstallment,
                 taxa;
 
-            grandTotal = quote.totals().base_grand_total;
-
+            grandTotal = calcBy;
+            if (!calcBy) {
+                grandTotal = quote.totals().base_grand_total;
+            }
             info_interest = window.checkoutConfig.payment[this.getAuxiliaryCode()].info_interest;
 
             min_installment = window.checkoutConfig.payment[this.getAuxiliaryCode()].min_installment;
@@ -103,23 +106,21 @@
 
         /**
          * Get instalments
+         * @param   {Float|null} calcBy
          * @returns {Array}
          */
-        getInstallments() {
+        getInstallments(calcBy = null) {
             var temp,
                 inst,
                 newArray = [],
                 idx;
 
-            temp = _.map(this.getInstalmentsValues(), function (value, key) {
+            temp = _.map(this.getInstalmentsValues(calcBy), function (value, key) {
+                // eslint-disable-next-line max-len
+                inst = $t('%1x of %2 in the total value of %3').replace('%1', key).replace('%2', value['installment']).replace('%3', value['totalInstallment']);
+
                 if (value['interest'] === 0) {
                     inst = $t('%1x of %2 not interest').replace('%1', key).replace('%2', value['installment']);
-                } else if (value['interest'] < 0) {
-                    // eslint-disable-next-line max-len
-                    inst = $t('%1% of discount cash with total of %2').replace('%1', value['discount']).replace('%2', value['totalWithTheDiscount']);
-                } else {
-                    // eslint-disable-next-line max-len
-                    inst = $t('%1x of %2 in the total value of %3').replace('%1', key).replace('%2', value['installment']).replace('%3', value['totalInstallment']);
                 }
 
                 return {

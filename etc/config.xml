@@ -101,11 +101,46 @@
             <getnet_paymentmagento_cc_vault>
                 <active>1</active>
                 <model>PaymentMagentoCcVaultFacade</model>
+                <paymentInfoKeys>cc_holder_tax_document,cc_holder_phone,cc_payment_first_amount,cc_installments,cc_type,cc_number,cc_cardholder_name,cc_payment_secondary_amount,cc_secondary_installments,cc_secondary_type,cc_secondary_number,cc_secondary_cardholder_name,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</paymentInfoKeys>
+                <privateInfoKeys>device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</privateInfoKeys>
                 <title>Stored Cards (Getnet)</title>
                 <can_use_internal>0</can_use_internal>
                 <cvv_enabled>1</cvv_enabled>
                 <group>getnet_group</group>
             </getnet_paymentmagento_cc_vault>
+            <getnet_paymentmagento_two_cc>
+                <active>1</active>
+                <model>PaymentMagentoTwoCcFacade</model>
+                <order_status>processing</order_status>
+                <payment_action>authorize_capture</payment_action>
+                <title>Com 2 Cartões de Crédito</title>
+                <currency>BRL</currency>
+                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
+                <paymentInfoKeys>cc_holder_tax_document,cc_holder_phone,payment_id,cc_payment_first_amount,cc_installments,cc_type,cc_number,cc_cardholder_name,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id,payment_id_secondary,cc_payment_secondary_amount,cc_secondary_installments,cc_secondary_type,cc_secondary_number,cc_secondary_cardholder_name,terminal_nsu_secondary,authorization_code_secondary,acquirer_transaction_id_secondary,transaction_id_secondary,device</paymentInfoKeys>
+                <privateInfoKeys>payment_id,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id,payment_id_secondary,terminal_nsu_secondary,authorization_code_secondary,acquirer_transaction_id_secondary,transaction_id_secondary</privateInfoKeys>
+                <is_gateway>1</is_gateway>
+                <can_use_internal>0</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize_vault>0</can_authorize_vault>
+                <can_capture_vault>0</can_capture_vault>
+                <can_authorize>0</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>0</can_capture_partial>
+                <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_review_payment>0</can_review_payment>
+                <can_deny_payment>0</can_deny_payment>
+                <can_accept_payment>0</can_accept_payment>
+                <group>getnet_group</group>
+                <cctypes>HC,ELO,AE,VI,MC</cctypes>
+                <min_order_total>500</min_order_total>
+                <max_order_total>200000</max_order_total>
+                <allowspecific>1</allowspecific>
+                <specificcountry>BR</specificcountry>
+                <sort_order>10</sort_order>
+            </getnet_paymentmagento_two_cc>
             <getnet_paymentmagento_boleto>
                 <active>1</active>
                 <model>PaymentMagentoBoletoFacade</model>

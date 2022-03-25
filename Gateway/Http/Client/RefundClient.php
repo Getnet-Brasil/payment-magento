@@ -50,22 +50,22 @@ class RefundClient implements ClientInterface
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
      * @var ZendClientFactory
      */
-    private $httpClientFactory;
+    protected $httpClientFactory;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @var Json
      */
-    private $json;
+    protected $json;
 
     /**
      * @param Logger            $logger
@@ -99,15 +99,13 @@ class RefundClient implements ClientInterface
         $request = $transferObject->getBody();
         $url = $this->config->getApiUrl();
         $apiBearer = $this->config->getMerchantGatewayOauth();
-        $sellerId = $this->config->getMerchantGatewaySellerId();
 
         try {
             $client->setUri($url.'/v1/payments/cancel/request');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
-                    'Authorization' => 'Bearer '.$apiBearer,
-                    'Seller-Id'     => $sellerId,
+                    'Authorization' => 'Bearer '.$apiBearer
                 ]
             );
             $client->setRawData($this->json->serialize($request), 'application/json');

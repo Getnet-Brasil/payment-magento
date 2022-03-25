@@ -52,9 +52,19 @@ class CcPaymentDataRequest implements BuilderInterface
     public const CREDIT_CARD = 'card';
 
     /**
+     * Credit Card Brand - Block Name.
+     */
+    public const CREDIT_CARD_BRAND = 'brand';
+
+    /**
      * Credit card store - Block Name.
      */
     public const CREDIT_CARD_STORE = 'store';
+
+    /**
+     * Dynamic Mcc  block name.
+     */
+    public const DYNAMIC_MCC = 'dynamic_mcc';
 
     /**
      * Credit card Holder Name - Block name.
@@ -159,8 +169,10 @@ class CcPaymentDataRequest implements BuilderInterface
             self::TRANSACTION_TYPE     => $transactionType,
             self::NUMBER_INSTALLMENTS  => $installment,
             self::SOFT_DESCRIPTOR      => $this->config->getStatementDescriptor($storeId),
+            self::DYNAMIC_MCC          => $this->config->getMerchantGatewayDynamicMcc($storeId),
             self::CREDIT_CARD          => [
                 self::CREDIT_NUMBER_TOKEN     => $payment->getAdditionalInformation('cc_number_token'),
+                self::CREDIT_CARD_BRAND       => $payment->getAdditionalInformation('cc_type'),
                 self::CREDIT_CARDHOLDER_NAME  => $payment->getAdditionalInformation('cc_cardholder_name'),
                 self::CREDIT_CID              => $payment->getAdditionalInformation('cc_cid'),
                 self::CREDIT_MONTH            => $month,
