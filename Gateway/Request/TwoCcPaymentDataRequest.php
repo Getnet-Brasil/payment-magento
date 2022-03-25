@@ -40,7 +40,7 @@ class TwoCcPaymentDataRequest implements BuilderInterface
      * Currency - Block name.
      */
     public const CURRENCY = 'currency';
-    
+
     /**
      * Credit - Block name.
      */
@@ -169,6 +169,7 @@ class TwoCcPaymentDataRequest implements BuilderInterface
 
         $result[self::PAYMENTS][] = $this->getDataPaymentCc($payment, $incrementId, $currency, $storeId);
         $result[self::PAYMENTS][] = $this->getDataSecondaryPaymentCc($payment, $incrementId, $currency, $storeId);
+
         return $result;
     }
 
@@ -211,7 +212,7 @@ class TwoCcPaymentDataRequest implements BuilderInterface
                 self::CREDIT_CID              => $payment->getAdditionalInformation('cc_cid'),
                 self::CREDIT_MONTH            => $month,
                 self::CREDIT_YEAR             => $year,
-            ]
+            ],
         ];
         $payment->unsAdditionalInformation('cc_cid');
 
@@ -234,7 +235,6 @@ class TwoCcPaymentDataRequest implements BuilderInterface
         $currency,
         $storeId
     ) {
-        
         $payments = [];
         $totalSecondary = $payment->getAdditionalInformation('cc_payment_secondary_amount');
         $installmentSecondary = $payment->getAdditionalInformation('cc_secondary_installments') ?: 1;

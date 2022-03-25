@@ -105,7 +105,7 @@ class RefundClient implements ClientInterface
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
-                    'Authorization' => 'Bearer '.$apiBearer
+                    'Authorization' => 'Bearer '.$apiBearer,
                 ]
             );
             $client->setRawData($this->json->serialize($request), 'application/json');

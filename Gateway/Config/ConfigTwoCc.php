@@ -12,7 +12,6 @@ namespace Getnet\PaymentMagento\Gateway\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Config\Config as PaymentConfig;
-use Magento\Payment\Model\Method\AbstractMethod;
 use Magento\Store\Model\ScopeInterface;
 
 /**

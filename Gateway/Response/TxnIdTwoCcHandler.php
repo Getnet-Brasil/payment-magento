@@ -14,7 +14,6 @@ use InvalidArgumentException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
-use Magento\Payment\Model\InfoInterface;
 
 /**
  * Txn Id Cc Handler - Handles reading responses for Boleto payment.
@@ -218,11 +217,12 @@ class TxnIdTwoCcHandler implements HandlerInterface
     }
 
     /**
-     * Set Data For Payment Idx
+     * Set Data For Payment Idx.
      *
      * @param int   $idx
      * @param array $handlingSubject
      * @param array $paymentIdx
+     *
      * @return void
      */
     public function setDataForPaymentIdx(
@@ -234,7 +234,6 @@ class TxnIdTwoCcHandler implements HandlerInterface
         $payment = $paymentDO->getPayment();
         $payCredit = $paymentIdx[self::CREDIT];
         if ($idx === 0) {
-            
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_PAYMENT_ID,
                 $paymentIdx[self::RESPONSE_PAYMENT_ID]
@@ -262,7 +261,6 @@ class TxnIdTwoCcHandler implements HandlerInterface
         }
 
         if ($idx === 1) {
-
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_PAYMENT_ID_SECONDARY,
                 $paymentIdx[self::RESPONSE_PAYMENT_ID]

@@ -71,7 +71,6 @@ class TwoCcRefundHandler implements HandlerInterface
         $payment = $paymentDO->getPayment();
 
         foreach ($response[self::PAYMENTS] as $paymentGetnet) {
-           
             if ($paymentGetnet[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_ACCEPTED) {
                 $isAccept = true;
                 $isDenied = false;

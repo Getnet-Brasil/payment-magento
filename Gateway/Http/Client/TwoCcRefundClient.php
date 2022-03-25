@@ -95,7 +95,7 @@ class TwoCcRefundClient implements ClientInterface
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
-                    'Authorization' => 'Bearer '.$apiBearer
+                    'Authorization' => 'Bearer '.$apiBearer,
                 ]
             );
             $client->setRawData($this->json->serialize($request), 'application/json');
@@ -112,7 +112,7 @@ class TwoCcRefundClient implements ClientInterface
             if (isset($data[self::RESPONSE_PAYMENTS])) {
                 $response = array_merge(
                     [
-                        self::RESULT_CODE   => 1
+                        self::RESULT_CODE   => 1,
                     ],
                     $data
                 );

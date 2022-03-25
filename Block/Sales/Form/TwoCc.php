@@ -10,7 +10,6 @@ namespace Getnet\PaymentMagento\Block\Sales\Form;
 
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCcVault;
 use Magento\Backend\Model\Session\Quote;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Framework\Url;
@@ -18,7 +17,6 @@ use Magento\Framework\View\Element\Template\Context;
 use Magento\Payment\Block\Form\Cc as NativeCc;
 use Magento\Payment\Helper\Data;
 use Magento\Payment\Model\Config;
-use Magento\Vault\Model\VaultPaymentInterface;
 
 /**
  * Class TwoCc - Form for payment by cc.

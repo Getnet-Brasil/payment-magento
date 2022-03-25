@@ -89,11 +89,11 @@ class TwoCcRefundRequest implements BuilderInterface
 
         $paymentId = $payment->getAdditionalInformation('payment_id');
 
-        $tagId = $incrementId .'-1';
+        $tagId = $incrementId.'-1';
 
         $paymentIdSecondary = $payment->getAdditionalInformation('payment_id_secondary');
 
-        $tagIdSecondary = $incrementId .'-2';
+        $tagIdSecondary = $incrementId.'-2';
 
         $result[self::GETNET_PAYMENTS][] = [
             self::GETNET_PAYMENT_ID     => $paymentId,

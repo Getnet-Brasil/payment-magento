@@ -110,7 +110,7 @@ class AmountAndTwoInterestDataRequest implements BuilderInterface
             $interestSecondary = $this->configCc->getInterestToAmount($installmentSecondary, $totalSecondary, $storeId);
             $amountSecondary = $totalSecondary + $interestSecondary;
         }
-        
+
         $result[self::AMOUNT] = $this->config->formatPrice(round($amountFirst + $amountSecondary, 2));
 
         $payment->setAdditionalInformation(

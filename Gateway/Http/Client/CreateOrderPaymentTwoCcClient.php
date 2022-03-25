@@ -128,12 +128,12 @@ class CreateOrderPaymentTwoCcClient implements ClientInterface
                     $data
                 );
             }
-            
+
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/payments/combined',
                     'request'  => $this->json->serialize($transferObject->getBody()),
-                    'response' => $responseBody
+                    'response' => $responseBody,
                 ]
             );
         } catch (InvalidArgumentException $e) {

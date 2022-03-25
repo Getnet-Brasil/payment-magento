@@ -135,7 +135,7 @@ class DataAssignObserverTwoCc extends AbstractDataAssignObserver
         self::PAYMENT_INFO_CC_SECONDARY_EXP_M,
         self::PAYMENT_INFO_CC_SECONDARY_EXP_Y,
         self::PAYMENT_INFO_CC_SECONDARY_INSTALLMENTS,
-        self::PAYMENT_INFO_CC_FIRST_AMOUNT
+        self::PAYMENT_INFO_CC_FIRST_AMOUNT,
     ];
 
     /**
