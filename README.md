@@ -81,6 +81,27 @@ Principais Recursos:
 - Reembolso off-line
 - Consolidação de status (cancelamento e confirmação de pagamento automática)
 
+
+<img src="view/base/web/images/cc/logo.svg" align="right" width="35"/> <img src="view/base/web/images/cc/logo.svg" align="right" width="35"/>
+
+### 2 Cartões de Crédito
+
+1 pagamento, 2 cartões!
+
+Dê a seu cliente a possibilidade de dividir o pagamento entre 2 cartões de crédito.
+
+
+Principais Recursos:
+- Caso alguma transação seja nega a outra transação é automaticamente cancelada
+- AntiFraude
+- Método transparente
+- Captura automatizada
+- Reembolso On-line
+- Consolidação de status (cancelamento e confirmação de pagamento automática)
+
+
+<img src="view/base/web/images/getpay/logo.svg" align="right" width="35"/>
+
 ### Getpay
 
 Mantenha vendas e estoque sincronizadas com a sua loja, gerando um link para pagamento diretamente na Getnet.
