@@ -37,22 +37,27 @@ class ConfigProviderTwoCc implements ConfigProviderInterface
     /**
      * @var ConfigBase
      */
-    private $configBase;
+    protected $configBase;
+
+    /**
+     * @var ConfigCc
+     */
+    protected $configCc;
 
     /**
      * @var configTwoCc
      */
-    private $configTwoCc;
+    protected $configTwoCc;
 
     /**
      * @var CartInterface
      */
-    private $cart;
+    protected $cart;
 
     /**
      * @var array
      */
-    private $icons = [];
+    protected $icons = [];
 
     /**
      * @var CcConfig

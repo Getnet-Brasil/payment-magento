@@ -85,7 +85,7 @@ class Config extends PaymentConfig
     /**
      * Formant Price.
      *
-     * @param int $amount
+     * @param double $amount
      *
      * @return float
      */
