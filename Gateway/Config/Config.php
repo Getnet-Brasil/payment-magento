@@ -87,7 +87,7 @@ class Config extends PaymentConfig
      *
      * @param float $amount
      *
-     * @return int
+     * @return float
      */
     public function formatPrice($amount): int
     {
