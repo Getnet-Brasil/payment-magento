@@ -10,6 +10,7 @@ namespace Getnet\PaymentMagento\Model\Ui;
 
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
+use Getnet\PaymentMagento\Gateway\Config\ConfigTwoCc;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Session\SessionManager;
 use Magento\Framework\View\Asset\Source;
@@ -17,16 +18,16 @@ use Magento\Payment\Model\CcConfig;
 use Magento\Quote\Api\Data\CartInterface;
 
 /**
- * Class ConfigProviderCc - Defines properties of the payment form.
+ * Class ConfigProviderTwoCc - Defines properties of the payment form.
  *
  * @SuppressWarnings(PHPCPD)
  */
-class ConfigProviderCc implements ConfigProviderInterface
+class ConfigProviderTwoCc implements ConfigProviderInterface
 {
     /*
      * @const string
      */
-    public const CODE = 'getnet_paymentmagento_cc';
+    public const CODE = 'getnet_paymentmagento_two_cc';
 
     /*
      * @const string
@@ -36,22 +37,27 @@ class ConfigProviderCc implements ConfigProviderInterface
     /**
      * @var ConfigBase
      */
-    private $configBase;
+    protected $configBase;
 
     /**
-     * @var configCc
+     * @var ConfigCc
      */
-    private $configCc;
+    protected $configCc;
+
+    /**
+     * @var configTwoCc
+     */
+    protected $configTwoCc;
 
     /**
      * @var CartInterface
      */
-    private $cart;
+    protected $cart;
 
     /**
      * @var array
      */
-    private $icons = [];
+    protected $icons = [];
 
     /**
      * @var CcConfig
@@ -71,6 +77,7 @@ class ConfigProviderCc implements ConfigProviderInterface
     /**
      * @param ConfigBase     $configBase
      * @param ConfigCc       $configCc
+     * @param ConfigTwoCc    $configTwoCc
      * @param CartInterface  $cart
      * @param CcConfig       $ccConfig
      * @param Source         $assetSource
@@ -79,6 +86,7 @@ class ConfigProviderCc implements ConfigProviderInterface
     public function __construct(
         ConfigBase $configBase,
         ConfigCc $configCc,
+        ConfigTwoCc $configTwoCc,
         CartInterface $cart,
         CcConfig $ccConfig,
         Source $assetSource,
@@ -86,6 +94,7 @@ class ConfigProviderCc implements ConfigProviderInterface
     ) {
         $this->configBase = $configBase;
         $this->configCc = $configCc;
+        $this->configTwoCc = $configTwoCc;
         $this->cart = $cart;
         $this->ccConfig = $ccConfig;
         $this->assetSource = $assetSource;
@@ -103,9 +112,9 @@ class ConfigProviderCc implements ConfigProviderInterface
 
         return [
             'payment' => [
-                ConfigCc::METHOD => [
-                    'isActive'             => $this->configCc->isActive($storeId),
-                    'title'                => $this->configCc->getTitle($storeId),
+                ConfigTwoCc::METHOD => [
+                    'isActive'             => $this->configTwoCc->isActive($storeId),
+                    'title'                => $this->configTwoCc->getTitle($storeId),
                     'useCvv'               => $this->configCc->isCvvEnabled($storeId),
                     'ccTypesMapper'        => $this->configCc->getCcTypesMapper($storeId),
                     'logo'                 => $this->getLogo(),
@@ -116,7 +125,6 @@ class ConfigProviderCc implements ConfigProviderInterface
                     'info_interest'        => $this->configCc->getInfoInterest($storeId),
                     'min_installment'      => $this->configCc->getMinInstallment($storeId),
                     'max_installment'      => $this->configCc->getMaxInstallment($storeId),
-                    'ccVaultCode'          => self::VAULT_CODE,
                     'fingerPrintSessionId' => $this->session->getSessionId(),
                     'fingerPrintCode'      => $this->configBase->getMerchantGatewayOnlineMetrixCode($storeId),
                 ],

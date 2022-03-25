@@ -9,6 +9,7 @@
     'jquery',
     'Magento_Payment/js/view/payment/cc-form',
     'Magento_Vault/js/view/payment/vault-enabler',
+    'Magento_Checkout/js/model/full-screen-loader',
     'Magento_Payment/js/model/credit-card-validation/credit-card-data',
     'Getnet_PaymentMagento/js/view/payment/gateway/custom-validation',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
@@ -23,6 +24,7 @@
         $,
         Component,
         VaultEnabler,
+        fullScreenLoader,
         creditCardData,
         _customValidation,
         _mask,
@@ -185,6 +187,8 @@
                 cardId,
                 token;
 
+            fullScreenLoader.startLoader();
+
             serviceUrl = urlBuilder.createUrl('/carts/mine/generate-credit-card-number-token', {});
             payload = {
                 cartId: quoteId,
@@ -233,8 +237,10 @@
                         cardId = response[0].card_id;
                         self.creditCardPublicId(cardId);
                     }
+                    fullScreenLoader.stopLoader(true);
                 }
             );
+            fullScreenLoader.stopLoader(true);
         },
 
         /**

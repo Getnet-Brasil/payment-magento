@@ -11,10 +11,8 @@
     <message_list>
         <!-- GENERIC -->
         <message code="GENERIC-400" translate="true">Erro genérico.</message>
-
         <!-- CONFIG -->
-        <message code="CONFIG-403" translate="true">O pagamento por boleto não está habilitado para esse estabelecimento.</message>
-
+        <message code="CONFIG-403" translate="true">Essa forma de pagamento não está habilitada para esse estabelecimento.</message>
         <!-- PAYMENTS -->
         <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
         <message code="PAYMENTS-013" translate="true">Valor da parcela inválido.</message>
@@ -57,13 +55,11 @@
         <message code="PAYMENTS-117" translate="true">Solicite ao portator ligar para o emissor.</message>
         <message code="PAYMENTS-118" translate="true">Cartao inválido ou produto não habilitado.</message>
         <message code="PAYMENTS-999" translate="true">Transação não processada.</message>
-
         <!-- Crédito/Débito - 404 Not Found -->
         <message code="PAYMENTS-043" translate="true">Registro não encontrado.</message>
         <message code="PAYMENTS-057" translate="true">Transação não existe.</message>
         <message code="PAYMENTS-076" translate="true">Transação não disponível.</message>
         <message code="PAYMENTS-095" translate="true">Autorização não encontrada.</message>
-
         <!-- Crédito/Débito - 500 Internal Server Error -->
         <message code="PAYMENTS-042" translate="true">Resposta inválida.</message>
         <message code="PAYMENTS-059" translate="true">Instituição temporariamente fora de operação.</message>
@@ -75,14 +71,11 @@
         <message code="PAYMENTS-100" translate="true">Canal desconectado.</message>
         <message code="PAYMENTS-107" translate="true">Erro de comunicação.</message>
         <message code="PAYMENTS-500" translate="true">Internal Server Error.</message>
-
         <!-- Crédito/Débito - 503 Service Unavailable -->
         <message code="PAYMENTS-021" translate="true">Sistema do Emissor indisponível - Tente novamente.</message>
-
         <!-- Crédito/Débito - 504 Gateway Timeout -->
         <message code="PAYMENTS-031" translate="true">Timeout.</message>
         <message code="PAYMENTS-089" translate="true">Timeout interno.</message>
-
         <!-- Boleto - 402 Business Error -->
         <message code="PAYMENTS-402" translate="true">Erro na geração de boleto.</message>
         <message code="PAYMENTS-402-00001" translate="true">Nosso número inválido/incompatível.</message>
@@ -114,7 +107,6 @@
         <message code="PAYMENTS-402-00431" translate="true">Campo nosso número não numérico.</message>
         <message code="PAYMENTS-402-00432" translate="true">Cliente não possui entrada online.</message>
         <message code="PAYMENTS-402-00433" translate="true">Data limite desconto inválida.</message>
-
         <!-- Códigos De Retorno ABECS -->
         <message code="PAYMENTS-002" translate="true">Número de cartão não pertence ao emissor | número de cartão inválido.</message>
         <message code="PAYMENTS-003" translate="true">O cartão está expirado.</message>
@@ -136,9 +128,9 @@
         <message code="PAYMENTS-605" translate="true">Suspensão de pagamento recorrente para um serviço.</message>
         <message code="PAYMENTS-077" translate="true">Verifique os dados do Cartão.</message>
         <message code="PAYMENTS-033" translate="true">Entrar em contato com a Getnet.</message>
-
         <!-- Antifraud -->
         <message code="200" translate="true">Transação negada. Cód: 200.</message>
+        <message code="402" translate="true">Transação negada. Cód: 402.</message>
         <message code="250" translate="true">Transação negada. Cód: 250.</message>
         <message code="0700" translate="true">Transação negada. Cód: 0700.</message>
         <message code="2000" translate="true">Transação negada. Cód: 2000.</message>
@@ -164,5 +156,5 @@
         <message code="151" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.</message>
         <message code="121" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.</message>
         <message code="500" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.</message>
-    </message_list>
+        </message_list>
 </mapping>
