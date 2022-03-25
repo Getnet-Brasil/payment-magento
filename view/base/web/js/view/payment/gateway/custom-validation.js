@@ -159,6 +159,33 @@ define([
                 return yearValidator(date).isValid;
             },
             $.mage.__('Incorrect credit card expiration year.')
+        ],
+        'validate-range-split-pay-getnet': [
+
+            /**
+             * Validate credit type getnet is for the correct credit card type.
+             *
+             * @param {*} value - number to pay
+             * @param {*} element - element contains amount
+             * @param {*} params - selector for min and max
+             * @return {Boolean}
+             */
+            function (v, _elm, param) {
+                var numValue;
+
+                if ($.mage.isEmptyNoTrim(v)) {
+                    return true;
+                }
+
+                numValue = $.mage.parseNumber(v);
+
+                if (isNaN(numValue)) {
+                    return false;
+                }
+                return $.mage.isBetween(numValue, param.min, param.max);
+            },
+            $.mage.__('The value is not within the specified range.'),
+            true
         ]
 
     }, function (i, rule) {

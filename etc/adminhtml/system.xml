@@ -23,6 +23,11 @@
                         <config_path>payment/getnet_paymentmagento/statement_descriptor</config_path>
                         <validate>required-entry</validate>
                     </field>
+                    <field id="dynamic_mcc" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                        <label>Dynamic Mcc</label>
+                        <config_path>payment/getnet_paymentmagento/dynamic_mcc</config_path>
+                        <validate>required-entry validate-number minimum-length-4 maximum-length-4</validate>
+                    </field>
                     <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
                         <label>Environment</label>
                         <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Environment</source_model>
@@ -223,7 +228,45 @@
                         </field>
                     </group>
                 </group>
-                <group id="getnet_paymentmagento_pix" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <group id="getnet_paymentmagento_two_cc" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>2 Cartões de Crédito</label>
+                    <comment>Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.</comment>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_two_cc/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Title</label>
+                        <config_path>payment/getnet_paymentmagento_two_cc/title</config_path>
+                    </field>
+                    <field id="min_order_total" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minimum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_two_cc/min_order_total</config_path>
+                    </field>
+                    <field id="max_order_total" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Maximum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_two_cc/max_order_total</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="240" showInDefault="9" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Applicable Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <config_path>payment/getnet_paymentmagento_two_cc/allowspecific</config_path>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Specific Countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <config_path>payment/getnet_paymentmagento_two_cc/specificcountry</config_path>
+                    </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sort Order</label>
+                        <frontend_class>validate-number</frontend_class>
+                        <config_path>payment/getnet_paymentmagento_two_cc/sort_order</config_path>
+                    </field>
+                </group>
+                <group id="getnet_paymentmagento_pix" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Pix</label>
                     <comment>Instant payment with automatic status consolidation, offer a fast and convenient method.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -271,7 +314,7 @@
                         <config_path>payment/getnet_paymentmagento_pix/sort_order</config_path>
                     </field>
                 </group>
-                <group id="getnet_paymentmagento_boleto" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <group id="getnet_paymentmagento_boleto" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Boleto Bancário</label>
                     <comment>Boleto registered, fully integrated into your Santander account.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -344,7 +387,7 @@
                         </field>
                     </group>
                 </group>
-                <!-- <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <!-- <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Wallet</label>
                     <comment>Offer instant payment across multiple wallets.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
@@ -392,7 +435,7 @@
                         <config_path>payment/getnet_paymentmagento_wallet/sort_order</config_path>
                     </field>
                 </group> -->
-                <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Getpay</label>
                     <comment>Offer sales via external link, keeping your inventory and order status in sync.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">

@@ -85,7 +85,7 @@ class Config extends PaymentConfig
     /**
      * Formant Price.
      *
-     * @param int $amount
+     * @param float $amount
      *
      * @return float
      */
@@ -224,6 +224,18 @@ class Config extends PaymentConfig
         }
 
         return $code;
+    }
+
+    /**
+     * Gets the Merchant Gateway Dynamic Mcc.
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getMerchantGatewayDynamicMcc($storeId = null): ?string
+    {
+        return $this->getAddtionalValue('dynamic_mcc', $storeId);
     }
 
     /**

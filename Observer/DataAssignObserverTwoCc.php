@@ -14,20 +14,10 @@ use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 
 /**
- * Class Data Assign Observer Vault Cc - Capture vault payment information.
+ * Class DataAssignObserverTwoCc - Capture credit card payment information.
  */
-class DataAssignObserverCcVault extends AbstractDataAssignObserver
+class DataAssignObserverTwoCc extends AbstractDataAssignObserver
 {
-    /**
-     * @const string
-     */
-    public const PAYMENT_INFO_CC_CID = 'cc_cid';
-
-    /**
-     * @const string
-     */
-    public const PAYMENT_INFO_CC_INSTALLMENTS = 'cc_installments';
-
     /**
      * @const string
      */
@@ -56,7 +46,72 @@ class DataAssignObserverCcVault extends AbstractDataAssignObserver
     /**
      * @const string
      */
+    public const PAYMENT_INFO_CC_INSTALLMENTS = 'cc_installments';
+
+    /**
+     * @const string
+     */
     public const PAYMENT_INFO_CARDHOLDER_NAME = 'cc_cardholder_name';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_HOLDER_TAX_DOCUMENT = 'cc_holder_tax_document';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_HOLDER_PHONE = 'cc_holder_phone';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_CID = 'cc_cid';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_NUMBER_TOKEN = 'cc_secondary_number_token';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_NUMBER = 'cc_secondary_number';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_TYPE = 'cc_secondary_type';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_EXP_M = 'cc_secondary_exp_month';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_EXP_Y = 'cc_secondary_exp_year';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_INSTALLMENTS = 'cc_secondary_installments';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_CARDHOLDER_NAME = 'cc_secondary_cardholder_name';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_SECONDARY_CID = 'cc_secondary_cid';
+
+    /**
+     * @const string
+     */
+    public const PAYMENT_INFO_CC_FIRST_AMOUNT = 'cc_payment_first_amount';
 
     /**
      * @var array
@@ -70,6 +125,17 @@ class DataAssignObserverCcVault extends AbstractDataAssignObserver
         self::PAYMENT_INFO_CC_EXP_M,
         self::PAYMENT_INFO_CC_EXP_Y,
         self::PAYMENT_INFO_CC_INSTALLMENTS,
+        self::PAYMENT_INFO_HOLDER_TAX_DOCUMENT,
+        self::PAYMENT_INFO_HOLDER_PHONE,
+        self::PAYMENT_INFO_CC_SECONDARY_NUMBER_TOKEN,
+        self::PAYMENT_INFO_CC_SECONDARY_CARDHOLDER_NAME,
+        self::PAYMENT_INFO_CC_SECONDARY_NUMBER,
+        self::PAYMENT_INFO_CC_SECONDARY_TYPE,
+        self::PAYMENT_INFO_CC_SECONDARY_CID,
+        self::PAYMENT_INFO_CC_SECONDARY_EXP_M,
+        self::PAYMENT_INFO_CC_SECONDARY_EXP_Y,
+        self::PAYMENT_INFO_CC_SECONDARY_INSTALLMENTS,
+        self::PAYMENT_INFO_CC_FIRST_AMOUNT,
     ];
 
     /**
@@ -107,17 +173,19 @@ class DataAssignObserverCcVault extends AbstractDataAssignObserver
 
         foreach ($this->addInformationList as $addInformationKey) {
             if (isset($additionalData[$addInformationKey])) {
-                if ($addInformationKey === self::PAYMENT_INFO_CC_TYPE) {
+                if ($addInformationKey === self::PAYMENT_INFO_CC_TYPE
+                    || $addInformationKey === self::PAYMENT_INFO_CC_SECONDARY_TYPE) {
                     $paymentInfo->setAdditionalInformation(
                         $addInformationKey,
                         $this->getFullTypeName($additionalData[$addInformationKey])
                     );
                     continue;
                 }
-                if ($addInformationKey === self::PAYMENT_INFO_CC_NUMBER) {
+                if ($addInformationKey === self::PAYMENT_INFO_CC_NUMBER
+                    || $addInformationKey === self::PAYMENT_INFO_CC_SECONDARY_NUMBER) {
                     $paymentInfo->setAdditionalInformation(
                         $addInformationKey,
-                        'xxxx xxxx xxxx '.$additionalData[$addInformationKey]
+                        'xxxx xxxx xxxx '.substr($additionalData[$addInformationKey], -4)
                     );
                     continue;
                 }
