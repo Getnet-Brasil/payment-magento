@@ -89,7 +89,7 @@ class Config extends PaymentConfig
      *
      * @return float
      */
-    public function formatPrice($amount): int
+    public function formatPrice($amount): float
     {
         return $amount * self::ROUND_UP;
     }
