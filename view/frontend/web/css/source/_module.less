@@ -85,6 +85,10 @@
         }
 
         .fieldset {
+            &.fieldset-ajust-margin-bottom {
+                margin-bottom: @indent__base;
+            }
+
             &.payment-getnet {
                 border: 1px solid;
                 border-color: @color-gray-light2;
@@ -276,7 +280,30 @@
                         }
                     }
                 }
+
+                &.first-payment-amount {
+                    .ui-slider-horizontal {
+                        border-radius: 0;
+                    }
+                }
             }
+        }
+
+        .details-payment-amount {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-left: @indent__s;
+            padding-right: @indent__s;
+
+            h4 {
+                margin-top: 0;
+            }
+        }
+
+        .first-payment-amount {
+            margin-top: @indent__base;
         }
     }
 
@@ -312,6 +339,18 @@
     .getnet-instruction {
         .instruction-information {
             margin-bottom: @indent__s;
+        }
+    }
+
+    .full-checkout {
+        .checkout-payment-method {
+            .payment-method-content {
+                .fieldset:not(:last-child) {
+                    &.fieldset-ajust-margin-bottom {
+                        margin-bottom: @indent__base;
+                    }
+                }
+            }
         }
     }
 

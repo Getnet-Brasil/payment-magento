@@ -17,6 +17,7 @@ define(
         var config = window.checkoutConfig.payment,
             methodBoleto = 'getnet_paymentmagento_boleto',
             methodCc = 'getnet_paymentmagento_cc',
+            methodTwoCc = 'getnet_paymentmagento_two_cc',
             methodPix = 'getnet_paymentmagento_pix',
             methodWallet = 'getnet_paymentmagento_wallet';
 
@@ -34,6 +35,15 @@ define(
                 {
                     type: methodCc,
                     component: 'Getnet_PaymentMagento/js/view/payment/method-renderer/getnet_paymentmagento_cc'
+                }
+            );
+        }
+
+        if (config[methodTwoCc].isActive) {
+            rendererList.push(
+                {
+                    type: methodTwoCc,
+                    component: 'Getnet_PaymentMagento/js/view/payment/method-renderer/getnet_paymentmagento_two_cc'
                 }
             );
         }

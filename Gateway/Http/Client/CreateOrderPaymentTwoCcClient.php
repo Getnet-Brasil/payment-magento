@@ -21,11 +21,11 @@ use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
 
 /**
- * Class Create Order Payment Boleto Client - create order for payment by Boleto.
+ * Class Create Order Payment Two Cc Client - create authorization for payment by Cc.
  *
  * @SuppressWarnings(PHPCPD)
  */
-class CreateOrderPaymentBoletoClient implements ClientInterface
+class CreateOrderPaymentTwoCcClient implements ClientInterface
 {
     /**
      * Result Code - Block name.
@@ -40,22 +40,22 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
     /**
      * @var Logger
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var ZendClientFactory
      */
-    protected $httpClientFactory;
+    private $httpClientFactory;
 
     /**
      * @var Config
      */
-    protected $config;
+    private $config;
 
     /**
      * @var Json
      */
-    protected $json;
+    private $json;
 
     /**
      * @param Logger            $logger
@@ -85,15 +85,20 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
     public function placeRequest(TransferInterface $transferObject)
     {
         /** @var ZendClient $client */
+        $isSuccess = false;
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
         $url = $this->config->getApiUrl();
         $apiBearer = $this->config->getMerchantGatewayOauth();
 
         try {
-            $client->setUri($url.'/v1/payments/boleto');
+            $client->setUri($url.'v1/payments/combined');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization' => 'Bearer '.$apiBearer,
+                ]
+            );
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 
@@ -105,18 +110,28 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
                 ],
                 $data
             );
-            if (isset($data['payment_id'])) {
+
+            if (isset($data['payments'])) {
+                foreach ($data['payments'] as $payment) {
+                    if (isset($payment['payment_id'])) {
+                        $isSuccess = true;
+                    }
+                }
+            }
+
+            if ($isSuccess) {
                 $response = array_merge(
                     [
                         self::RESULT_CODE => 1,
-                        self::EXT_ORD_ID  => $data['payment_id'],
+                        self::EXT_ORD_ID  => $data['combined_id'],
                     ],
                     $data
                 );
             }
+
             $this->logger->debug(
                 [
-                    'url'      => $url.'v1/payments/boleto',
+                    'url'      => $url.'v1/payments/combined',
                     'request'  => $this->json->serialize($transferObject->getBody()),
                     'response' => $responseBody,
                 ]
@@ -124,10 +139,10 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [
-                    'url'       => $url.'v1/payments/boleto',
+                    'exception' => $e->getMessage(),
+                    'url'       => $url.'v1/payments/combined',
                     'request'   => $this->json->serialize($transferObject->getBody()),
                     'response'  => $responseBody,
-                    'error'     => $e->getMessage(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
