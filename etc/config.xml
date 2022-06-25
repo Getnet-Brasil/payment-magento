@@ -17,9 +17,12 @@
                 <statement_descriptor>Store Name</statement_descriptor>
                 <client_id_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_secret_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_id_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_id_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_secret_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <oauth_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <oauth_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <oauth_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <key_public_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <key_public_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
