@@ -1,6 +1,6 @@
 <img src="view/adminhtml/web/images/logo.svg" align="right" width="200"/>
 
-# Getnet para Magento 2
+# Criação de Getnet para Magento 2
 
 Pagamentos Digitais Getnet
 
@@ -19,98 +19,16 @@ Status Atual
 
 ## Recursos
 
-<img src="view/base/web/images/cc/ae.svg" align="right" width="35"/>
-<img src="view/base/web/images/cc/elo.svg" align="right" width="35"/>
-<img src="view/base/web/images/cc/mc.svg" align="right" width="35"/>
-<img src="view/base/web/images/cc/vi.svg" align="right" width="35"/>
-<img src="view/base/web/images/cc/hc.svg" align="right" width="35"/>
+Crie Sub Seller na Getnet para split de pagamentos.
 
-### Cartão de Crédito
+### Interface via Administrativo
 
-Receba transações de cartão de crédito das bandeiras American Express, Elo, Mastercard, Visa e Hipercard.
+Permite ao administrador da loja cadastrar novos Sub Sellers associados a sua conta Getnet
 
-Principais Recursos:
+### Interface via API
 
-- AntiFraude
-- Método transparente
-- Captura automatizada ou tardia
-- Reembolso online.
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
+Via API você pode criar as contas de Sub Seller.
 
-
-<img src="view/base/web/images/cc/logo.svg" align="right" width="35"/>
-
-### Cofre (Vault)
-
-Após uma compra com cartão, seu cliente aproveita as vantegens do nosso Cofre, onde precisará apenas informar o CVV e número de parcelas desejados para concluir o pagamento.
-
-
-Principais Recursos:
-- AntiFraude
-- Método transparente
-- Captura automatizada ou tardia
-- Reembolso On-line
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
-
-
-<img src="view/base/web/images/pix/logo.svg" align="right" width="35"/>
-
-### Pix
-
-Pagamento instantâneo com consolidação de status automática, ofereça um método rápido e prático.
-
-
-Principais Recursos:
-- Image do QrCode
-- Código do QrCode
-- Reembolso Off-line
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
-
-
-<img src="view/base/web/images/boleto/logo.svg" align="right" width="35"/>
-
-### Boleto Bancário
-
-Boleto registrado, totalmente integrado a sua conta Santander.
-
-Principais Recursos:
-- Boleto em PDF
-- Código digitável na instrução de pagamento
-- Definição vencimento
-- Definição de instrução para o pagamento
-- Reembolso off-line
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
-
-
-<img src="view/base/web/images/cc/logo.svg" align="right" width="35"/> <img src="view/base/web/images/cc/logo.svg" align="right" width="35"/>
-
-### 2 Cartões de Crédito
-
-1 pagamento, 2 cartões!
-
-Dê a seu cliente a possibilidade de dividir o pagamento entre 2 cartões de crédito.
-
-
-Principais Recursos:
-- Caso alguma transação seja nega a outra transação é automaticamente cancelada
-- AntiFraude
-- Método transparente
-- Captura automatizada
-- Reembolso On-line
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
-
-
-
-<img src="view/base/web/images/getpay/logo.svg" align="right" width="35"/>
-
-### Getpay
-
-Mantenha vendas e estoque sincronizadas com a sua loja, gerando um link para pagamento diretamente na Getnet.
-
-Principais Recursos:
-- Gerar link para vendas em canais externos (WhatsApp, Direct Message, Email...)
-- Reembolso off-line
-- Consolidação de status (cancelamento e confirmação de pagamento automática)
 
 ## Instalação e Configuração
 
