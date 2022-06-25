@@ -123,7 +123,7 @@ class Config extends PaymentConfig
             return self::ENDPOINT_HOMOLOG;
         }
 
-        return ENDPOINT_PRODUCTION;
+        return self::ENDPOINT_PRODUCTION;
     }
 
     /**
@@ -145,7 +145,7 @@ class Config extends PaymentConfig
             return self::ENVIRONMENT_HOMOLOG;
         }
 
-        return ENVIRONMENT_PRODUCTION;
+        return self::ENVIRONMENT_PRODUCTION;
     }
 
     /**
