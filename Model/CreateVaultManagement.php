@@ -219,7 +219,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                     'number_token' => $data['number_token'],
                 ];
             }
-            
+
             if (isset($data['details'])) {
                 $response = [
                     'success' => 0,

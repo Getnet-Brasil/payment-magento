@@ -8,9 +8,6 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request;
 
-use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
-use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
@@ -29,7 +26,7 @@ class SplitPaymentDataRequest implements BuilderInterface
     public const BLOCK_NAME_ID = 'id';
     public const BLOCK_NAME_DESCRIPTION = 'description';
     public const BLOCK_NAME_TAX_AMOUNT = 'tax_amount';
-    
+
     /**
      * Build.
      *

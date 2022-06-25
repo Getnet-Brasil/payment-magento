@@ -91,7 +91,7 @@ class Config extends PaymentConfig
      */
     public function formatPrice($amount): float
     {
-        return round((float)$amount, 2) * self::ROUND_UP;
+        return round((float) $amount, 2) * self::ROUND_UP;
     }
 
     /**
