@@ -8,34 +8,24 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request;
 
-use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Order Data Pix Request - Payment amount structure.
+ * Class Split Payment Data Request - Payment amount structure.
  */
-class OrderDataPixRequest implements BuilderInterface
+class SplitPaymentDataRequest implements BuilderInterface
 {
-    /**
-     * Order Id Block Name.
-     */
-    public const ORDER_ID = 'order_id';
-
-    /**
-     * @var SubjectReader
-     */
-    protected $subjectReader;
-
-    /**
-     * @param SubjectReader $subjectReader
-     */
-    public function __construct(
-        SubjectReader $subjectReader
-    ) {
-        $this->subjectReader = $subjectReader;
-    }
+    public const BLOCK_NAME_MARKETPLACE_SUBSELLER_PAYMENTS = 'marketplace_subseller_payments';
+    public const BLOCK_NAME_SUB_SELLER_ID = 'subseller_id';
+    public const BLOCK_NAME_SUBSELLER_SALES_AMOUNT = 'subseller_sales_amount';
+    public const BLOCK_NAME_ORDER_ITEMS = 'order_items';
+    public const BLOCK_NAME_AMOUNT = 'amount';
+    public const BLOCK_NAME_CURRENCY = 'currency';
+    public const BLOCK_NAME_ID = 'id';
+    public const BLOCK_NAME_DESCRIPTION = 'description';
+    public const BLOCK_NAME_TAX_AMOUNT = 'tax_amount';
 
     /**
      * Build.
@@ -50,13 +40,7 @@ class OrderDataPixRequest implements BuilderInterface
             throw new InvalidArgumentException('Payment data object should be provided');
         }
 
-        $paymentDO = $this->subjectReader->readPayment($buildSubject);
-
         $result = [];
-
-        $order = $paymentDO->getOrder();
-
-        $result[self::ORDER_ID] = $order->getOrderIncrementId();
 
         return $result;
     }

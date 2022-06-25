@@ -44,7 +44,7 @@ class Config extends PaymentConfig
     /**
      * @const string
      */
-    public const ENDPOINT_SANDBOX = 'https://api-sandbox.getnet.com.br/';
+    public const ENDPOINT_SANDBOX = 'https://api-homologacao.getnet.com.br/';
 
     /**
      * @const string
@@ -85,13 +85,13 @@ class Config extends PaymentConfig
     /**
      * Formant Price.
      *
-     * @param float $amount
+     * @param string|int|float $amount
      *
      * @return float
      */
     public function formatPrice($amount): float
     {
-        return $amount * self::ROUND_UP;
+        return round((float) $amount, 2) * self::ROUND_UP;
     }
 
     /**

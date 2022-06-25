@@ -17,9 +17,9 @@ use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Boleto Payment Data Request - Payment data structure for boleto.
+ * Class Pix Payment Data Request - Payment data structure for boleto.
  */
-class BoletoPaymentDataRequest implements BuilderInterface
+class PixPaymentDataRequest implements BuilderInterface
 {
     /**
      * Method - Block Name.
@@ -52,7 +52,7 @@ class BoletoPaymentDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var ConfigBoleto
+     * @var Config Boleto
      */
     protected $configBoleto;
 
