@@ -33,7 +33,7 @@
         _ko,
         urlBuilder,
         urlFormatter,
-        customer
+        customer,
     ) {
     'use strict';
 
@@ -170,7 +170,6 @@
                 return;
             }
             this.getTokenize();
-            this.placeOrder();
         },
 
         /**
@@ -225,22 +224,33 @@
             $.ajax({
                 url: urlFormatter.build(serviceUrl),
                 data: JSON.stringify(payload),
-                global: false,
+                global: true,
                 contentType: 'application/json',
                 type: 'POST',
-                async: false
+                async: true
             }).done(
                 function (response) {
-                    token = response[0].number_token;
-                    self.creditCardNumberToken(token);
-                    if (saveCard) {
-                        cardId = response[0].card_id;
-                        self.creditCardPublicId(cardId);
+
+                    if (response[0].success) {
+                        token = response[0].number_token;
+                        self.creditCardNumberToken(token);
+                        if (saveCard) {
+                            cardId = response[0].card_id;
+                            self.creditCardPublicId(cardId);
+                        }
+                        self.placeOrder();
                     }
-                    fullScreenLoader.stopLoader(true);
+
+                    if (!response[0].success) {
+                        self.messageContainer.addErrorMessage({"message": response[0].message.text});
+                    }
+                    
+                }
+            ).always(
+                function () {
+                    fullScreenLoader.stopLoader();
                 }
             );
-            fullScreenLoader.stopLoader(true);
         },
 
         /**
