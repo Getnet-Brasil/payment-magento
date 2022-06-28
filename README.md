@@ -81,25 +81,19 @@ Principais Recursos:
 - Reembolso off-line
 - Consolidação de status (cancelamento e confirmação de pagamento automática)
 
+<img src="view/base/web/images/wallet/logo.svg" align="right" width="35"/>
 
-<img src="view/base/web/images/cc/logo.svg" align="right" width="35"/> <img src="view/base/web/images/cc/logo.svg" align="right" width="35"/>
+### QrCode (Carteiras digitais)
 
-### 2 Cartões de Crédito
-
-1 pagamento, 2 cartões!
-
-Dê a seu cliente a possibilidade de dividir o pagamento entre 2 cartões de crédito.
-
+Ofereça pagamentos por carteiras digitais em diversos serviços.
 
 Principais Recursos:
-- Caso alguma transação seja nega a outra transação é automaticamente cancelada
-- AntiFraude
-- Método transparente
-- Captura automatizada
-- Reembolso On-line
+- Mercado Pago
+- PicPay
+- Ame
+- App's do seu banco
+- Reembolso off-line
 - Consolidação de status (cancelamento e confirmação de pagamento automática)
-
-
 
 <img src="view/base/web/images/getpay/logo.svg" align="right" width="35"/>
 
