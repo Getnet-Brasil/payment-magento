@@ -73,10 +73,10 @@ class TaxDocumentDataRequest implements BuilderInterface
     {
         $obtainTaxDocFrom = $this->config->getAddtionalValue('get_tax_document_from');
 
-        $taxDocument = $orderAdapter->getBillingAddress()->getVatId();
+        $taxDocument = $orderAdapter->getCustomerTaxvat();
 
-        if ($obtainTaxDocFrom === 'customer') {
-            $taxDocument = $orderAdapter->getCustomerTaxvat();
+        if ($obtainTaxDocFrom === 'address') {
+            $taxDocument = $orderAdapter->getBillingAddress()->getVatId();
         }
 
         return $taxDocument;

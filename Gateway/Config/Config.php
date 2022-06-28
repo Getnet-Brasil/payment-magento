@@ -44,6 +44,16 @@ class Config extends PaymentConfig
     /**
      * @const string
      */
+    public const ENDPOINT_HOMOLOG = 'https://api-homologacao.getnet.com.br/';
+
+    /**
+     * @const string
+     */
+    public const ENVIRONMENT_HOMOLOG = 'homolog';
+
+    /**
+     * @const string
+     */
     public const ENDPOINT_SANDBOX = 'https://api-sandbox.getnet.com.br/';
 
     /**
@@ -85,13 +95,13 @@ class Config extends PaymentConfig
     /**
      * Formant Price.
      *
-     * @param float $amount
+     * @param string|int|float $amount
      *
      * @return float
      */
     public function formatPrice($amount): float
     {
-        return $amount * self::ROUND_UP;
+        return round((float) $amount, 2) * self::ROUND_UP;
     }
 
     /**
@@ -105,9 +115,15 @@ class Config extends PaymentConfig
     {
         $environment = $this->getEnvironmentMode($storeId);
 
-        return $environment === 'sandbox'
-            ? self::ENDPOINT_SANDBOX
-            : self::ENDPOINT_PRODUCTION;
+        if ($environment === 'sandbox') {
+            return self::ENDPOINT_SANDBOX;
+        }
+
+        if ($environment === 'homolog') {
+            return self::ENDPOINT_HOMOLOG;
+        }
+
+        return self::ENDPOINT_PRODUCTION;
     }
 
     /**
@@ -121,9 +137,15 @@ class Config extends PaymentConfig
     {
         $environment = $this->getAddtionalValue('environment', $storeId);
 
-        return $environment === 'sandbox'
-            ? self::ENVIRONMENT_SANDBOX
-            : self::ENVIRONMENT_PRODUCTION;
+        if ($environment === 'sandbox') {
+            return self::ENVIRONMENT_SANDBOX;
+        }
+
+        if ($environment === 'homolog') {
+            return self::ENVIRONMENT_HOMOLOG;
+        }
+
+        return self::ENVIRONMENT_PRODUCTION;
     }
 
     /**
@@ -141,6 +163,10 @@ class Config extends PaymentConfig
 
         if ($environment === 'sandbox') {
             $sellerId = $this->getAddtionalValue('seller_id_sandbox', $storeId);
+        }
+
+        if ($environment === 'homolog') {
+            $sellerId = $this->getAddtionalValue('seller_id_homolog', $storeId);
         }
 
         return $sellerId;
@@ -163,6 +189,10 @@ class Config extends PaymentConfig
             $clientId = $this->getAddtionalValue('client_id_sandbox', $storeId);
         }
 
+        if ($environment === 'homolog') {
+            $clientId = $this->getAddtionalValue('client_id_homolog', $storeId);
+        }
+
         return $clientId;
     }
 
@@ -181,6 +211,10 @@ class Config extends PaymentConfig
 
         if ($environment === 'sandbox') {
             $clientSecret = $this->getAddtionalValue('client_secret_sandbox', $storeId);
+        }
+
+        if ($environment === 'homolog') {
+            $clientSecret = $this->getAddtionalValue('client_secret_homolog', $storeId);
         }
 
         return $clientSecret;
@@ -203,6 +237,10 @@ class Config extends PaymentConfig
             $oauth = $this->getAddtionalValue('access_token_sandbox', $storeId);
         }
 
+        if ($environment === 'homolog') {
+            $oauth = $this->getAddtionalValue('access_token_homolog', $storeId);
+        }
+
         return $oauth;
     }
 
@@ -220,6 +258,10 @@ class Config extends PaymentConfig
         $environment = $this->getEnvironmentMode($storeId);
 
         if ($environment === 'sandbox') {
+            $code = '1snn5n9w';
+        }
+
+        if ($environment === 'homolog') {
             $code = '1snn5n9w';
         }
 

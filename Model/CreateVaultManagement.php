@@ -110,8 +110,11 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         $storeId = $quote->getData(QuoteCartInterface::KEY_STORE_ID);
 
         $numberToken = $this->getTokenCcNumber($storeId, $vaultData);
-
+        $token['tokenize'] = [
+            'error' => __('Error creating payment, please try again later. COD: 401'),
+        ];
         if ($numberToken) {
+            unset($token);
             $vaultDetails = $this->getVaultDetails($storeId, $numberToken, $vaultData);
             $token['tokenize'] = $vaultDetails;
         }
@@ -196,6 +199,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             'expiration_year'   => $vaultData['expiration_year'],
             'customer_id'       => $vaultData['customer_email'],
             'cardholder_name'   => $vaultData['cardholder_name'],
+            'verify_card'       => false,
         ];
 
         try {
@@ -207,9 +211,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
 
             $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
-            $response = [
-                'success' => 0,
-            ];
+
             if (isset($data['card_id'])) {
                 $response = [
                     'success'      => 1,
@@ -217,6 +219,17 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                     'number_token' => $data['number_token'],
                 ];
             }
+
+            if (isset($data['details'])) {
+                $response = [
+                    'success' => 0,
+                    'message' => [
+                        'code' => $data['details'][0]['error_code'],
+                        'text' => $data['details'][0]['description_detail'],
+                    ],
+                ];
+            }
+
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/cards',
