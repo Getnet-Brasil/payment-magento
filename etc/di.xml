@@ -253,6 +253,7 @@
                 <item name="customerBillingAddress" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CustomerBillingAddressDataRequest</item>
                 <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TaxDocumentDataRequest</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\BoletoPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -297,6 +298,7 @@
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataPixRequest</item>
                 <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CustomerDataPixRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -347,6 +349,7 @@
                 <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TaxDocumentDataRequest</item>
                 <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DeviceDataRequest</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\WalletPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -420,6 +423,7 @@
             <argument name="builders" xsi:type="array">
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataGetpayRequest</item>
                 <item name="payment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GetpayPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -497,6 +501,7 @@
                 <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DeviceDataRequest</item>
                 <item name="vaultBuilder" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\VaultDataBuilder</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CcPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -592,6 +597,7 @@
                 <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DeviceDataRequest</item>
                 <item name="vaultBuilder" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\VaultDataBuilder</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CcPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -659,6 +665,7 @@
                 <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TaxDocumentDataRequest</item>
                 <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DeviceDataRequest</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TwoCcPaymentDataRequest</item>
+                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
