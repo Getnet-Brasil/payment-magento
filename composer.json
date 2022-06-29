@@ -16,7 +16,7 @@
         "magento/module-payment": "^100.3",
         "magento/module-vault": "101.*",
         "magento/zendframework1": "~1.14.2",
-        "endroid/qr-code": "*",
+        "endroid/qr-code": "^2.5",
         "ext-json": "*"
     },
     "type": "magento2-module",
