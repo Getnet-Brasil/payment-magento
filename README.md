@@ -16,6 +16,11 @@ Status Atual
 [![Magento Coding Quality](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/magento-coding-quality.yml)
 [![Magento Mess Detector](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml/badge.svg)](https://github.com/getnet-adquirencia/payment-magento/actions/workflows/mess-detector.yml)
 
+## Conta
+
+Crie sua conta na Getnet.
+
+[![Criar conta](https://img.shields.io/badge/-Crie%20sua%20Conta-%23EC0000)](https://site.getnet.com.br/ecommerce/#formulario_ecommerce)
 
 ## Recursos
 
