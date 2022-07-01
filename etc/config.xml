@@ -207,7 +207,7 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <sort_order>11</sort_order>
             </getnet_paymentmagento_pix>
             <getnet_paymentmagento_wallet>
-                <active>1</active>
+                <active>0</active>
                 <model>PaymentMagentoWalletFacade</model>
                 <order_status>pending</order_status>
                 <title>Wallet</title>
