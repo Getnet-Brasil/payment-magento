@@ -16,8 +16,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 use Magento\Payment\Model\Method\Logger;
+use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 
 /**
  * Payment Release - release the payment amount to the sub seller.
@@ -61,12 +61,12 @@ class PaymentRelease extends AbstractModel
     protected $httpClientFactory;
 
     /**
-     * @param State                        $state
-     * @param Logger                       $logger
-     * @param GetnetConfig                 $getnetConfig
-     * @param TransactionSearch            $transactionSearch
-     * @param Json                         $json
-     * @param ZendClientFactory            $httpClientFactory
+     * @param State             $state
+     * @param Logger            $logger
+     * @param GetnetConfig      $getnetConfig
+     * @param TransactionSearch $transactionSearch
+     * @param Json              $json
+     * @param ZendClientFactory $httpClientFactory
      */
     public function __construct(
         State $state,
@@ -89,8 +89,8 @@ class PaymentRelease extends AbstractModel
     /**
      * Command Preference.
      *
-     * @param int $orderId
-     * @param string $date
+     * @param int         $orderId
+     * @param string      $date
      * @param string|null $subSellerId
      *
      * @return void
@@ -108,8 +108,8 @@ class PaymentRelease extends AbstractModel
     /**
      * Create Sub Seller.
      *
-     * @param int $orderId
-     * @param string $date
+     * @param int         $orderId
+     * @param string      $date
      * @param string|null $subSellerId
      *
      * @return void
@@ -123,6 +123,7 @@ class PaymentRelease extends AbstractModel
             $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
         } catch (LocalizedException $exc) {
             $this->writeln('<error>'.$exc->getMessage().'</error>');
+
             return;
         }
         $transactionId = $transaction->getTxnId();
@@ -132,6 +133,7 @@ class PaymentRelease extends AbstractModel
                 'Unable to get order transaction'
             );
             $this->writeln(sprintf('<error>%s</error>', $messageInfo));
+
             return;
         }
 
@@ -141,7 +143,7 @@ class PaymentRelease extends AbstractModel
         foreach ($sellersItems as $sellerId => $items) {
             $subSellersInPayment[] = $sellerId;
             foreach ($items as $item) {
-                if ((int)$item['amount']) {
+                if ((int) $item['amount']) {
                     $orderItems[$sellerId][] = [
                         'id'     => $item['id'],
                         'amount' => $item['amount'],
@@ -153,8 +155,8 @@ class PaymentRelease extends AbstractModel
         if ($subSellerId) {
             $data = [
                 self::RELEASE_PAYMENT_DATE => $date,
-                self::SUBSELLER_ID => $subSellerId,
-                self::ORDER_ITEM_RELEASE => $orderItems[$subSellerId],
+                self::SUBSELLER_ID         => $subSellerId,
+                self::ORDER_ITEM_RELEASE   => $orderItems[$subSellerId],
             ];
             $messageInfo = __(
                 'Releasing payment from seller %1, for date of %2',
@@ -171,8 +173,8 @@ class PaymentRelease extends AbstractModel
             foreach ($subSellersInPayment as $subSellerId) {
                 $data = [
                     self::RELEASE_PAYMENT_DATE => $date,
-                    self::SUBSELLER_ID => $subSellerId,
-                    self::ORDER_ITEM_RELEASE => $orderItems[$subSellerId],
+                    self::SUBSELLER_ID         => $subSellerId,
+                    self::ORDER_ITEM_RELEASE   => $orderItems[$subSellerId],
                 ];
                 $this->writeln($transactionId);
                 $messageInfo = __(
@@ -214,28 +216,28 @@ class PaymentRelease extends AbstractModel
         try {
             $result = $client->request()->getBody();
             $response = $this->json->unserialize($result);
-            
+
             $this->logger->debug([
                 'url'      => $uri,
                 'send'     => $this->json->serialize($data),
                 'response' => $this->json->serialize($response),
             ]);
-            
+
             $getnetData->setData($response);
         } catch (Exception $e) {
-            
             $this->logger->debug([
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
 
             $getnetData->getMessage('Connection Error');
             $getnetData->setDetails(
                 [
-                    'error_code' => 401,
+                    'error_code'  => 401,
                     'description' => $e->getMessage(),
                 ]
             );
         }
+
         return $getnetData;
     }
 
