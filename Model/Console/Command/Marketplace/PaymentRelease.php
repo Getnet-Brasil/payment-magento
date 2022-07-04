@@ -90,15 +90,15 @@ class PaymentRelease extends AbstractModel
      * Command Preference.
      *
      * @param int $orderId
-     * @param int|null $subSellerId
      * @param string $date
+     * @param string|null $subSellerId
      *
      * @return void
      */
     public function create(
         int $orderId,
         string $date,
-        int $subSellerId = null
+        string $subSellerId = null
     ) {
         $this->writeln('Init Payment Release');
         $this->createPaymentRelease($orderId, $date, $subSellerId);
@@ -109,18 +109,15 @@ class PaymentRelease extends AbstractModel
      * Create Sub Seller.
      *
      * @param int $orderId
-     * @param int|null $subSellerId
      * @param string $date
+     * @param string|null $subSellerId
      *
      * @return void
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * phpcs:disable Generic.Metrics.NestingLevel
      */
-    protected function createPaymentRelease(
+    public function createPaymentRelease(
         int $orderId,
         string $date,
-        int $subSellerId = null
+        string $subSellerId = null
     ) {
         try {
             $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
@@ -132,7 +129,7 @@ class PaymentRelease extends AbstractModel
 
         if (!$transactionId) {
             $messageInfo = __(
-                'Não foi possível obter a transação do pedido'
+                'Unable to get order transaction'
             );
             $this->writeln(sprintf('<error>%s</error>', $messageInfo));
             return;
@@ -159,26 +156,15 @@ class PaymentRelease extends AbstractModel
                 self::SUBSELLER_ID => $subSellerId,
                 self::ORDER_ITEM_RELEASE => $orderItems[$subSellerId],
             ];
-            $this->writeln($transactionId);
             $messageInfo = __(
-                'Fazendo a liberação para o vendedor %1, na data %2',
+                'Releasing payment from seller %1, for date of %2',
                 $subSellerId,
                 $date
             );
             $this->writeln(sprintf('<info>%s</info>', $messageInfo));
+
             $response = $this->sendData($transactionId, $data);
-            if ($response->getSuccess()) {
-                $messageInfo = __(
-                    'Liberação solicitada com sucesso'
-                );
-                $this->writeln(sprintf('<info>%s</info>', $messageInfo));
-                return;
-            }
-    
-            if ($response->getMessage()) {
-                $this->writeln(sprintf('<error>%s</error>', $response->getMessage()));
-                return;
-            }
+            $this->setMessages($response);
         }
 
         if (!$subSellerId) {
@@ -190,27 +176,16 @@ class PaymentRelease extends AbstractModel
                 ];
                 $this->writeln($transactionId);
                 $messageInfo = __(
-                    'Fazendo a liberação para o vendedor %1, na data %2',
+                    'Releasing payment from seller %1, for date of %2',
                     $subSellerId,
                     $date
                 );
                 $this->writeln(sprintf('<info>%s</info>', $messageInfo));
+
                 $response = $this->sendData($transactionId, $data);
-                if ($response->getSuccess()) {
-                    $messageInfo = __(
-                        'Liberação solicitada com sucesso'
-                    );
-                    $this->writeln(sprintf('<info>%s</info>', $messageInfo));
-                    return;
-                }
-        
-                if ($response->getMessage()) {
-                    $this->writeln(sprintf('<error>%s</error>', $response->getMessage()));
-                    return;
-                }
+                $this->setMessages($response);
             }
         }
-
     }
 
     /**
@@ -221,7 +196,7 @@ class PaymentRelease extends AbstractModel
      *
      * @return \Magento\Framework\DataObject
      */
-    protected function sendData(
+    public function sendData(
         string $transactionId,
         array $data
     ): \Magento\Framework\DataObject {
@@ -247,14 +222,49 @@ class PaymentRelease extends AbstractModel
             ]);
             
             $getnetData->setData($response);
-
-            return $getnetData;
         } catch (Exception $e) {
+            
             $this->logger->debug([
                 'error' => $e->getMessage()
             ]);
 
-            return $getnetData->setDetails($e->getMessage());
+            $getnetData->getMessage('Connection Error');
+            $getnetData->setDetails(
+                [
+                    'error_code' => 401,
+                    'description' => $e->getMessage(),
+                ]
+            );
+        }
+        return $getnetData;
+    }
+
+    /**
+     * Set Messages.
+     *
+     * @param \Magento\Framework\DataObject $response
+     *
+     * @return void;
+     */
+    public function setMessages(\Magento\Framework\DataObject $response)
+    {
+        if ($response->getSuccess()) {
+            $messageInfo = __(
+                'Payment release requested successfully'
+            );
+            $this->writeln(sprintf('<info>%s</info>', $messageInfo));
+        }
+
+        if ($response->getMessage()) {
+            $this->writeln(sprintf('<error>%s</error>', $response->getMessage()));
+            foreach ($response->getDetails() as $message) {
+                $messageInfo = __(
+                    'Error: %1, description: %2',
+                    $message['error_code'],
+                    $message['description']
+                );
+                $this->writeln(sprintf('<error>%s</error>', $messageInfo));
+            }
         }
     }
 }

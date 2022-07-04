@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Console\Command\Marketplace;
 
-use Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease as PaymentRelease;
+use Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease;
 use Magento\Framework\App\State;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,12 +27,12 @@ class Release extends Command
     /**
      * @const string.
      */
-    public const ORDER_ID = 'order_id';
+    public const ORDER_ID = 'order-id';
 
     /**
      * @const string.
      */
-    public const SUB_SELLER_ID = 'sub_seller_id';
+    public const SUB_SELLER_ID = 'sub-seller-id';
 
     /**
      * @const string.
@@ -48,15 +50,31 @@ class Release extends Command
     protected $state;
 
     /**
-     * @param State          $state
-     * @param PaymentRelease $paymentRelease
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
+     * @var TimezoneInterface
+     */
+    protected $timezone;
+
+    /**
+     * @param State             $state
+     * @param PaymentRelease    $paymentRelease
+     * @param DataTime          $date
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         State $state,
-        PaymentRelease $paymentRelease
+        PaymentRelease $paymentRelease,
+        \Magento\Framework\Stdlib\DateTime\DateTime $date,
+        TimezoneInterface $timezone
     ) {
         $this->state = $state;
         $this->paymentRelease = $paymentRelease;
+        $this->date = $date;
+        $this->timezone = $timezone;
         parent::__construct();
     }
 
@@ -74,9 +92,12 @@ class Release extends Command
         $this->paymentRelease->setOutput($output);
 
         $orderId = (int) $input->getArgument(self::ORDER_ID);
-        $subSellerId = (int) $input->getArgument(self::SUB_SELLER_ID);
+
+        $subSellerId = $input->getArgument(self::SUB_SELLER_ID);
+
         $date = $input->getArgument(self::DATE);
-        
+        $date = $this->convertDate($date);
+
         $this->paymentRelease->create($orderId, $date, $subSellerId);
     }
 
@@ -92,10 +113,34 @@ class Release extends Command
         $this->setDefinition(
             [
                 new InputArgument(self::ORDER_ID, InputArgument::REQUIRED, 'Order Id'),
-                new InputArgument(self::DATE, InputArgument::REQUIRED, 'Date'),
+                new InputArgument(self::DATE, InputArgument::OPTIONAL, 'Date'),
                 new InputArgument(self::SUB_SELLER_ID, InputArgument::OPTIONAL, 'Sub Seller Id Getnet (id ext)'),
             ]
         );
         parent::configure();
+    }
+
+    /**
+     * Convert Date.
+     *
+     * @param string|null $date
+     *
+     * @return string
+     */
+    public function convertDate(string $date = null): string
+    {
+        if ($date) {
+            $date = str_replace('/', '-', $date);
+            $defaultTimezone = $this->timezone->getDefaultTimezone();
+            $configTimezone = $this->timezone->getConfigTimezone();
+            $date = new \DateTime($date, new \DateTimeZone($configTimezone));
+            $date->setTimezone(new \DateTimeZone($defaultTimezone));
+        }
+
+        if (!$date) {
+            $date = new \DateTime();
+        }
+
+        return $date->format('Y-m-d\TH:i:s\Z');
     }
 }
