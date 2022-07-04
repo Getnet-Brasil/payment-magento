@@ -58,10 +58,10 @@ class Release extends Command
     protected $timezone;
 
     /**
-     * @param State                                                 $state
-     * @param PaymentRelease                                        $paymentRelease
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime           $date
-     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface  $timezone
+     * @param State                                                $state
+     * @param PaymentRelease                                       $paymentRelease
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime          $date
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
      */
     public function __construct(
         State $state,

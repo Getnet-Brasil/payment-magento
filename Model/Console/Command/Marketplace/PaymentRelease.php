@@ -17,8 +17,8 @@ use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
-use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
+use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 use Magento\Sales\Model\Service\OrderService;
 
 /**
