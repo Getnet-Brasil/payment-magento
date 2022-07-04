@@ -24,6 +24,8 @@ use Magento\Sales\Model\Service\OrderService;
 
 /**
  * Payment Release - release the payment amount to the sub seller.
+ * 
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class PaymentRelease extends AbstractModel
 {
@@ -143,6 +145,7 @@ class PaymentRelease extends AbstractModel
             $transactionId = $transaction->getTxnId();
         } catch (LocalizedException $exc) {
             $this->writeln('<error>'.$exc->getMessage().'</error>');
+
             return;
         }
 
@@ -305,8 +308,7 @@ class PaymentRelease extends AbstractModel
     ) {
         /** @var OrderInterfaceFactory $order */
         $order = $this->orderFactory->create()->load($orderId);
-        $comment = __('Payment release requested successfully.');
-        $history = $order->addStatusHistoryComment($comment, $order->getStatus());
+        $history = $order->addStatusHistoryComment($messageInfo, $order->getStatus());
         $history->setIsVisibleOnFront(false);
         $history->setIsCustomerNotified(false);
         $this->orderService->addComment($orderId, $history);
