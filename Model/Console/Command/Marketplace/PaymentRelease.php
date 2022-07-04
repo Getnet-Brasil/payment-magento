@@ -18,6 +18,8 @@ use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
+use Magento\Sales\Api\Data\OrderInterfaceFactory;
+use Magento\Sales\Model\Service\OrderService;
 
 /**
  * Payment Release - release the payment amount to the sub seller.
@@ -61,12 +63,24 @@ class PaymentRelease extends AbstractModel
     protected $httpClientFactory;
 
     /**
-     * @param State             $state
-     * @param Logger            $logger
-     * @param GetnetConfig      $getnetConfig
-     * @param TransactionSearch $transactionSearch
-     * @param Json              $json
-     * @param ZendClientFactory $httpClientFactory
+     * @var OrderInterfaceFactory
+     */
+    protected $orderFactory;
+
+    /**
+     * @var OrderService
+     */
+    protected $orderService;
+
+    /**
+     * @param State                 $state
+     * @param Logger                $logger
+     * @param GetnetConfig          $getnetConfig
+     * @param TransactionSearch     $transactionSearch
+     * @param Json                  $json
+     * @param ZendClientFactory     $httpClientFactor
+     * @param OrderInterfaceFactory $orderFactory
+     * @param OrderService          $orderService
      */
     public function __construct(
         State $state,
@@ -74,7 +88,9 @@ class PaymentRelease extends AbstractModel
         GetnetConfig $getnetConfig,
         TransactionSearch $transactionSearch,
         Json $json,
-        ZendClientFactory $httpClientFactory
+        ZendClientFactory $httpClientFactory,
+        OrderInterfaceFactory $orderFactory,
+        OrderService $orderService
     ) {
         parent::__construct(
             $logger
@@ -84,6 +100,8 @@ class PaymentRelease extends AbstractModel
         $this->transactionSearch = $transactionSearch;
         $this->json = $json;
         $this->httpClientFactory = $httpClientFactory;
+        $this->orderFactory = $orderFactory;
+        $this->orderService = $orderService;
     }
 
     /**
@@ -188,6 +206,10 @@ class PaymentRelease extends AbstractModel
                 $this->setMessages($response);
             }
         }
+
+        if ($response->getSuccess()) {
+            $this->addReleaseComment($orderId);
+        }
     }
 
     /**
@@ -268,5 +290,23 @@ class PaymentRelease extends AbstractModel
                 $this->writeln(sprintf('<error>%s</error>', $messageInfo));
             }
         }
+    }
+
+    /**
+     * Add Release Comment.
+     *
+     * @param int $orderId
+     *
+     * @return void
+     */
+    public function addReleaseComment(int $orderId)
+    {
+        /** @var OrderInterfaceFactory $order */
+        $order = $this->orderFactory->create()->load($orderId);
+        $comment = __('Payment release requested successfully.');
+        $history = $order->addStatusHistoryComment($comment, $order->getStatus());
+        $history->setIsVisibleOnFront(false);
+        $history->setIsCustomerNotified(false);
+        $this->orderService->addComment($orderId, $history);
     }
 }

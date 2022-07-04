@@ -12,8 +12,6 @@ namespace Getnet\PaymentMagento\Console\Command\Marketplace;
 
 use Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease;
 use Magento\Framework\App\State;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,26 +48,26 @@ class Release extends Command
     protected $state;
 
     /**
-     * @var DateTime
+     * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $date;
 
     /**
-     * @var TimezoneInterface
+     * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
     protected $timezone;
 
     /**
-     * @param State             $state
-     * @param PaymentRelease    $paymentRelease
-     * @param DataTime          $date
-     * @param TimezoneInterface $timezone
+     * @param State                                                 $state
+     * @param PaymentRelease                                        $paymentRelease
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime           $date
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface  $timezone
      */
     public function __construct(
         State $state,
         PaymentRelease $paymentRelease,
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
-        TimezoneInterface $timezone
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
     ) {
         $this->state = $state;
         $this->paymentRelease = $paymentRelease;
