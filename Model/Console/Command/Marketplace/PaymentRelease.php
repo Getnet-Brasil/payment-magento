@@ -15,6 +15,7 @@ use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
+use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
@@ -78,7 +79,7 @@ class PaymentRelease extends AbstractModel
      * @param GetnetConfig          $getnetConfig
      * @param TransactionSearch     $transactionSearch
      * @param Json                  $json
-     * @param ZendClientFactory     $httpClientFactor
+     * @param ZendClientFactory     $httpClientFactory
      * @param OrderInterfaceFactory $orderFactory
      * @param OrderService          $orderService
      */
@@ -139,12 +140,11 @@ class PaymentRelease extends AbstractModel
     ) {
         try {
             $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
+            $transactionId = $transaction->getTxnId();
         } catch (LocalizedException $exc) {
             $this->writeln('<error>'.$exc->getMessage().'</error>');
-
             return;
         }
-        $transactionId = $transaction->getTxnId();
 
         if (!$transactionId) {
             $messageInfo = __(
@@ -181,10 +181,8 @@ class PaymentRelease extends AbstractModel
                 $subSellerId,
                 $date
             );
-            $this->writeln(sprintf('<info>%s</info>', $messageInfo));
-
             $response = $this->sendData($transactionId, $data);
-            $this->setMessages($response);
+            $this->setMessages($response, $messageInfo, $orderId);
         }
 
         if (!$subSellerId) {
@@ -200,15 +198,9 @@ class PaymentRelease extends AbstractModel
                     $subSellerId,
                     $date
                 );
-                $this->writeln(sprintf('<info>%s</info>', $messageInfo));
-
                 $response = $this->sendData($transactionId, $data);
-                $this->setMessages($response);
+                $this->setMessages($response, $messageInfo, $orderId);
             }
-        }
-
-        if ($response->getSuccess()) {
-            $this->addReleaseComment($orderId);
         }
     }
 
@@ -267,16 +259,23 @@ class PaymentRelease extends AbstractModel
      * Set Messages.
      *
      * @param \Magento\Framework\DataObject $response
+     * @param Phrase                        $messageInfo
+     * @param int                           $orderId
      *
      * @return void;
      */
-    public function setMessages(\Magento\Framework\DataObject $response)
-    {
+    public function setMessages(
+        \Magento\Framework\DataObject $response,
+        Phrase $messageInfo,
+        int $orderId
+    ) {
+        $this->writeln(sprintf('<info>%s</info>', $messageInfo));
         if ($response->getSuccess()) {
-            $messageInfo = __(
+            $messageDone = __(
                 'Payment release requested successfully'
             );
-            $this->writeln(sprintf('<info>%s</info>', $messageInfo));
+            $this->writeln(sprintf('<info>%s</info>', $messageDone));
+            $this->addReleaseComment($messageInfo, $orderId);
         }
 
         if ($response->getMessage()) {
@@ -295,12 +294,15 @@ class PaymentRelease extends AbstractModel
     /**
      * Add Release Comment.
      *
-     * @param int $orderId
+     * @param Phrase $messageInfo
+     * @param int    $orderId
      *
      * @return void
      */
-    public function addReleaseComment(int $orderId)
-    {
+    public function addReleaseComment(
+        Phrase $messageInfo,
+        int $orderId
+    ) {
         /** @var OrderInterfaceFactory $order */
         $order = $this->orderFactory->create()->load($orderId);
         $comment = __('Payment release requested successfully.');
