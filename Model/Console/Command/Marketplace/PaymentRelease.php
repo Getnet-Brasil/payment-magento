@@ -24,7 +24,7 @@ use Magento\Sales\Model\Service\OrderService;
 
 /**
  * Payment Release - release the payment amount to the sub seller.
- * 
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class PaymentRelease extends AbstractModel
