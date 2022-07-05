@@ -186,6 +186,7 @@ class PaymentRelease extends AbstractModel
             );
             $response = $this->sendData($transactionId, $data);
             $this->setMessages($response, $messageInfo, $orderId);
+
             return $response;
         }
 
@@ -203,6 +204,7 @@ class PaymentRelease extends AbstractModel
                 );
                 $response = $this->sendData($transactionId, $data);
                 $this->setMessages($response, $messageInfo, $orderId);
+
                 return $response;
             }
         }
@@ -280,6 +282,7 @@ class PaymentRelease extends AbstractModel
             );
             $this->writeln(sprintf('<info>%s</info>', $messageDone));
             $this->addReleaseComment($messageInfo, $orderId);
+
             return $messageDone;
         }
 
@@ -293,6 +296,7 @@ class PaymentRelease extends AbstractModel
                 );
                 $this->writeln(sprintf('<error>%s</error>', $messageInfo));
             }
+
             return $messageInfo;
         }
     }
