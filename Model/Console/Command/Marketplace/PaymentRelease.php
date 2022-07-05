@@ -186,6 +186,7 @@ class PaymentRelease extends AbstractModel
             );
             $response = $this->sendData($transactionId, $data);
             $this->setMessages($response, $messageInfo, $orderId);
+            return $response;
         }
 
         if (!$subSellerId) {
@@ -195,7 +196,6 @@ class PaymentRelease extends AbstractModel
                     self::SUBSELLER_ID         => $subSellerId,
                     self::ORDER_ITEM_RELEASE   => $orderItems[$subSellerId],
                 ];
-                $this->writeln($transactionId);
                 $messageInfo = __(
                     'Releasing payment from seller %1, for date of %2',
                     $subSellerId,
@@ -203,6 +203,7 @@ class PaymentRelease extends AbstractModel
                 );
                 $response = $this->sendData($transactionId, $data);
                 $this->setMessages($response, $messageInfo, $orderId);
+                return $response;
             }
         }
     }
@@ -279,6 +280,7 @@ class PaymentRelease extends AbstractModel
             );
             $this->writeln(sprintf('<info>%s</info>', $messageDone));
             $this->addReleaseComment($messageInfo, $orderId);
+            return $messageDone;
         }
 
         if ($response->getMessage()) {
@@ -291,6 +293,7 @@ class PaymentRelease extends AbstractModel
                 );
                 $this->writeln(sprintf('<error>%s</error>', $messageInfo));
             }
+            return $messageInfo;
         }
     }
 
