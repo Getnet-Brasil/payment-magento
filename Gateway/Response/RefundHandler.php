@@ -26,7 +26,7 @@ class RefundHandler implements HandlerInterface
     /**
      * Response Pay Cancel Request Id - Block Name.
      */
-    public const RESPONSE_CANCEL_REQUEST_ID = 'cancel_request_id';
+    public const RESPONSE_CANCEL_CUSTOM_KEY = 'cancel_custom_key';
 
     /**
      * Response Pay Status - Block Name.
@@ -62,7 +62,7 @@ class RefundHandler implements HandlerInterface
         $paymentDO = $handlingSubject['payment'];
         $payment = $paymentDO->getPayment();
 
-        $payment->setTransactionId($response[self::RESPONSE_CANCEL_REQUEST_ID]);
+        $payment->setTransactionId($response[self::RESPONSE_CANCEL_CUSTOM_KEY]);
 
         if ($response[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_ACCEPTED) {
             $creditmemo = $payment->getCreditmemo();
