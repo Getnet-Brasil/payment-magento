@@ -161,7 +161,7 @@ class PaymentRelease extends AbstractModel
         }
 
         $sellersItems = $transaction->getOrder()->getPayment()->getAdditionalInformation('marketplace');
-        
+
         if (!$sellersItems) {
             $messageInfo = __(
                 'Unable to get order transaction marketplace'
@@ -170,7 +170,7 @@ class PaymentRelease extends AbstractModel
 
             return;
         }
-        
+
         $sellersItems = $this->json->unserialize($sellersItems);
 
         foreach ($sellersItems as $sellerId => $items) {
