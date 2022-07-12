@@ -159,6 +159,16 @@ class PaymentRelease extends AbstractModel
         }
 
         $sellersItems = $transaction->getOrder()->getPayment()->getAdditionalInformation('marketplace');
+        
+        if (!$sellersItems) {
+            $messageInfo = __(
+                'Unable to get order transaction marketplace'
+            );
+            $this->writeln(sprintf('<error>%s</error>', $messageInfo));
+
+            return;
+        }
+        
         $sellersItems = $this->json->unserialize($sellersItems);
 
         foreach ($sellersItems as $sellerId => $items) {
@@ -225,7 +235,7 @@ class PaymentRelease extends AbstractModel
         $uri = $this->getnetConfig->getApiUrl();
         $bearer = $this->getnetConfig->getMerchantGatewayOauth();
         $client = $this->httpClientFactory->create();
-        $uri = $uri.'/v1/marketplace/payments/'.$transactionId.'/release';
+        $uri = $uri.'v1/marketplace/payments/'.$transactionId.'/release';
         $client->setUri($uri);
         $client->setHeaders('Authorization', 'Bearer '.$bearer);
         $client->setConfig(['maxredirects' => 0, 'timeout' => 40]);
