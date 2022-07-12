@@ -134,6 +134,8 @@ class PaymentRelease extends AbstractModel
      * @param string|null $subSellerId
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function createPaymentRelease(
         int $orderId,
