@@ -1,4 +1,4 @@
-<img src="view/adminhtml/web/images/logo.svg" align="right" width="200"/>
+x<img src="view/adminhtml/web/images/logo.svg" align="right" width="200"/>
 
 # Getnet para Magento 2
 
