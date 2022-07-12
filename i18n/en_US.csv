@@ -15,6 +15,7 @@ Debit,Debit
 Pix,Pix
 "Qr Code","Qr Code"
 Production,Production
+Homolog,Homolog
 "Sandbox - Environment for tests","Sandbox - Environment for tests"
 "Attention, a new cookie will be created.","Attention, a new cookie will be created."
 "Adjust your cookie information page.","Adjust your cookie information page."
@@ -56,6 +57,11 @@ Finished,Finished
 "Error saving information in database: %1","Error saving information in database: %1"
 "Refresh Token Error: %1","Refresh Token Error: %1"
 "Token update request error: %1","Token update request error: %1"
+"Unable to get order transaction","Unable to get order transaction"
+"Releasing payment from seller %1, for date of %2","Releasing payment from seller %1, for date of %2"
+"Payment release requested successfully","Payment release requested successfully"
+"Error: %1, description: %2","Error: %1, description: %2"
+"Error creating payment, please try again later. COD: 401","Error creating payment, please try again later. COD: 401"
 Getnet,Getnet
 Due,Due
 Instruction,Instruction
@@ -118,6 +124,7 @@ Year,Year
 "Incorrect credit card expiration month.","Incorrect credit card expiration month."
 "Please enter a valid credit card verification number.","Please enter a valid credit card verification number."
 "Incorrect credit card expiration year.","Incorrect credit card expiration year."
+"The value is not within the specified range.","The value is not within the specified range."
 "Credit Card","Credit Card"
 "Debit Card","Debit Card"
 "Payment Services","Payment Services"
@@ -135,6 +142,9 @@ Environment,Environment
 "Seller Id - production","Seller Id - production"
 "Client Id - production","Client Id - production"
 "Client Secret - production","Client Secret - production"
+"Seller Id - homolog","Seller Id - homolog"
+"Client Id - homolog","Client Id - homolog"
+"Client Secret - homolog","Client Secret - homolog"
 "Seller Id - Sandbox","Seller Id - Sandbox"
 "Client Id - Sandbox","Client Id - Sandbox"
 "Client Secret - Sandbox","Client Secret - Sandbox"
@@ -180,6 +190,8 @@ Title,Title
 "Information displayed at checkout.","Information displayed at checkout."
 "Information will be printed on the boleto.","Information will be printed on the boleto."
 "Capture name in the payment form?","Capture name in the payment form?"
+Wallet,Wallet
+"Offer instant payment across multiple wallets.","Offer instant payment across multiple wallets."
 Getpay,Getpay
 "Offer sales via external link, keeping your inventory and order status in sync.","Offer sales via external link, keeping your inventory and order status in sync."
 "Product Type","Product Type"

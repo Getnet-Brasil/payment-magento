@@ -20,6 +20,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="refreshToken" xsi:type="object">Getnet\PaymentMagento\Console\Command\Basic\RefreshToken</item>
+                <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item>
             </argument>
         </arguments>
     </type>
@@ -1177,6 +1178,12 @@
     </type>
 
     <type name="Getnet\PaymentMagento\Model\Console\Command\Basic\Refresh">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>

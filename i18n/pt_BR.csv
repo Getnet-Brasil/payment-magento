@@ -10,13 +10,14 @@
 "Awaiting payment of the Pix.","Aguardando pagamento do Pix."
 "Awaiting payment of the Wallet.","Aguardando pagamento via Wallet."
 "Gateway rejected the transaction.","Transação rejeitada."
-Production,Produção
-"Sandbox - Environment for tests","Sandbox - Ambiente de teste"
-"Attention, a new cookie will be created.","Atenção, um novo cookie será criado."
 Credit,Crédito
 Debit,Débito
 Pix,Pix
 "Qr Code","Qr Code"
+Production,Produção
+Homolog,Homologação
+"Sandbox - Environment for tests","Sandbox - Ambiente de teste"
+"Attention, a new cookie will be created.","Atenção, um novo cookie será criado."
 "Adjust your cookie information page.","Ajuste sua página de informações de cookies."
 "New cookie name: ""thx_guid""","Novo nome de cookie: ""thx_guid"""
 "Description of use: User identification cookie with Getnet payment method.","Descrição de uso: Cookie de identificação do usuário com método de pagamento Getnet."
@@ -56,6 +57,11 @@ Finished,Concluido
 "Error saving information in database: %1","Erro ao salvar a informação no banco de dados: %1"
 "Refresh Token Error: %1","Erro ao renovar o token: %1"
 "Token update request error: %1","Erro de solicitação de atualização de token: %1"
+"Unable to get order transaction","Não foi possível obter a transação"
+"Releasing payment from seller %1, for date of %2","Liberando o pagamento do vendedor %1, para a data de %2"
+"Payment release requested successfully","Liberação de pagamento solicitada com sucesso"
+"Error: %1, description: %2","Erro: %1, descrição: %2"
+"Error creating payment, please try again later. COD: 401","Erro ao criar o pagamento. Tente novamente mais tarde. CÓDIGO: 401"
 Getnet,Getnet
 Due,Vencimento
 Instruction,Instrução
@@ -118,6 +124,7 @@ Year,Ano
 "Incorrect credit card expiration month.","Mês de vencimento do cartão de crédito incorreto."
 "Please enter a valid credit card verification number.","Insira um número de verificação de cartão de crédito válido."
 "Incorrect credit card expiration year.","Ano de expiração do cartão de crédito incorreto."
+"The value is not within the specified range.","O valor não está dentro do intervalo especificado."
 "Credit Card","Cartão de Crédito"
 "Debit Card","Cartão de Débito"
 "Payment Services","Serviços de pagamento"
@@ -135,6 +142,9 @@ Environment,Ambiente
 "Seller Id - production","Seller Id - Produção"
 "Client Id - production","Client Id - Produção"
 "Client Secret - production","Client Secret - Produção"
+"Seller Id - homolog","Seller Id - Homologação"
+"Client Id - homolog","Client Id - Homologação"
+"Client Secret - homolog","Client Secret - Homologação"
 "Seller Id - Sandbox","Seller Id - Sandbox"
 "Client Id - Sandbox","Client Id - Sandbox"
 "Client Secret - Sandbox","Client Secret - Sandbox"
@@ -180,6 +190,8 @@ Title,Título
 "Information displayed at checkout.","Informação exibida no checkout."
 "Information will be printed on the boleto.","Informação impressa no boleto."
 "Capture name in the payment form?","Capturar nome no formulário de pagamento?"
+Wallet,Carteiras Digitais
+"Offer instant payment across multiple wallets.","Ofereça pagamento instantâneo em várias carteiras."
 Getpay,Getpay
 "Offer sales via external link, keeping your inventory and order status in sync.","Ofereça vendas via link externo, mantendo seu estoque e status do pedido sincronizados."
 "Product Type","Tipos de produto"
