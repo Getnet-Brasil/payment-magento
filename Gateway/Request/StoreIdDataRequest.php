@@ -63,7 +63,7 @@ class StoreIdDataRequest implements BuilderInterface
         $storeId = $order->getStoreId();
 
         return [
-            self::STORE_ID  => $storeId ?: 0
+            self::STORE_ID  => $storeId ?: 0,
         ];
     }
 }

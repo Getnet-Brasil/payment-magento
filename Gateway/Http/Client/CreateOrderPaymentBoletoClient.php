@@ -123,7 +123,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
             }
             $this->logger->debug(
                 [
-                    'storeId' => $storeId,
+                    'storeId'  => $storeId,
                     'url'      => $url.'v1/payments/boleto',
                     'auth'     => $apiBearer,
                     'request'  => $this->json->serialize($transferObject->getBody()),
@@ -133,9 +133,9 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [
-                    'storeId' => $storeId,
+                    'storeId'   => $storeId,
                     'url'       => $url.'v1/payments/boleto',
-                    'auth'     => $apiBearer,
+                    'auth'      => $apiBearer,
                     'request'   => $this->json->serialize($transferObject->getBody()),
                     'response'  => $responseBody,
                     'error'     => $e->getMessage(),

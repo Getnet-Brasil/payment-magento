@@ -36,7 +36,7 @@ class CreateOrderPaymentCcClient implements ClientInterface
      * Store Id - Block name.
      */
     public const STORE_ID = 'store_id';
-    
+
     /**
      * External Order Id - Block name.
      */

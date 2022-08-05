@@ -21,9 +21,9 @@ use Magento\Framework\App\State;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Model\ScopeInterface;
 use Magento\Payment\Model\Method\Logger;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Refresh Token.
@@ -76,16 +76,16 @@ class Refresh extends AbstractModel
     protected $httpClientFactory;
 
     /**
-     * @param TypeListInterface    $cacheTypeList
-     * @param Pool                 $cacheFrontendPool
-     * @param Logger               $logger
-     * @param ScopeConfigInterface $scopeConfig
-     * @param State                $state
-     * @param GetnetConfig         $getnetConfig
-     * @param Config               $config
+     * @param TypeListInterface     $cacheTypeList
+     * @param Pool                  $cacheFrontendPool
+     * @param Logger                $logger
+     * @param ScopeConfigInterface  $scopeConfig
+     * @param State                 $state
+     * @param GetnetConfig          $getnetConfig
+     * @param Config                $config
      * @param StoreManagerInterface $storeManager
-     * @param Json                 $json
-     * @param ZendClientFactory    $httpClientFactory
+     * @param Json                  $json
+     * @param ZendClientFactory     $httpClientFactory
      */
     public function __construct(
         TypeListInterface $cacheTypeList,
@@ -124,14 +124,14 @@ class Refresh extends AbstractModel
     {
         $storeIds = $storeId ?: array_keys($this->storeManager->getStores());
         $this->writeln('Init Referesh Token');
-        foreach ($this->storeManager->getStores() as $stores){
-            $storeId = (int)$stores->getId();
+        foreach ($this->storeManager->getStores() as $stores) {
+            $storeId = (int) $stores->getId();
             $webSite = $this->storeManager->setCurrentStore($stores);
-            $webSiteId = (int)$stores->getWebsiteId();
+            $webSiteId = (int) $stores->getWebsiteId();
             $this->writeln(__('For Store Id %1 Web Site Id %2', $storeId, $webSiteId));
             $this->createNewToken($storeId, $webSiteId);
         }
-        
+
         $this->writeln(__('Finished'));
     }
 
@@ -214,8 +214,8 @@ class Refresh extends AbstractModel
      * Set New Token.
      *
      * @param string $token
-     * @param int $storeId
-     * @param int $webSiteId
+     * @param int    $storeId
+     * @param int    $webSiteId
      *
      * @return array
      */
@@ -232,7 +232,6 @@ class Refresh extends AbstractModel
                 ScopeInterface::SCOPE_WEBSITES,
                 $webSiteId
             );
-           
         } catch (Exception $e) {
             return ['success' => false, 'error' => $e->getMessage()];
         }
