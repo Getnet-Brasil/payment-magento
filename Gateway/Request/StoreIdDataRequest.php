@@ -15,19 +15,14 @@ use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Seller Id Data Request - Seller Id structure.
+ * Class Store Id Data Request - Store Id structure.
  */
-class SellerIdDataRequest implements BuilderInterface
+class StoreIdDataRequest implements BuilderInterface
 {
     /**
      * Store Id block name.
      */
     public const STORE_ID = 'store_id';
-
-    /**
-     * Seller Id block name.
-     */
-    public const SELLER_ID = 'seller_id';
 
     /**
      * @var SubjectReader
@@ -68,8 +63,7 @@ class SellerIdDataRequest implements BuilderInterface
         $storeId = $order->getStoreId();
 
         return [
-            self::STORE_ID  => $storeId,
-            self::SELLER_ID => $this->config->getMerchantGatewaySellerId($storeId),
+            self::STORE_ID  => $storeId ?: 0,
         ];
     }
 }

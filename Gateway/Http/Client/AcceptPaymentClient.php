@@ -34,6 +34,11 @@ class AcceptPaymentClient implements ClientInterface
     public const RESULT_CODE = 'RESULT_CODE';
 
     /**
+     * Store Id - Block name.
+     */
+    public const STORE_ID = 'store_id';
+
+    /**
      * Response Pay Status - Block Name.
      */
     public const RESPONSE_STATUS = 'status';
@@ -98,10 +103,12 @@ class AcceptPaymentClient implements ClientInterface
         /** @var ZendClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
-        $url = $this->config->getApiUrl();
-        $apiBearer = $this->config->getMerchantGatewayOauth();
+        $storeId = $request[self::STORE_ID];
+        $url = $this->config->getApiUrl($storeId);
+        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
         $paymentId = $request[ExtPaymentIdRequest::GETNET_PAYMENT_ID];
         unset($request[ExtPaymentIdRequest::GETNET_PAYMENT_ID]);
+        unset($request[self::STORE_ID]);
 
         try {
             $client->setUri($url.'/v1/payments/credit/'.$paymentId.'/confirm');

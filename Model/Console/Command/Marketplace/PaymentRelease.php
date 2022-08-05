@@ -235,7 +235,7 @@ class PaymentRelease extends AbstractModel
         array $data
     ): \Magento\Framework\DataObject {
         $uri = $this->getnetConfig->getApiUrl();
-        $bearer = $this->getnetConfig->getMerchantGatewayOauth();
+        $bearer = $this->getnetConfig->getMerchantGatewayOauth(0);
         $client = $this->httpClientFactory->create();
         $uri = $uri.'v1/marketplace/payments/'.$transactionId.'/release';
         $client->setUri($uri);

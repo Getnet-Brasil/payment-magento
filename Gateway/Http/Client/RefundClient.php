@@ -33,6 +33,11 @@ class RefundClient implements ClientInterface
     public const RESULT_CODE = 'RESULT_CODE';
 
     /**
+     * Store Id - Block name.
+     */
+    public const STORE_ID = 'store_id';
+
+    /**
      * Response Pay Cancel Request Id - Block name.
      */
     public const RESPONSE_CANCEL_REQUEST_ID = 'cancel_request_id';
@@ -97,8 +102,10 @@ class RefundClient implements ClientInterface
         /** @var ZendClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
-        $url = $this->config->getApiUrl();
-        $apiBearer = $this->config->getMerchantGatewayOauth();
+        $storeId = $request[self::STORE_ID];
+        $url = $this->config->getApiUrl($storeId);
+        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        unset($request[self::STORE_ID]);
 
         try {
             $client->setUri($url.'/v1/payments/cancel/request');

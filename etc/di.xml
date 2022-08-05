@@ -246,6 +246,7 @@
     <virtualType name="PaymentMagentoBoletoOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="sellerId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SellerIdDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
@@ -295,6 +296,7 @@
     <virtualType name="PaymentMagentoPixOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataPixRequest</item>
@@ -341,6 +343,7 @@
     <virtualType name="PaymentMagentoWalletOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndInterestDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataRequest</item>
@@ -381,6 +384,7 @@
     <virtualType name="WalletFetchTransactionInfoRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\WalletFetchTransactionInfoRequest</item>
             </argument>
         </arguments>
@@ -422,6 +426,7 @@
     <virtualType name="PaymentMagentoGetpayOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataGetpayRequest</item>
                 <item name="payment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GetpayPaymentDataRequest</item>
                 <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
@@ -455,6 +460,7 @@
     <virtualType name="GetpayFetchTransactionInfoRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GetpayFetchTransactionInfoRequest</item>
             </argument>
         </arguments>
@@ -491,6 +497,7 @@
     <virtualType name="PaymentMagentoCcAuthorizationRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="sellerId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SellerIdDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndInterestDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
@@ -587,6 +594,7 @@
     <virtualType name="PaymentMagentoCcVaultRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="sellerId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SellerIdDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndInterestDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
@@ -656,6 +664,7 @@
     <virtualType name="PaymentMagentoTwoCcCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="sellerId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SellerIdDataRequest</item>
                 <item name="dynamicMcc" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\DynamicMccDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndTwoInterestDataRequest</item>
@@ -686,6 +695,7 @@
     <virtualType name="PaymentMagentoTwoCcRefundRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TwoCcRefundRequest</item>
             </argument>
         </arguments>
@@ -728,6 +738,7 @@
     <virtualType name="PaymentMagentoRefundRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\RefundRequest</item>
             </argument>
         </arguments>
@@ -758,6 +769,7 @@
     <virtualType name="PaymentMagentoAcceptPaymentRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountAndInterestDataRequest</item>
             </argument>
@@ -789,6 +801,7 @@
     <virtualType name="PaymentMagentoDenyPaymentRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest</item>
                 <item name="amountDenyTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDenyDataRequest</item>
             </argument>
