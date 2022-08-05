@@ -16,7 +16,6 @@ use Getnet\PaymentMagento\Model\Console\Command\AbstractModel;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Cache\Frontend\Pool;
 use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\State;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
