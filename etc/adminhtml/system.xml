@@ -28,13 +28,21 @@
                         <config_path>payment/getnet_paymentmagento/dynamic_mcc</config_path>
                         <validate>required-entry validate-number minimum-length-4 maximum-length-4</validate>
                     </field>
-                    <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Environment</label>
                         <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Environment</source_model>
                         <config_path>payment/getnet_paymentmagento/environment</config_path>
                         <validate>required-entry validate-select</validate>
                     </field>
-                    <field id="seller_id_production" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="access_token_production" translate="label comment" type="text" sortOrder="20" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Access Token - production</label>
+                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
+                        <config_path>payment/getnet_paymentmagento/access_token_production</config_path>
+                        <depends>
+                            <field id="*/*/*/environment">production</field>
+                        </depends>
+                    </field>
+                    <field id="seller_id_production" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - production</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_production</config_path>
                         <validate>required-entry</validate>
@@ -42,7 +50,7 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="client_id_production" translate="label" type="obscure" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_id_production" translate="label" type="obscure" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Id - production</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_id_production</config_path>
@@ -51,7 +59,7 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="client_secret_production" translate="label" type="obscure" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_secret_production" translate="label" type="obscure" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Secret - production</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_secret_production</config_path>
@@ -60,7 +68,15 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="seller_id_homolog" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="access_token_homolog" translate="label" type="text" sortOrder="30" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Access Token - Homolog</label>
+                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
+                        <config_path>payment/getnet_paymentmagento/access_token_homolog</config_path>
+                        <depends>
+                            <field id="*/*/*/environment">homolog</field>
+                        </depends>
+                    </field>
+                    <field id="seller_id_homolog" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - homolog</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_homolog</config_path>
                         <validate>required-entry</validate>
@@ -68,7 +84,7 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="client_id_homolog" translate="label" type="obscure" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_id_homolog" translate="label" type="obscure" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Id - homolog</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_id_homolog</config_path>
@@ -77,7 +93,7 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="client_secret_homolog" translate="label" type="obscure" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_secret_homolog" translate="label" type="obscure" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Secret - homolog</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_secret_homolog</config_path>
@@ -86,7 +102,15 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="seller_id_sandbox" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="access_token_sandbox" translate="label" type="text" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Access Token - Sandbox</label>
+                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
+                        <config_path>payment/getnet_paymentmagento/access_token_sandbox</config_path>
+                        <depends>
+                            <field id="*/*/*/environment">sandbox</field>
+                        </depends>
+                    </field>
+                    <field id="seller_id_sandbox" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - Sandbox</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_sandbox</config_path>
                         <validate>required-entry</validate>
@@ -94,7 +118,7 @@
                             <field id="*/*/*/environment">sandbox</field>
                         </depends>
                     </field>
-                    <field id="client_id_sandbox" translate="label" type="obscure" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_id_sandbox" translate="label" type="obscure" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Id - Sandbox</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_id_sandbox</config_path>
@@ -103,7 +127,7 @@
                             <field id="*/*/*/environment">sandbox</field>
                         </depends>
                     </field>
-                    <field id="client_secret_sandbox" translate="label" type="obscure" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_secret_sandbox" translate="label" type="obscure" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Secret - Sandbox</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_secret_sandbox</config_path>
@@ -112,7 +136,7 @@
                             <field id="*/*/*/environment">sandbox</field>
                         </depends>
                     </field>
-                    <field id="debug" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="debug" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                         <label>Debug</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento/debug</config_path>

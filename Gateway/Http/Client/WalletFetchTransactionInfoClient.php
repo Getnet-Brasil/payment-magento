@@ -34,6 +34,11 @@ class WalletFetchTransactionInfoClient implements ClientInterface
     public const GETNET_PAYMENT_ID = 'payment_id';
 
     /**
+     * Store Id - Block name.
+     */
+    public const STORE_ID = 'store_id';
+
+    /**
      * Order State - Block Name.
      */
     public const ORDER_STATE = 'state';
@@ -104,8 +109,10 @@ class WalletFetchTransactionInfoClient implements ClientInterface
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
         $url = $this->config->getApiUrl();
-        $apiBearer = $this->config->getMerchantGatewayOauth();
-        $getnetPaymentId = $request[self::GETNET_PAYMENT_ID];
+        $storeId = $request[self::STORE_ID];
+        $url = $this->config->getApiUrl($storeId);
+        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        unset($request[self::STORE_ID]);
         $response = ['RESULT_CODE' => 0];
 
         if ($request[self::ORDER_STATE] !== Order::STATE_NEW) {

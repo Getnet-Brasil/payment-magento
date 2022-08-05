@@ -34,6 +34,11 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
     public const GETNET_PAYMENT_ID = 'payment_id';
 
     /**
+     * Store Id - Block name.
+     */
+    public const STORE_ID = 'store_id';
+
+    /**
      * @var string
      */
     public const GETNET_ORDER_ID = 'order_id';
@@ -113,8 +118,10 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
         /** @var ZendClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
-        $url = $this->config->getApiUrl();
-        $apiBearer = $this->config->getMerchantGatewayOauth();
+        $storeId = $request[self::STORE_ID];
+        $url = $this->config->getApiUrl($storeId);
+        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        unset($request[self::STORE_ID]);
         $getnetOrderId = $request[self::GETNET_ORDER_ID];
         $response = ['RESULT_CODE' => 0];
 
