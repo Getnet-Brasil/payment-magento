@@ -21,6 +21,8 @@ use Magento\Framework\App\State;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Payment\Model\Method\Logger;
 
 /**
@@ -46,27 +48,32 @@ class Refresh extends AbstractModel
     /**
      * @var State
      */
-    private $state;
+    protected $state;
 
     /**
      * @var GetnetConfig
      */
-    private $getnetConfig;
+    protected $getnetConfig;
 
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
 
     /**
      * @var Json
      */
-    private $json;
+    protected $json;
 
     /**
      * @var ZendClientFactory
      */
-    private $httpClientFactory;
+    protected $httpClientFactory;
 
     /**
      * @param TypeListInterface    $cacheTypeList
@@ -76,6 +83,7 @@ class Refresh extends AbstractModel
      * @param State                $state
      * @param GetnetConfig         $getnetConfig
      * @param Config               $config
+     * @param StoreManagerInterface $storeManager
      * @param Json                 $json
      * @param ZendClientFactory    $httpClientFactory
      */
@@ -87,6 +95,7 @@ class Refresh extends AbstractModel
         State $state,
         GetnetConfig $getnetConfig,
         Config $config,
+        StoreManagerInterface $storeManager,
         Json $json,
         ZendClientFactory $httpClientFactory
     ) {
@@ -99,6 +108,7 @@ class Refresh extends AbstractModel
         $this->scopeConfig = $scopeConfig;
         $this->getnetConfig = $getnetConfig;
         $this->config = $config;
+        $this->storeManager = $storeManager;
         $this->json = $json;
         $this->httpClientFactory = $httpClientFactory;
     }
@@ -112,9 +122,16 @@ class Refresh extends AbstractModel
      */
     public function newToken($storeId = null)
     {
-        $storeId = $storeId ?: 0;
+        $storeIds = $storeId ?: array_keys($this->storeManager->getStores());
         $this->writeln('Init Referesh Token');
-        $this->createNewToken($storeId);
+        foreach ($this->storeManager->getStores() as $stores){
+            $storeId = (int)$stores->getId();
+            $webSite = $this->storeManager->setCurrentStore($stores);
+            $webSiteId = (int)$stores->getWebsiteId();
+            $this->writeln(__('For Store Id %1 Web Site Id %2', $storeId, $webSiteId));
+            $this->createNewToken($storeId, $webSiteId);
+        }
+        
         $this->writeln(__('Finished'));
     }
 
@@ -122,16 +139,17 @@ class Refresh extends AbstractModel
      * Create New Token.
      *
      * @param int $storeId
+     * @param int $webSiteId
      *
      * @return void
      */
-    private function createNewToken($storeId)
+    protected function createNewToken(int $storeId = 0, int $webSiteId = 0)
     {
-        $newToken = $this->getNewToken();
+        $newToken = $this->getNewToken($storeId, $webSiteId);
         if ($newToken['success']) {
             $token = $newToken['response'];
             if (isset($token['access_token'])) {
-                $registryConfig = $this->setNewToken($token['access_token'], $storeId);
+                $registryConfig = $this->setNewToken($token['access_token'], $storeId, $webSiteId);
                 if ($registryConfig['success']) {
                     $this->cacheTypeList->cleanType('config');
 
@@ -154,13 +172,16 @@ class Refresh extends AbstractModel
     /**
      * Get New Token.
      *
+     * @param int $storeId
+     * @param int $webSiteId
+     *
      * @return array
      */
-    private function getNewToken(): array
+    protected function getNewToken(int $storeId = 0, int $webSiteId = 0): array
     {
-        $uri = $this->getnetConfig->getApiUrl();
-        $clientId = $this->getnetConfig->getMerchantGatewayClientId();
-        $clientSecret = $this->getnetConfig->getMerchantGatewayClientSecret();
+        $uri = $this->getnetConfig->getApiUrl($storeId);
+        $clientId = $this->getnetConfig->getMerchantGatewayClientId($storeId);
+        $clientSecret = $this->getnetConfig->getMerchantGatewayClientSecret($storeId);
         $dataSend = [
             'scope'      => 'oob',
             'grant_type' => 'client_credentials',
@@ -193,13 +214,14 @@ class Refresh extends AbstractModel
      * Set New Token.
      *
      * @param string $token
-     * @param int    $storeId
+     * @param int $storeId
+     * @param int $webSiteId
      *
      * @return array
      */
-    private function setNewToken(string $token, int $storeId): array
+    protected function setNewToken(string $token, int $storeId = 0, int $webSiteId = 0): array
     {
-        $environment = $this->getnetConfig->getEnvironmentMode();
+        $environment = $this->getnetConfig->getEnvironmentMode($storeId);
         $pathPattern = 'payment/getnet_paymentmagento/%s_%s';
         $pathConfigId = sprintf($pathPattern, 'access_token', $environment);
 
@@ -207,9 +229,10 @@ class Refresh extends AbstractModel
             $this->config->saveConfig(
                 $pathConfigId,
                 $token,
-                'default',
-                $storeId
+                ScopeInterface::SCOPE_WEBSITES,
+                $webSiteId
             );
+           
         } catch (Exception $e) {
             return ['success' => false, 'error' => $e->getMessage()];
         }
