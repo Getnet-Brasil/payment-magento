@@ -27,6 +27,8 @@ use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Refresh Token.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Refresh extends AbstractModel
 {
@@ -39,11 +41,6 @@ class Refresh extends AbstractModel
      * @var Pool
      */
     protected $cacheFrontendPool;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $scopeConfig;
 
     /**
      * @var State
@@ -79,7 +76,6 @@ class Refresh extends AbstractModel
      * @param TypeListInterface     $cacheTypeList
      * @param Pool                  $cacheFrontendPool
      * @param Logger                $logger
-     * @param ScopeConfigInterface  $scopeConfig
      * @param State                 $state
      * @param GetnetConfig          $getnetConfig
      * @param Config                $config
@@ -91,7 +87,6 @@ class Refresh extends AbstractModel
         TypeListInterface $cacheTypeList,
         Pool $cacheFrontendPool,
         Logger $logger,
-        ScopeConfigInterface $scopeConfig,
         State $state,
         GetnetConfig $getnetConfig,
         Config $config,
@@ -105,7 +100,6 @@ class Refresh extends AbstractModel
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheFrontendPool = $cacheFrontendPool;
         $this->state = $state;
-        $this->scopeConfig = $scopeConfig;
         $this->getnetConfig = $getnetConfig;
         $this->config = $config;
         $this->storeManager = $storeManager;
@@ -122,16 +116,17 @@ class Refresh extends AbstractModel
      */
     public function newToken($storeId = null)
     {
-        $storeIds = $storeId ?: array_keys($this->storeManager->getStores());
+        $storeIds = $storeId ?: null;
         $this->writeln('Init Referesh Token');
-        foreach ($this->storeManager->getStores() as $stores) {
-            $storeId = (int) $stores->getId();
-            $webSite = $this->storeManager->setCurrentStore($stores);
-            $webSiteId = (int) $stores->getWebsiteId();
-            $this->writeln(__('For Store Id %1 Web Site Id %2', $storeId, $webSiteId));
-            $this->createNewToken($storeId, $webSiteId);
+        if (!$storeIds) {
+            foreach ($this->storeManager->getStores() as $stores) {
+                $storeId = (int) $stores->getId();
+                $this->storeManager->setCurrentStore($stores);
+                $webSiteId = (int) $stores->getWebsiteId();
+                $this->writeln(__('For Store Id %1 Web Site Id %2', $storeId, $webSiteId));
+                $this->createNewToken($storeId, $webSiteId);
+            }
         }
-
         $this->writeln(__('Finished'));
     }
 
@@ -145,7 +140,7 @@ class Refresh extends AbstractModel
      */
     protected function createNewToken(int $storeId = 0, int $webSiteId = 0)
     {
-        $newToken = $this->getNewToken($storeId, $webSiteId);
+        $newToken = $this->getNewToken($storeId);
         if ($newToken['success']) {
             $token = $newToken['response'];
             if (isset($token['access_token'])) {
@@ -173,11 +168,10 @@ class Refresh extends AbstractModel
      * Get New Token.
      *
      * @param int $storeId
-     * @param int $webSiteId
      *
      * @return array
      */
-    protected function getNewToken(int $storeId = 0, int $webSiteId = 0): array
+    protected function getNewToken(int $storeId = 0): array
     {
         $uri = $this->getnetConfig->getApiUrl($storeId);
         $clientId = $this->getnetConfig->getMerchantGatewayClientId($storeId);
