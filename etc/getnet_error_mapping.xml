@@ -135,6 +135,7 @@
         <message code="0700" translate="true">Transação negada. Cód: 0700.</message>
         <message code="2000" translate="true">Transação negada. Cód: 2000.</message>
         <message code="480" translate="true">Transação negada. Cód: 480.</message>
+        <message code="481" translate="true">Transação negada. Cód: 481.</message>
         <message code="0150" translate="true">Transação enviada com o campo "amount" preenchido com o valor nulo ou inválido. Cód: 0150.</message>
         <message code="0902" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 0902.</message>
         <message code="101" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 101.</message>

@@ -34,14 +34,6 @@
                         <config_path>payment/getnet_paymentmagento/environment</config_path>
                         <validate>required-entry validate-select</validate>
                     </field>
-                    <field id="access_token_production" translate="label comment" type="text" sortOrder="20" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
-                        <label>Access Token - production</label>
-                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
-                        <config_path>payment/getnet_paymentmagento/access_token_production</config_path>
-                        <depends>
-                            <field id="*/*/*/environment">production</field>
-                        </depends>
-                    </field>
                     <field id="seller_id_production" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - production</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_production</config_path>
@@ -68,14 +60,6 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="access_token_homolog" translate="label" type="text" sortOrder="30" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
-                        <label>Access Token - Homolog</label>
-                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
-                        <config_path>payment/getnet_paymentmagento/access_token_homolog</config_path>
-                        <depends>
-                            <field id="*/*/*/environment">homolog</field>
-                        </depends>
-                    </field>
                     <field id="seller_id_homolog" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - homolog</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_homolog</config_path>
@@ -100,14 +84,6 @@
                         <validate>required-entry</validate>
                         <depends>
                             <field id="*/*/*/environment">homolog</field>
-                        </depends>
-                    </field>
-                    <field id="access_token_sandbox" translate="label" type="text" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0" canRestore="0">
-                        <label>Access Token - Sandbox</label>
-                        <comment>Access Token will be generated via cron, do not apply value manually.</comment>
-                        <config_path>payment/getnet_paymentmagento/access_token_sandbox</config_path>
-                        <depends>
-                            <field id="*/*/*/environment">sandbox</field>
                         </depends>
                     </field>
                     <field id="seller_id_sandbox" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
