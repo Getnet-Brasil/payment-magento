@@ -181,6 +181,7 @@
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
                 payload,
+                isUsed = this.vaultEnabler.isVaultEnabled(),
                 saveCard = this.vaultEnabler.isActivePaymentTokenEnabler(),
                 quoteId = quote.getQuoteId(),
                 cardId,
@@ -196,7 +197,7 @@
                 }
             };
 
-            if (saveCard) {
+            if (saveCard && isUsed) {
                 serviceUrl = urlBuilder.createUrl('/carts/mine/create-vault', {});
                 payload = {
                     cartId: quoteId,
