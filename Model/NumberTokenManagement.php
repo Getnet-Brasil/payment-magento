@@ -184,12 +184,12 @@ class NumberTokenManagement implements NumberTokenManagementInterface
                     'response' => $responseBody,
                 ]
             );
-            
+
             if (!$client->request()->isSuccessful()) {
                 $response = [
                     'success' => 0,
                     'message' => [
-                        'text' => __("Error creating payment. Please, contact the store owner or try again.")
+                        'text' => __("Error creating payment. Please, contact the store owner or try again."),
                     ],
                 ];
             }
