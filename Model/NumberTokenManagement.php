@@ -189,7 +189,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
                 $response = [
                     'success' => 0,
                     'message' => [
-                        'text' => __("Error creating payment. Please, contact the store owner or try again."),
+                        'text' => __('Error creating payment. Please, contact the store owner or try again.'),
                     ],
                 ];
             }
