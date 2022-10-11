@@ -62,6 +62,7 @@ Finished,Finished
 "Payment release requested successfully","Payment release requested successfully"
 "Error: %1, description: %2","Error: %1, description: %2"
 "Error creating payment, please try again later. COD: 401","Error creating payment, please try again later. COD: 401"
+"Error creating payment. Please, contact the store owner or try again.","Error creating payment. Please, contact the store owner or try again."
 Getnet,Getnet
 Due,Due
 Instruction,Instruction
