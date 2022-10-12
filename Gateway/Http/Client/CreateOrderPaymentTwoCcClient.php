@@ -104,6 +104,7 @@ class CreateOrderPaymentTwoCcClient implements ClientInterface
             $client->setHeaders(
                 [
                     'Authorization' => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
                 ]
             );
             $client->setRawData($this->json->serialize($request), 'application/json');
