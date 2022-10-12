@@ -62,6 +62,7 @@ Finished,Concluido
 "Payment release requested successfully","Liberação de pagamento solicitada com sucesso"
 "Error: %1, description: %2","Erro: %1, descrição: %2"
 "Error creating payment, please try again later. COD: 401","Erro ao criar o pagamento. Tente novamente mais tarde. CÓDIGO: 401"
+"Error creating payment. Please, contact the store owner or try again.","Erro ao criar o pagamento. Por favor, entre em contato com o lojista ou tente novamente."
 Getnet,Getnet
 Due,Vencimento
 Instruction,Instrução
