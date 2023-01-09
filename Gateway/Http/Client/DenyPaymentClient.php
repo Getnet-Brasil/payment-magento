@@ -136,7 +136,12 @@ class DenyPaymentClient implements ClientInterface
         try {
             $client->setUri($uri);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 

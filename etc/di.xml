@@ -20,7 +20,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="refreshToken" xsi:type="object">Getnet\PaymentMagento\Console\Command\Basic\RefreshToken</item>
-                <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item>
+                <!-- <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item> -->
             </argument>
         </arguments>
     </type>

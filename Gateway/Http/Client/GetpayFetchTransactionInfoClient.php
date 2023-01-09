@@ -133,7 +133,12 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
         try {
             $client->setUri($url.'v1/payment-links/'.$getnetOrderId);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
             $client->setMethod(ZendClient::GET);
 
             $responseBody = $client->request()->getBody();

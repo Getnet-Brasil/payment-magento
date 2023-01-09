@@ -100,10 +100,14 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
         try {
             $client->setUri($url.'/v1/payments/boleto');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders([
-                'Authorization' => 'Bearer '.$apiBearer,
-                'x-transaction-channel-entry' => 'MG',
-            ]);
+
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
+            
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 

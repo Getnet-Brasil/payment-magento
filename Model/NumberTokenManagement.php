@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
-use Exception;
 use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
 use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
@@ -173,7 +172,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             $response = [
                 'success' => 0,
             ];
-            if (isset($data['number_token'])) {
+            if (!empty($data['number_token'])) {
                 $response = [
                     'success'      => 1,
                     'number_token' => $data['number_token'],
@@ -185,7 +184,16 @@ class NumberTokenManagement implements NumberTokenManagementInterface
                     'response' => $responseBody,
                 ]
             );
-        } catch (InvalidArgumentException $e) {
+
+            if (!$client->request()->isSuccessful()) {
+                $response = [
+                    'success' => 0,
+                    'message' => [
+                        'text' => __('Error creating payment. Please, contact the store owner or try again.'),
+                    ],
+                ];
+            }
+        } catch (\InvalidArgumentException $e) {
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/tokens/card',
@@ -193,7 +201,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new Exception('Invalid JSON was returned by the gateway');
+            throw new \Exception('Invalid JSON was returned by the gateway');
         }
 
         return $response;
