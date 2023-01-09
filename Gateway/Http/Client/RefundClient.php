@@ -28,6 +28,21 @@ use Magento\Payment\Model\Method\Logger;
 class RefundClient implements ClientInterface
 {
     /**
+     * External Payment Id - Block Name.
+     */
+    public const GETNET_PAYMENT_ID = 'payment_id';
+
+    /**
+     * Day Zero block name.
+     */
+    public const DAY_ZERO = 'day_zero';
+
+    /**
+     * Amount block name.
+     */
+    public const CANCEL_AMOUNT = 'cancel_amount';
+
+    /**
      * Result Code - Block name.
      */
     public const RESULT_CODE = 'RESULT_CODE';
@@ -51,6 +66,11 @@ class RefundClient implements ClientInterface
      * Response Pay Status Denied - Value.
      */
     public const RESPONSE_STATUS_DENIED = 'DENIED';
+
+    /**
+     * Response Pay Cancel Request Id - Block Name.
+     */
+    public const RESPONSE_CANCEL_CUSTOM_KEY = 'cancel_custom_key';
 
     /**
      * @var Logger
@@ -105,10 +125,21 @@ class RefundClient implements ClientInterface
         $storeId = $request[self::STORE_ID];
         $url = $this->config->getApiUrl($storeId);
         $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        $uri = $url.'v1/payments/cancel/request';
+        $paymentId = $request[self::GETNET_PAYMENT_ID];
+
+        if ($request[self::DAY_ZERO]) {
+            $uri = $url.'v1/payments/credit/'.$paymentId.'/cancel';
+
+            unset($request[self::CANCEL_AMOUNT]);
+            unset($request[self::GETNET_PAYMENT_ID]);
+        }
+
+        unset($request[self::DAY_ZERO]);
         unset($request[self::STORE_ID]);
 
         try {
-            $client->setUri($url.'/v1/payments/cancel/request');
+            $client->setUri($uri);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
@@ -145,21 +176,34 @@ class RefundClient implements ClientInterface
                     );
                 }
             }
+
+            if (isset($data[self::RESPONSE_STATUS])) {
+                if ($data[self::RESPONSE_STATUS] === 'CANCELED') {
+                    $response = array_merge(
+                        [
+                            self::RESULT_CODE                 => 1,
+                            self::RESPONSE_CANCEL_REQUEST_ID  => $paymentId.'-cancel',
+                            self::RESPONSE_CANCEL_CUSTOM_KEY  => $paymentId.'-cancel',
+                        ],
+                        $data
+                    );
+                }
+            }
+
             $this->logger->debug(
                 [
-                    'url'      => $url.'v1/payments/cancel/request',
-                    'request'  => $this->json->serialize($transferObject->getBody()),
+                    'url'      => $uri,
+                    'request'  => $this->json->serialize($request),
                     'response' => $this->json->serialize($response),
                 ]
             );
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [
-                    'oauth'     => $apiBearer,
-                    'url'       => $url.'v1/payments/cancel/request',
-                    'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $this->json->serialize($response),
+                    'url'       => $uri,
+                    'request'   => $this->json->serialize($request),
                     'error'     => $e->getMessage(),
+                    'msg'       => $client->request()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

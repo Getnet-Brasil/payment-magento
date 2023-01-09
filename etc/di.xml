@@ -804,6 +804,7 @@
                 <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest</item>
                 <item name="amountDenyTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDenyDataRequest</item>
+                <item name="typeToDeny" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\TypeDenyRequest</item>
             </argument>
         </arguments>
     </virtualType>

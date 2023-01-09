@@ -138,7 +138,7 @@ class CreateOrderPaymentPixClient implements ClientInterface
                 [
                     'url'       => $url.'v1/payments/qrcode/pix',
                     'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $responseBody,
+                    'response'  => $client->request()->getBody(),
                     'error'     => $e->getMessage(),
                 ]
             );

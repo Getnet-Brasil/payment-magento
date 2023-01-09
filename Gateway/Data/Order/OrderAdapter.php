@@ -70,6 +70,16 @@ class OrderAdapter implements OrderAdapterInterface
     }
 
     /**
+     * Get Created At.
+     *
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->order->getCreatedAt();
+    }
+
+    /**
      * Returns billing address.
      *
      * @return AddressAdapterInterface|null

@@ -28,6 +28,16 @@ use Magento\Payment\Model\Method\Logger;
 class DenyPaymentClient implements ClientInterface
 {
     /**
+     * External Payment Id - Block Name.
+     */
+    public const GETNET_PAYMENT_ID = 'payment_id';
+
+    /**
+     * Day Zero block name.
+     */
+    public const DAY_ZERO = 'day_zero';
+
+    /**
      * Result Code - Block name.
      */
     public const RESULT_CODE = 'RESULT_CODE';
@@ -51,6 +61,11 @@ class DenyPaymentClient implements ClientInterface
      * Response Pay Status Denied - Value.
      */
     public const RESPONSE_STATUS_DENIED = 'DENIED';
+
+    /**
+     * Amount block name.
+     */
+    public const CANCEL_AMOUNT = 'cancel_amount';
 
     /**
      * @var Logger
@@ -105,10 +120,21 @@ class DenyPaymentClient implements ClientInterface
         $storeId = $request[self::STORE_ID];
         $url = $this->config->getApiUrl($storeId);
         $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        $uri = $url.'/v1/payments/cancel/request';
+        $paymentId = $request[self::GETNET_PAYMENT_ID];
+
+        if ($request[self::DAY_ZERO]) {
+            $uri = $url.'v1/payments/credit/'.$paymentId.'/cancel';
+
+            unset($request[self::CANCEL_AMOUNT]);
+            unset($request[self::GETNET_PAYMENT_ID]);
+        }
+
+        unset($request[self::DAY_ZERO]);
         unset($request[self::STORE_ID]);
 
         try {
-            $client->setUri($url.'/v1/payments/cancel/request');
+            $client->setUri($uri);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
@@ -121,12 +147,14 @@ class DenyPaymentClient implements ClientInterface
 
             $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
+
             $response = array_merge(
                 [
                     self::RESULT_CODE  => 0,
                 ],
                 $data
             );
+
             if (isset($data[self::RESPONSE_CANCEL_REQUEST_ID])) {
                 $response = array_merge(
                     [
@@ -145,19 +173,31 @@ class DenyPaymentClient implements ClientInterface
                     );
                 }
             }
+
+            if (isset($data[self::RESPONSE_STATUS])) {
+                if ($data[self::RESPONSE_STATUS] === 'CANCELED') {
+                    $response = array_merge(
+                        [
+                            self::RESULT_CODE                 => 1,
+                            self::RESPONSE_CANCEL_REQUEST_ID  => $paymentId.'-cancel',
+                        ],
+                        $data
+                    );
+                }
+            }
+
             $this->logger->debug(
                 [
-                    'url'      => $url.'v1/payments/cancel/request',
-                    'request'  => $this->json->serialize($transferObject->getBody()),
+                    'url'      => $uri,
+                    'request'  => $this->json->serialize($request),
                     'response' => $this->json->serialize($response),
                 ]
             );
         } catch (InvalidArgumentException $e) {
             $this->logger->debug(
                 [
-                    'url'       => $url.'v1/payments/cancel/request',
-                    'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $this->json->serialize($response),
+                    'url'       => $uri,
+                    'request'   => $this->json->serialize($request),
                     'error'     => $e->getMessage(),
                 ]
             );

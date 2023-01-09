@@ -155,14 +155,17 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/tokens/card',
+                    'storeId'  => $storeId,
                     'response' => $responseBody,
                 ]
             );
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $exc) {
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/tokens/card',
-                    'response' => $responseBody,
+                    'msg'      => $exc->getMessage(),
+                    'response' => $client->request()->getBody(),
+                    'storeId'  => $storeId,
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

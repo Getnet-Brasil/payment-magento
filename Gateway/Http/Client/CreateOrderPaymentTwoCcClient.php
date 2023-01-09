@@ -150,7 +150,7 @@ class CreateOrderPaymentTwoCcClient implements ClientInterface
                     'exception' => $e->getMessage(),
                     'url'       => $url.'v1/payments/combined',
                     'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $responseBody,
+                    'response'  => $client->request()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

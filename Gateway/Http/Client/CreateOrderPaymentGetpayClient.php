@@ -138,7 +138,7 @@ class CreateOrderPaymentGetpayClient implements ClientInterface
                 [
                     'url'       => $url.'v1/payment-links',
                     'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $responseBody,
+                    'response'  => $client->request()->getBody(),
                     'error'     => $e->getMessage(),
                 ]
             );
