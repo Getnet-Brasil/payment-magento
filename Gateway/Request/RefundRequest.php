@@ -69,12 +69,12 @@ class RefundRequest implements BuilderInterface
     protected $orderAdapterFactory;
 
     /**
-     * @param SubjectReader         $subjectReader
-     * @param ConfigInterface       $config
-     * @param Config                $configPayment
-     * @param OrderAdapterFactory   $orderAdapterFactory
-     * @param ConfigCc              $configCc
-     * @param DateTime              $date
+     * @param SubjectReader       $subjectReader
+     * @param ConfigInterface     $config
+     * @param Config              $configPayment
+     * @param OrderAdapterFactory $orderAdapterFactory
+     * @param ConfigCc            $configCc
+     * @param DateTime            $date
      */
     public function __construct(
         SubjectReader $subjectReader,

@@ -107,7 +107,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
                     'x-transaction-channel-entry' => 'MG',
                 ]
             );
-            
+
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 

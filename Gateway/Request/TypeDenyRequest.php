@@ -41,9 +41,9 @@ class TypeDenyRequest implements BuilderInterface
     protected $orderAdapterFactory;
 
     /**
-     * @param SubjectReader         $subjectReader
-     * @param OrderAdapterFactory   $orderAdapterFactory
-     * @param DateTime              $date
+     * @param SubjectReader       $subjectReader
+     * @param OrderAdapterFactory $orderAdapterFactory
+     * @param DateTime            $date
      */
     public function __construct(
         SubjectReader $subjectReader,
