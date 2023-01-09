@@ -101,11 +101,10 @@ class CreateOrderPaymentTwoCcClient implements ClientInterface
         try {
             $client->setUri($url.'v1/payments/combined');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders(
-                [
-                    'Authorization' => 'Bearer '.$apiBearer,
-                ]
-            );
+            $client->setHeaders([
+                'Authorization' => 'Bearer '.$apiBearer,
+                'x-transaction-channel-entry' => 'MG',
+            ]);
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 
@@ -149,7 +148,7 @@ class CreateOrderPaymentTwoCcClient implements ClientInterface
                     'exception' => $e->getMessage(),
                     'url'       => $url.'v1/payments/combined',
                     'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $responseBody,
+                    'response'  => $client->request()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

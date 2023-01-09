@@ -89,7 +89,7 @@ class AddressDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var OrderAdapterFactory;
+     * @var OrderAdapterFactory
      */
     protected $orderAdapterFactory;
 
