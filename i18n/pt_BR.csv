@@ -118,7 +118,7 @@ Year,Ano
 "Select Card type","Selecione o tipo de Cartão"
 "Payer Phone","Telefone do pagador"
 "%1x of %2 in the total value of %3","%1x de %2 no valor total de %3"
-"%1x of %2 not interest","%1x of %2 sem juros"
+"%1x of %2 not interest","%1x de %2 sem juros"
 "Credit card number does not match credit card type.","O número do cartão de crédito não corresponde ao tipo de cartão de crédito."
 "Please enter a valid credit card type number.","Insira um número de tipo de cartão de crédito válido."
 "Please enter a valid credit card number.","Por favor digite um número de cartão de crédito válido."
