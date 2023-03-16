@@ -182,6 +182,7 @@
                 serviceUrl,
                 payload,
                 saveCard = this.vaultEnabler.isActivePaymentTokenEnabler(),
+                isUsed = this.vaultEnabler.isVaultEnabled(),
                 quoteId = quote.getQuoteId(),
                 cardId,
                 token;
@@ -196,7 +197,7 @@
                 }
             };
 
-            if (saveCard) {
+            if (saveCard && isUsed) {
                 serviceUrl = urlBuilder.createUrl('/carts/mine/create-vault', {});
                 payload = {
                     cartId: quoteId,
