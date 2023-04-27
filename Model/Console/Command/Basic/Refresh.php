@@ -17,8 +17,8 @@ use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Cache\Frontend\Pool;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\State;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Store\Model\ScopeInterface;
@@ -67,7 +67,7 @@ class Refresh extends AbstractModel
     protected $json;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     protected $httpClientFactory;
 
@@ -80,7 +80,7 @@ class Refresh extends AbstractModel
      * @param Config                $config
      * @param StoreManagerInterface $storeManager
      * @param Json                  $json
-     * @param ZendClientFactory     $httpClientFactory
+     * @param ClientFactory         $httpClientFactory
      */
     public function __construct(
         TypeListInterface $cacheTypeList,
@@ -91,7 +91,7 @@ class Refresh extends AbstractModel
         Config $config,
         StoreManagerInterface $storeManager,
         Json $json,
-        ZendClientFactory $httpClientFactory
+        ClientFactory $httpClientFactory
     ) {
         parent::__construct(
             $logger
@@ -182,13 +182,13 @@ class Refresh extends AbstractModel
         $client = $this->httpClientFactory->create();
         $client->setUri($uri.'auth/oauth/v2/token');
         $client->setAuth($clientId, $clientSecret);
-        $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
+        $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
         $client->setHeaders(['content' => 'application/x-www-form-urlencoded']);
         $client->setParameterPost($dataSend);
-        $client->setMethod(ZendClient::POST);
+        $client->setMethod(Request::METHOD_POST);
 
         try {
-            $result = $client->request()->getBody();
+            $result = $client->send()->getBody();
             $response = $this->json->unserialize($result);
             $this->logger->debug(['response' => $response]);
 

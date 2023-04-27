@@ -14,8 +14,8 @@ use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest;
 use InvalidArgumentException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
@@ -59,7 +59,7 @@ class AcceptPaymentClient implements ClientInterface
     protected $logger;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     protected $httpClientFactory;
 
@@ -74,14 +74,14 @@ class AcceptPaymentClient implements ClientInterface
     protected $json;
 
     /**
-     * @param Logger            $logger
-     * @param ZendClientFactory $httpClientFactory
-     * @param Config            $config
-     * @param Json              $json
+     * @param Logger        $logger
+     * @param ClientFactory $httpClientFactory
+     * @param Config        $config
+     * @param Json          $json
      */
     public function __construct(
         Logger $logger,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         Config $config,
         Json $json
     ) {
@@ -100,7 +100,7 @@ class AcceptPaymentClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        /** @var ZendClient $client */
+        /** @var LaminasClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
         $storeId = $request[self::STORE_ID];
@@ -112,17 +112,18 @@ class AcceptPaymentClient implements ClientInterface
 
         try {
             $client->setUri($url.'/v1/payments/credit/'.$paymentId.'/confirm');
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
                     'Authorization'               => 'Bearer '.$apiBearer,
+                    'Content-Type'                => 'application/json',
                     'x-transaction-channel-entry' => 'MG',
                 ]
             );
-            $client->setRawData($this->json->serialize($request), 'application/json');
-            $client->setMethod(ZendClient::POST);
+            $client->setRawBody($this->json->serialize($request));
+            $client->setMethod(Request::METHOD_POST);
 
-            $responseBody = $client->request()->getBody();
+            $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
             $response = array_merge(
                 [
@@ -143,7 +144,7 @@ class AcceptPaymentClient implements ClientInterface
             $this->logger->debug(
                 [
                     'url'      => $url.'/v1/payments/credit/'.$paymentId.'/confirm',
-                    'request'  => $this->json->serialize($transferObject->getBody()),
+                    'request'  => $this->json->serialize($request),
                     'response' => $this->json->serialize($response),
                 ]
             );
@@ -152,8 +153,8 @@ class AcceptPaymentClient implements ClientInterface
                 [
                     'exception' => $e->getMessage(),
                     'url'       => $url.'/v1/payments/credit/'.$paymentId.'/confirm',
-                    'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $this->json->serialize($response),
+                    'request'   => $this->json->serialize($request),
+                    'response'  => $client->send()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

@@ -69,6 +69,11 @@ class ConfigWallet extends PaymentConfig
     protected $config;
 
     /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param File                 $fileIo
      * @param Filesystem           $filesystem

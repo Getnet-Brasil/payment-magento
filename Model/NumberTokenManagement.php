@@ -15,8 +15,8 @@ use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Model\Method\Logger;
@@ -51,7 +51,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     private $configBase;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     private $httpClientFactory;
 
@@ -67,7 +67,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
      * @param CartRepositoryInterface $quoteRepository
      * @param ConfigInterface         $config
      * @param ConfigBase              $configBase
-     * @param ZendClientFactory       $httpClientFactory
+     * @param ClientFactory           $httpClientFactory
      * @param Json                    $json
      */
     public function __construct(
@@ -75,7 +75,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
         CartRepositoryInterface $quoteRepository,
         ConfigInterface $config,
         ConfigBase $configBase,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         Json $json
     ) {
         $this->logger = $logger;
@@ -154,7 +154,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
      */
     public function getNumberToken($storeId, $cardNumber)
     {
-        /** @var ZendClient $client */
+        /** @var LaminasClient $client */
         $client = $this->httpClientFactory->create();
         $request = ['card_number' => $cardNumber];
         $url = $this->configBase->getApiUrl($storeId);
@@ -162,12 +162,15 @@ class NumberTokenManagement implements NumberTokenManagementInterface
 
         try {
             $client->setUri($url.'/v1/tokens/card');
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
-            $client->setRawData($this->json->serialize($request), 'application/json');
-            $client->setMethod(ZendClient::POST);
+            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setHeaders([
+                'Authorization' => 'Bearer '.$apiBearer,
+                'Content-Type'  => 'application/json',
+            ]);
+            $client->setRawBody($this->json->serialize($request));
+            $client->setMethod(Request::METHOD_POST);
 
-            $responseBody = $client->request()->getBody();
+            $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
             $response = [
                 'success' => 0,
@@ -180,12 +183,13 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             }
             $this->logger->debug(
                 [
+                    'file'     => 'NumberTokenManagement',
                     'url'      => $url.'v1/tokens/card',
                     'response' => $responseBody,
                 ]
             );
 
-            if (!$client->request()->isSuccessful()) {
+            if (!isset($data['number_token'])) {
                 $response = [
                     'success' => 0,
                     'message' => [
@@ -197,7 +201,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/tokens/card',
-                    'response' => $responseBody,
+                    'response' => $client->send()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

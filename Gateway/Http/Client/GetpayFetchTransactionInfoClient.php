@@ -13,8 +13,8 @@ namespace Getnet\PaymentMagento\Gateway\Http\Client;
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use InvalidArgumentException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
@@ -74,7 +74,7 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
     protected $logger;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     protected $httpClientFactory;
 
@@ -89,14 +89,14 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
     protected $json;
 
     /**
-     * @param Logger            $logger
-     * @param ZendClientFactory $httpClientFactory
-     * @param Config            $config
-     * @param Json              $json
+     * @param Logger        $logger
+     * @param ClientFactory $httpClientFactory
+     * @param Config        $config
+     * @param Json          $json
      */
     public function __construct(
         Logger $logger,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         Config $config,
         Json $json
     ) {
@@ -115,7 +115,7 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        /** @var ZendClient $client */
+        /** @var LaminasClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
         $storeId = $request[self::STORE_ID];
@@ -139,9 +139,9 @@ class GetpayFetchTransactionInfoClient implements ClientInterface
                     'x-transaction-channel-entry' => 'MG',
                 ]
             );
-            $client->setMethod(ZendClient::GET);
+            $client->setMethod(Request::METHOD_GET);
 
-            $responseBody = $client->request()->getBody();
+            $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
 
             if ($data[self::RESPONSE_STATUS] === self::RESPONSE_EXPIRED ||

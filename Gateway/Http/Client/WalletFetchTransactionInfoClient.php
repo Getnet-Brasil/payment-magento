@@ -13,8 +13,8 @@ namespace Getnet\PaymentMagento\Gateway\Http\Client;
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use InvalidArgumentException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
@@ -32,6 +32,11 @@ class WalletFetchTransactionInfoClient implements ClientInterface
      * @var string
      */
     public const GETNET_PAYMENT_ID = 'payment_id';
+
+    /**
+     * @var string
+     */
+    public const GETNET_ORDER_ID = 'order_id';
 
     /**
      * Store Id - Block name.
@@ -64,7 +69,7 @@ class WalletFetchTransactionInfoClient implements ClientInterface
     protected $logger;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     protected $httpClientFactory;
 
@@ -79,14 +84,14 @@ class WalletFetchTransactionInfoClient implements ClientInterface
     protected $json;
 
     /**
-     * @param Logger            $logger
-     * @param ZendClientFactory $httpClientFactory
-     * @param Config            $config
-     * @param Json              $json
+     * @param Logger        $logger
+     * @param ClientFactory $httpClientFactory
+     * @param Config        $config
+     * @param Json          $json
      */
     public function __construct(
         Logger $logger,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         Config $config,
         Json $json
     ) {
@@ -105,13 +110,14 @@ class WalletFetchTransactionInfoClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        /** @var ZendClient $client */
+        /** @var LaminasClient $client */
         $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
         $url = $this->config->getApiUrl();
         $storeId = $request[self::STORE_ID];
         $url = $this->config->getApiUrl($storeId);
         $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
+        $getnetPaymentId = $request[self::GETNET_PAYMENT_ID];
         unset($request[self::STORE_ID]);
         $response = ['RESULT_CODE' => 0];
 
@@ -122,16 +128,16 @@ class WalletFetchTransactionInfoClient implements ClientInterface
 
         try {
             $client->setUri($url.'v1/payments/qrcode/'.$getnetPaymentId);
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
             $client->setHeaders(
                 [
                     'Authorization'               => 'Bearer '.$apiBearer,
                     'x-transaction-channel-entry' => 'MG',
                 ]
             );
-            $client->setMethod(ZendClient::GET);
+            $client->setMethod(Request::METHOD_GET);
 
-            $responseBody = $client->request()->getBody();
+            $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
             $status = $data[self::RESPONSE_STATUS];
             if ($status === self::RESPONSE_DENIED || $status === self::RESPONSE_APPROVED) {

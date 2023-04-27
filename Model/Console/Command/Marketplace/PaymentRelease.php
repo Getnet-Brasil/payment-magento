@@ -13,8 +13,8 @@ use Getnet\PaymentMagento\Gateway\Config\Config as GetnetConfig;
 use Getnet\PaymentMagento\Model\Console\Command\AbstractModel;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
@@ -61,7 +61,7 @@ class PaymentRelease extends AbstractModel
     protected $json;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     protected $httpClientFactory;
 
@@ -81,7 +81,7 @@ class PaymentRelease extends AbstractModel
      * @param GetnetConfig          $getnetConfig
      * @param TransactionSearch     $transactionSearch
      * @param Json                  $json
-     * @param ZendClientFactory     $httpClientFactory
+     * @param ClientFactory         $httpClientFactory
      * @param OrderInterfaceFactory $orderFactory
      * @param OrderService          $orderService
      */
@@ -91,7 +91,7 @@ class PaymentRelease extends AbstractModel
         GetnetConfig $getnetConfig,
         TransactionSearch $transactionSearch,
         Json $json,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         OrderInterfaceFactory $orderFactory,
         OrderService $orderService
     ) {
@@ -240,13 +240,13 @@ class PaymentRelease extends AbstractModel
         $uri = $uri.'v1/marketplace/payments/'.$transactionId.'/release';
         $client->setUri($uri);
         $client->setHeaders('Authorization', 'Bearer '.$bearer);
-        $client->setConfig(['maxredirects' => 0, 'timeout' => 40]);
-        $client->setRawData($this->json->serialize($data), 'application/json');
-        $client->setMethod(ZendClient::POST);
+        $client->setOptions(['maxredirects' => 0, 'timeout' => 40]);
+        $client->setRawBody($this->json->serialize($data), 'application/json');
+        $client->setMethod(Request::METHOD_POST);
         $getnetData = new \Magento\Framework\DataObject();
 
         try {
-            $result = $client->request()->getBody();
+            $result = $client->send()->getBody();
             $response = $this->json->unserialize($result);
 
             $this->logger->debug([

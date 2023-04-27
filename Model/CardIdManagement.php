@@ -14,10 +14,10 @@ use Getnet\PaymentMagento\Api\CardIdManagementInterface;
 use Getnet\PaymentMagento\Api\Data\CardIdInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use InvalidArgumentException;
+use Laminas\Http\ClientFactory;
+use Laminas\Http\Request;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Model\Method\Logger;
@@ -53,7 +53,7 @@ class CardIdManagement implements CardIdManagementInterface
     private $configBase;
 
     /**
-     * @var ZendClientFactory
+     * @var ClientFactory
      */
     private $httpClientFactory;
 
@@ -74,7 +74,7 @@ class CardIdManagement implements CardIdManagementInterface
      * @param CartRepositoryInterface $quoteRepository
      * @param ConfigInterface         $config
      * @param ConfigBase              $configBase
-     * @param ZendClientFactory       $httpClientFactory
+     * @param ClientFactory           $httpClientFactory
      * @param Json                    $json
      * @param PaymentTokenManagement  $tokenManagement
      */
@@ -83,7 +83,7 @@ class CardIdManagement implements CardIdManagementInterface
         CartRepositoryInterface $quoteRepository,
         ConfigInterface $config,
         ConfigBase $configBase,
-        ZendClientFactory $httpClientFactory,
+        ClientFactory $httpClientFactory,
         Json $json,
         PaymentTokenManagement $tokenManagement
     ) {
@@ -139,21 +139,28 @@ class CardIdManagement implements CardIdManagementInterface
      * @param int    $storeId
      * @param string $cardId
      *
-     * @return array
+     * @return array|\Magento\Framework\Phrase
      */
     public function getCardId($storeId, $cardId)
     {
         $client = $this->httpClientFactory->create();
         $url = $this->configBase->getApiUrl($storeId);
         $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        $response = [];
 
         try {
             $client->setUri($url.'v1/cards/'.$cardId);
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
-            $client->setMethod(ZendClient::GET);
+            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'Content-Type'                => 'application/json',
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
+            $client->setMethod(Request::METHOD_GET);
 
-            $responseBody = $client->request()->getBody();
+            $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
             $response = [
                 'success' => 0,
@@ -166,6 +173,7 @@ class CardIdManagement implements CardIdManagementInterface
             }
             $this->logger->debug(
                 [
+                    'aaa'      => $apiBearer,
                     'url'      => $url.'v1/cards/'.$cardId,
                     'request'  => $cardId,
                     'response' => $responseBody,
@@ -176,7 +184,7 @@ class CardIdManagement implements CardIdManagementInterface
                 [
                     'url'      => $url.'v1/cards/'.$cardId,
                     'request'  => $cardId,
-                    'response' => $responseBody,
+                    'response' => $client->send()->getBody(),
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
