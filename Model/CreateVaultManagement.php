@@ -13,10 +13,10 @@ namespace Getnet\PaymentMagento\Model;
 use Exception;
 use Getnet\PaymentMagento\Api\CreateVaultManagementInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\ConfigInterface;
 use Magento\Payment\Model\Method\Logger;
@@ -164,7 +164,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                     'url'      => $url.'v1/tokens/card',
                     'storeId'  => $storeId,
                     'response' => $responseBody,
-                    'request'  => $request
+                    'request'  => $request,
                 ]
             );
         } catch (\InvalidArgumentException $exc) {
@@ -175,7 +175,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
                     'msg'      => $exc->getMessage(),
                     'response' => $client->send()->getBody(),
                     'storeId'  => $storeId,
-                    'request'  => $request
+                    'request'  => $request,
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

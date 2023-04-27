@@ -82,6 +82,7 @@ class NumberToken extends Action
      * ACL.
      *
      * @return bool
+     *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _isAllowed()

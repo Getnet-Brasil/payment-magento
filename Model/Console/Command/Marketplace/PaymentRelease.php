@@ -11,10 +11,10 @@ namespace Getnet\PaymentMagento\Model\Console\Command\Marketplace;
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config as GetnetConfig;
 use Getnet\PaymentMagento\Model\Console\Command\AbstractModel;
-use Magento\Framework\App\State;
-use Magento\Framework\Exception\LocalizedException;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
+use Magento\Framework\App\State;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
@@ -134,6 +134,7 @@ class PaymentRelease extends AbstractModel
      * @param string|null $subSellerId
      *
      * @return void
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */

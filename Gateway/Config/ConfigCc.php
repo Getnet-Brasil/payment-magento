@@ -246,6 +246,7 @@ class ConfigCc extends PaymentConfig
      * @param int|null $storeId
      *
      * @return string
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function getCcAvailableTypes($storeId = null): string

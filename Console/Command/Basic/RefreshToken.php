@@ -62,6 +62,7 @@ class RefreshToken extends Command
 
         $storeId = $input->getArgument(self::STORE_ID);
         $this->refresh->newToken($storeId);
+
         return 1;
     }
 

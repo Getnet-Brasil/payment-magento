@@ -116,6 +116,7 @@ class All extends Action
      * @param Config                $config
      * @param OrderService          $orderService
      * @param InvoiceService        $invoiceService
+     *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(

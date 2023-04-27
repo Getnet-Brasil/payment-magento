@@ -97,6 +97,7 @@ class PaymentGroup extends Fieldset
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      *
      * @return string
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -137,6 +138,7 @@ class PaymentGroup extends Fieldset
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      *
      * @return string
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _getHeaderCommentHtml($element)
@@ -150,6 +152,7 @@ class PaymentGroup extends Fieldset
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      *
      * @return false
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _isCollapseState($element)
@@ -163,6 +166,7 @@ class PaymentGroup extends Fieldset
      * @param \Magento\Framework\Data\Form\Element\AbstractElement $element
      *
      * @return string
+     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _getExtraJs($element)
