@@ -204,7 +204,7 @@ class TxnIdCcHandler implements HandlerInterface
         }
 
         $ccLast4 = $payment->getAdditionalInformation(self::PAYMENT_INFO_CC_NUMBER);
-        $ccLast4 = preg_replace('/[^0-9]/', '', $ccLast4);
+        $ccLast4 = preg_replace('/[^0-9]/', '', (string) $ccLast4);
         $payment->setCcLast4($ccLast4);
 
         $ccOwner = $payment->getAdditionalInformation(self::PAYMENT_INFO_CC_OWNER);

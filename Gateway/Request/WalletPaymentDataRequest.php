@@ -142,7 +142,7 @@ class WalletPaymentDataRequest implements BuilderInterface
                 self::SOFT_DESCRIPTOR      => $this->config->getStatementDescriptor($storeId),
                 self::TRANSACTION_TYPE     => $transactionType,
                 self::NUMBER_INSTALLMENTS  => $installment,
-                self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', $phone),
+                self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', (string) $phone),
             ];
 
             return $instruction;
@@ -152,7 +152,7 @@ class WalletPaymentDataRequest implements BuilderInterface
             $instruction[self::PAYMENTS][] = [
                 self::TYPE                 => 'DEBIT',
                 self::SOFT_DESCRIPTOR      => $this->config->getStatementDescriptor($storeId),
-                self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', $phone),
+                self::CARDHOLDER_MOBILE    => preg_replace('/[^0-9]/', '', (string) $phone),
             ];
 
             return $instruction;

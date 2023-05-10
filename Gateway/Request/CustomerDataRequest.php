@@ -112,7 +112,7 @@ class CustomerDataRequest implements BuilderInterface
             self::LAST_NAME     => $billingAddress->getLastname(),
             self::NAME          => $name,
             self::EMAIL         => $billingAddress->getEmail(),
-            self::PHONE_NUMBER  => preg_replace('/[^0-9]/', '', $billingAddress->getTelephone()),
+            self::PHONE_NUMBER  => preg_replace('/[^0-9]/', '', (string) $billingAddress->getTelephone()),
         ];
 
         return $result;

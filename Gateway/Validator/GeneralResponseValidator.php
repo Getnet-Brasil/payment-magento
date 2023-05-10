@@ -64,7 +64,7 @@ class GeneralResponseValidator extends AbstractValidator
                         $errorCodes[] = $message['error_code'];
                         $errorMessages[] = isset($message['description_detail']) ?: $message['description'];
                         if ($message['error_code'] === 'PAYMENTS-402') {
-                            $detailCode = preg_replace('/[^0-9]/', '', $message['description_detail']);
+                            $detailCode = preg_replace('/[^0-9]/', '', (string) $message['description_detail']);
                             $errorCodes[] = $message['error_code'].'-'.$detailCode;
                             $errorMessages[] = $message['description_detail'];
                         }

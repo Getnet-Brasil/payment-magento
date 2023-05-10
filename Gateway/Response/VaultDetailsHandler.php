@@ -136,7 +136,7 @@ class VaultDetailsHandler implements HandlerInterface
             $ccType = $response[self::CREDIT][self::BRAND];
         }
 
-        $ccLast4 = preg_replace('/[^0-9]/', '', $ccLast4);
+        $ccLast4 = preg_replace('/[^0-9]/', '', (string) $ccLast4);
         $paymentToken = $this->paymentTokenFactory->create();
         $paymentToken->setGatewayToken($ccNumberToken);
         $paymentToken->setExpiresAt(strtotime('+1 year'));
