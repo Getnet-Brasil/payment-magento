@@ -135,6 +135,8 @@ class OrderDataGetpayRequest implements BuilderInterface
             ['order' => $payment->getOrder()]
         );
 
+        $total = $order->getGrandTotalAmount();
+
         $result = [
             self::LABEL      => 'Magento',
             self::EXPIRATION => $this->configGetpay->getExpiration($storeId),
@@ -144,11 +146,8 @@ class OrderDataGetpayRequest implements BuilderInterface
                 self::ORDER_TITLE           => __('Payment for order #%1', $order->getOrderIncrementId()),
                 self::ORDER_DESCRIPTION     => __('Payment link'),
                 self::ORDER_PREFIX          => $order->getOrderIncrementId(),
-                self::ORDER_SHIPPING_AMOUNT => $this->config->formatPrice(
-                    $orderAdapter->getShippingAmount()
-                ),
                 self::ORDER_AMOUNT          => $this->config->formatPrice(
-                    $orderAdapter->getSubTotal()
+                    $total
                 ),
             ],
         ];
