@@ -76,7 +76,7 @@ class CustomerBillingAddressDataRequest implements BuilderInterface
         $billingAddress = $orderAdapter->getBillingAddress();
         if ($billingAddress) {
             $result[CustomerDataRequest::CUSTOMER][AddressDataRequest::BILLING_ADDRESS] = [
-                AddressDataRequest::POSTAL_CODE   => preg_replace('/[^0-9]/', '', $billingAddress->getPostcode()),
+                AddressDataRequest::POSTAL_CODE   => preg_replace('/[^0-9]/', '', (string) $billingAddress->getPostcode()),
                 // phpcs:ignore Generic.Files.LineLength
                 AddressDataRequest::STREET        => $this->config->getValueForAddress($billingAddress, AddressDataRequest::STREET),
                 // phpcs:ignore Generic.Files.LineLength
