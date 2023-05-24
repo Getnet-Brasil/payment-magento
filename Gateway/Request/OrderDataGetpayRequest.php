@@ -123,17 +123,11 @@ class OrderDataGetpayRequest implements BuilderInterface
         }
 
         $paymentDO = $this->subjectReader->readPayment($buildSubject);
-        $payment = $paymentDO->getPayment();
         $result = [];
 
         $order = $paymentDO->getOrder();
 
         $storeId = $order->getStoreId();
-
-        /** @var OrderAdapterFactory $orderAdapter * */
-        $orderAdapter = $this->orderAdapterFactory->create(
-            ['order' => $payment->getOrder()]
-        );
 
         $total = $order->getGrandTotalAmount();
 

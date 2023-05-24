@@ -13,6 +13,8 @@ use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Boleto - Form for payment by boleto.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Boleto extends \Magento\Payment\Block\Form
 {

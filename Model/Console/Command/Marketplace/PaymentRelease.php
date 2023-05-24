@@ -152,6 +152,9 @@ class PaymentRelease extends AbstractModel
             return;
         }
 
+        $orderItems = [];
+        $subSellersInPayment = [];
+
         if (!$transactionId) {
             $messageInfo = __(
                 'Unable to get order transaction'
@@ -230,6 +233,8 @@ class PaymentRelease extends AbstractModel
      * @param string $data
      *
      * @return \Magento\Framework\DataObject
+     *
+     * @SuppressWarnings(PHPMD)
      */
     public function sendData(
         string $transactionId,

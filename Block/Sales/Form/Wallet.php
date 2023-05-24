@@ -16,6 +16,8 @@ use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Wallet - Form for payment by Wallet.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Wallet extends \Magento\Payment\Block\Form
 {

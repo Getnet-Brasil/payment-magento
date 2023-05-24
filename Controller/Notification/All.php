@@ -140,8 +140,7 @@ class All extends Action
         $this->config = $config;
         $this->orderService = $orderService;
         $this->invoiceService = $invoiceService;
-
-        return parent::__construct($context);
+        parent::__construct($context);
     }
 
     /**

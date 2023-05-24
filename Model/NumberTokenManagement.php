@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
+use Exception;
 use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
 use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
@@ -205,7 +206,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new \Exception('Invalid JSON was returned by the gateway');
+            throw new Exception('Invalid JSON was returned by the gateway');
         }
 
         return $response;

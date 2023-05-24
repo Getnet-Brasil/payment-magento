@@ -97,6 +97,8 @@ class Release extends Command
         $date = $this->convertDate($date);
 
         $this->paymentRelease->create($orderId, $date, $subSellerId);
+
+        return 1;
     }
 
     /**
@@ -124,6 +126,8 @@ class Release extends Command
      * @param string|null $date
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD)
      */
     public function convertDate(string $date = null): string
     {

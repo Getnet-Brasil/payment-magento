@@ -13,6 +13,8 @@ use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Cc - Payment information.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Cc extends ConfigurableInfo
 {

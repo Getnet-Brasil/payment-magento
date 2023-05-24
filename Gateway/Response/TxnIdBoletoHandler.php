@@ -159,6 +159,7 @@ class TxnIdBoletoHandler implements HandlerInterface
         );
 
         $links = $payBoleto[self::RESPONSE_BOLETO_LINKS];
+        $relativeLinkToPDF = null;
         foreach ($links as $link) {
             if ($link[self::RESPONSE_BOLETO_LINKS_REL] === self::RESPONSE_BOLETO_LINKS_REL_PDF) {
                 $relativeLinkToPDF = $link[self::RESPONSE_BOLETO_LINKS_HREF];

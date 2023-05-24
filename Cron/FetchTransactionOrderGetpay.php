@@ -8,6 +8,7 @@
 
 namespace Getnet\PaymentMagento\Cron;
 
+use Exception;
 use Getnet\PaymentMagento\Gateway\Config\ConfigGetpay;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Model\Order;
@@ -84,13 +85,18 @@ class FetchTransactionOrderGetpay
             }
             $loadedOrder = $this->order->load($order->getEntityId());
             $payment = $loadedOrder->getPayment();
-            $payment->update();
-            $this->logger->debug([
-                'cron'   => 'FetchTransactionOrderGetpay',
-                'type'   => ConfigGetpay::METHOD,
-                'order'  => $loadedOrder->getIncrementId(),
-                'status' => $loadedOrder->getStatus(),
-            ]);
+            
+            try {
+                $payment->update();
+                $this->logger->debug([
+                    'cron'   => 'FetchTransactionOrderGetpay',
+                    'type'   => ConfigGetpay::METHOD,
+                    'order'  => $loadedOrder->getIncrementId(),
+                    'status' => $loadedOrder->getStatus(),
+                ]);
+            } catch (\Exception $exc) {
+                continue;
+            }
         }
     }
 }
