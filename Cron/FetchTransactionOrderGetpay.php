@@ -8,7 +8,6 @@
 
 namespace Getnet\PaymentMagento\Cron;
 
-use Exception;
 use Getnet\PaymentMagento\Gateway\Config\ConfigGetpay;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Model\Order;
@@ -85,7 +84,7 @@ class FetchTransactionOrderGetpay
             }
             $loadedOrder = $this->order->load($order->getEntityId());
             $payment = $loadedOrder->getPayment();
-            
+
             try {
                 $payment->update();
                 $this->logger->debug([

@@ -8,7 +8,6 @@
 
 namespace Getnet\PaymentMagento\Cron;
 
-use Exception;
 use Getnet\PaymentMagento\Gateway\Config\ConfigWallet;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Model\Order;

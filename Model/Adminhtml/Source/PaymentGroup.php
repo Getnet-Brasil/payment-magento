@@ -9,7 +9,6 @@
 namespace Getnet\PaymentMagento\Model\Adminhtml\Source;
 
 use Magento\Config\Block\System\Config\Form\Fieldset;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /**
