@@ -80,6 +80,7 @@ class Config extends PaymentConfig
      * @param ScopeConfigInterface $scopeConfig
      * @param Json                 $json
      * @param string               $methodCode
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
