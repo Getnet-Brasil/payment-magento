@@ -80,10 +80,10 @@ body:
       label: Qual a gravidade do problema?
       multiple: true
       options:
-        - A loja estava offline
-        - Nenhum cliente pode fazer um pagamento
-        - Um dos métodos de pagamento não está funcionando
-        - Não consegui configurar o modulo
-        - Não consegui instalar o modulo
+        - A loja estava offline.
+        - Nenhum cliente pode fazer um pagamento.
+        - Um dos métodos de pagamento não está funcionando.
+        - Não consegui configurar o modulo.
+        - Não consegui instalar o modulo.
     validations:
       required: true
