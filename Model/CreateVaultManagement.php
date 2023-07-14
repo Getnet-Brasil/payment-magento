@@ -142,7 +142,12 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         try {
             $client->setUri($url.'/v1/tokens/card');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 
@@ -205,7 +210,12 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         try {
             $client->setUri($url.'/v1/cards');
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
             $client->setRawData($this->json->serialize($request), 'application/json');
             $client->setMethod(ZendClient::POST);
 

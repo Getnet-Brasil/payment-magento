@@ -150,7 +150,12 @@ class CardIdManagement implements CardIdManagementInterface
         try {
             $client->setUri($url.'v1/cards/'.$cardId);
             $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
+            $client->setHeaders(
+                [
+                    'Authorization'               => 'Bearer '.$apiBearer,
+                    'x-transaction-channel-entry' => 'MG',
+                ]
+            );
             $client->setMethod(ZendClient::GET);
 
             $responseBody = $client->request()->getBody();
