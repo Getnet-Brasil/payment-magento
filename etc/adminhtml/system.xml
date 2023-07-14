@@ -304,6 +304,11 @@
                         <label>Title</label>
                         <config_path>payment/getnet_paymentmagento_pix/title</config_path>
                     </field>
+                    <field id="expiration" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Expiration</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PixExpiration</source_model>
+                        <config_path>payment/getnet_paymentmagento_pix/expiration</config_path>
+                    </field>
                     <field id="instruction_checkout" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Instruction during checkout</label>
                         <comment>Information displayed at checkout.</comment>

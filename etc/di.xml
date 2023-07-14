@@ -294,6 +294,7 @@
     <virtualType name="PaymentMagentoPixOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
+                <item name="pixExpiration" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\PixExpirationDataRequest</item>
                 <item name="amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\AmountDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\OrderDataPixRequest</item>

@@ -47,6 +47,11 @@ class ConfigPix extends PaymentConfig
     public const INSTRUCTION_CHECKOUT = 'instruction_checkout';
 
     /**
+     * @const string
+     */
+    public const EXPIRATION = 'expiration';
+
+    /**
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
@@ -139,6 +144,24 @@ class ConfigPix extends PaymentConfig
 
         return $this->scopeConfig->getValue(
             sprintf($pathPattern, self::METHOD, self::INSTRUCTION_CHECKOUT),
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * Get Expiration.
+     *
+     * @param int|null $storeId
+     *
+     * @return int|null
+     */
+    public function getExpiration($storeId = null): ?int
+    {
+        $pathPattern = 'payment/%s/%s';
+
+        return (int) $this->scopeConfig->getValue(
+            sprintf($pathPattern, self::METHOD, self::EXPIRATION),
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

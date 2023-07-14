@@ -38,6 +38,11 @@ class CreateOrderPaymentPixClient implements ClientInterface
     public const EXT_ORD_ID = 'EXT_ORD_ID';
 
     /**
+     * Pix Expiration - Time of expiration.
+     */
+    public const PIX_EXPIRATION = 'pix_expiration';
+
+    /**
      * @var Logger
      */
     protected $logger;
@@ -89,6 +94,8 @@ class CreateOrderPaymentPixClient implements ClientInterface
         $request = $transferObject->getBody();
         $url = $this->config->getApiUrl();
         $apiBearer = $this->config->getMerchantGatewayOauth();
+        $expiration = $request[self::PIX_EXPIRATION];
+        unset($request[self::PIX_EXPIRATION]);
 
         try {
             $client->setUri($url.'/v1/payments/qrcode/pix');
@@ -97,6 +104,7 @@ class CreateOrderPaymentPixClient implements ClientInterface
                 [
                     'Authorization'               => 'Bearer '.$apiBearer,
                     'x-transaction-channel-entry' => 'MG',
+                    'x-qrcode-expiration-time'    => $expiration,
                 ]
             );
             $client->setRawData($this->json->serialize($request), 'application/json');
