@@ -106,7 +106,7 @@ class TaxDocumentDataRequest implements BuilderInterface
         );
 
         $taxDocument = $this->getFiscalNumber($payment, $orderAdapter);
-        $taxDocument = preg_replace('/[^0-9]/', '', $taxDocument);
+        $taxDocument = preg_replace('/[^0-9]/', '', (string) $taxDocument);
 
         if (strlen($taxDocument) === 14) {
             $typeDocument = 'CNPJ';
