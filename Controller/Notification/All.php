@@ -10,6 +10,7 @@ namespace Getnet\PaymentMagento\Controller\Notification;
 
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -22,6 +23,8 @@ use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Service\InvoiceService;
 use Magento\Sales\Model\Service\OrderService;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Sales\Api\TransactionRepositoryInterface;
+use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 
 /**
  * Controler Notification All - Notification of receivers for All Methods.
@@ -34,6 +37,11 @@ class All extends Action
      * @const string
      */
     public const APPROVED_PAID = 'APPROVED';
+
+    /**
+     * @const string
+     */
+    public const PENDING = "PENDING";
 
     /**
      * @const string
@@ -64,6 +72,11 @@ class All extends Action
      * @var Logger
      */
     protected $logger;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    protected $searchCriteria;
 
     /**
      * @var OrderInterfaceFactory
@@ -106,11 +119,24 @@ class All extends Action
     protected $invoiceService;
 
     /**
+     * @var TransactionSearch
+     */
+    protected $transactionSearch;
+
+    /**
+     * @var TransactionRepositoryInterface
+     */
+    protected $transaction;
+
+    /**
      * @param Context               $context
      * @param Logger                $logger
      * @param OrderInterfaceFactory $orderFactory
+     * @param SearchCriteriaBuilder $searchCriteria
      * @param PageFactory           $pageFactory
      * @param StoreManagerInterface $storeManager
+     * @param TransactionSearch     $transactionSearch
+     * @param TransactionRepositoryInterface $transaction
      * @param DataObjectFactory     $dataObjectFactory
      * @param JsonFactory           $resultJsonFactory
      * @param Config                $config
@@ -123,8 +149,11 @@ class All extends Action
         Context $context,
         Logger $logger,
         OrderInterfaceFactory $orderFactory,
+        SearchCriteriaBuilder $searchCriteria,
         PageFactory $pageFactory,
         StoreManagerInterface $storeManager,
+        TransactionSearch $transactionSearch,
+        TransactionRepositoryInterface $transaction,
         DataObjectFactory $dataObjectFactory,
         JsonFactory $resultJsonFactory,
         Config $config,
@@ -133,8 +162,11 @@ class All extends Action
     ) {
         $this->logger = $logger;
         $this->orderFactory = $orderFactory;
+        $this->searchCriteria = $searchCriteria;
         $this->pageFactory = $pageFactory;
         $this->storeManager = $storeManager;
+        $this->transactionSearch = $transactionSearch;
+        $this->transaction = $transaction;
         $this->dataObjectFactory = $dataObjectFactory;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->config = $config;
@@ -173,7 +205,15 @@ class All extends Action
         if ($sellerId === $getnetDataSellerId) {
             $getnetDataOrderId = $getnetData->getOrderId();
 
-            $order = $this->findMageOrder($getnetDataOrderId);
+            $getnetDataId = $getnetData->getId();
+
+            if (isset($getnetDataOrderId)) {
+                $order = $this->findMageOrder($getnetDataOrderId);
+            }
+
+            if (isset($getnetDataId) && !isset($getnetDataOrderId)) {
+                $order = $this->findMageOrderById($getnetDataId);
+            }
 
             if (!$order->getEntityId()) {
                 return $this->createResult(
@@ -184,12 +224,25 @@ class All extends Action
                     ]
                 );
             }
+           
+            if ($order->getState() === Order::STATE_NEW) {
+                $paymentType = $getnetData->getPaymentType();
+
+                if ($paymentType === 'boleto') {
+                    $getnetDataStatus = $getnetData->getStatus();
+                    $getnetDataId = $getnetData->getId();
+                    
+                    return $this->resolveStatusUpdate($getnetDataStatus, $order, $getnetDataId);
+                }
+               
+            }
 
             if ($order->getState() !== Order::STATE_NEW) {
                 return $this->createResult(
                     412,
                     [
                         'error'   => 412,
+                        'status'  => $order->getState(),
                         'message' => __('Not available.'),
                     ]
                 );
@@ -208,11 +261,16 @@ class All extends Action
      *
      * @param string                $getnetDataStatus
      * @param OrderInterfaceFactory $order
+     * @param string|null           $getnetDataId
      *
      * @return ResultInterface
      */
-    public function resolveStatusUpdate($getnetDataStatus, $order)
+    public function resolveStatusUpdate($getnetDataStatus, $order, $getnetDataId = null)
     {
+        if ($getnetDataStatus === self::PENDING) {
+            return $this->updatePayId($order, $getnetDataId);
+        }
+
         if ($getnetDataStatus === self::APPROVED_PAID ||
             $getnetDataStatus === self::ACCEPT_PAID ||
             $getnetDataStatus === self::ACCEPT_PAID_ALTERNATIVE) {
@@ -226,6 +284,73 @@ class All extends Action
         }
 
         return $this->createResult(412, []);
+    }
+
+    /**
+     * Update Payment Id
+     *
+     * @param OrderInterfaceFactory $order
+     * @param string $getnetDataPaymentId
+     */
+    public function updatePayId($order, $getnetDataId)
+    {
+        
+        try {
+            $orderId = $order->getId();
+            $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
+            $transaction->setTxnId($getnetDataId);
+            $transaction->save();
+
+        } catch (Exception $exc) {
+            return $this->createResult(
+                500,
+                [
+                    'error'   => 500,
+                    'message' => $exc->getMessage(),
+                ]
+            );
+        }
+
+        return $this->createResult(
+            200,
+            [
+                'order'     => $order->getIncrementId(),
+                'state'     => $order->getState(),
+                'status'    => $order->getStatus(),
+                'pay'       => $getnetDataId,
+            ]
+        );
+    }
+    
+    /**
+     * Find Magento Order.
+     *
+     * @param string $getnetDataId
+     *
+     * @return OrderInterfaceFactory|ResultInterface
+     */
+    public function findMageOrderById($getnetDataId)
+    {
+        $searchCriteria = $this->searchCriteria->addFilter('txn_id', $getnetDataId)
+            ->create();
+
+        try {
+            /** @var TransactionRepositoryInterface $transaction */
+            $transaction = $this->transaction->getList($searchCriteria)->getFirstItem();
+
+            $order = $this->orderFactory->create()->load($transaction->getOrderId());
+
+        } catch (Exception $exc) {
+            return $this->createResult(
+                500,
+                [
+                    'error'   => 500,
+                    'message' => $exc->getMessage(),
+                ]
+            );
+        }
+
+        return $order;
     }
 
     /**
