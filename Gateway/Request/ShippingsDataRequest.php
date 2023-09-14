@@ -132,7 +132,7 @@ class ShippingsDataRequest implements BuilderInterface
                     AddressDataRequest::DISTRICT      => $this->config->getValueForAddress($shippingAddress, AddressDataRequest::DISTRICT),
                     // phpcs:ignore Generic.Files.LineLength
                     AddressDataRequest::COMPLEMENT    => $this->config->getValueForAddress($shippingAddress, AddressDataRequest::COMPLEMENT),
-                    AddressDataRequest::LOCALITY      => $shippingAddress->getCity(),
+                    AddressDataRequest::LOCALITY      => iconv('UTF-8', 'ASCII//TRANSLIT', $shippingAddress->getCity()),
                     AddressDataRequest::STATE         => $shippingAddress->getRegionCode(),
                     AddressDataRequest::COUNTRY_CODE  => $shippingAddress->getCountryId(),
                 ],
