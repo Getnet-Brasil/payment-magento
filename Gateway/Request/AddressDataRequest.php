@@ -153,7 +153,7 @@ class AddressDataRequest implements BuilderInterface
                 self::NUMBER            => $this->config->getValueForAddress($shippingAddress, self::NUMBER),
                 self::DISTRICT          => $this->config->getValueForAddress($shippingAddress, self::DISTRICT),
                 self::COMPLEMENT        => $this->config->getValueForAddress($shippingAddress, self::COMPLEMENT),
-                self::LOCALITY          => $shippingAddress->getCity(),
+                self::LOCALITY          => iconv('UTF-8', 'ASCII//TRANSLIT', $shippingAddress->getCity()),
                 self::STATE             => $shippingAddress->getRegionCode(),
                 self::COUNTRY_CODE      => 'BRA',
             ];
