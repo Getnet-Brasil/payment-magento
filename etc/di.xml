@@ -663,6 +663,7 @@
         </arguments>
     </virtualType>
 
+
     <!-- TwoCc - Request -->
     <virtualType name="PaymentMagentoTwoCcCaptureRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>

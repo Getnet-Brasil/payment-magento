@@ -139,7 +139,7 @@ class AddressDataRequest implements BuilderInterface
                 self::NUMBER            => $this->config->getValueForAddress($billingAddress, self::NUMBER),
                 self::DISTRICT          => $this->config->getValueForAddress($billingAddress, self::DISTRICT),
                 self::COMPLEMENT        => $this->config->getValueForAddress($billingAddress, self::COMPLEMENT),
-                self::LOCALITY          => $billingAddress->getCity(),
+                self::LOCALITY          => iconv('UTF-8', 'ASCII//TRANSLIT', $billingAddress->getCity()),
                 self::STATE             => $billingAddress->getRegionCode(),
                 self::COUNTRY_CODE      => 'BRA',
             ];
