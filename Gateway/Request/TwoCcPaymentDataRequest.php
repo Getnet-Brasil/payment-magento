@@ -197,6 +197,7 @@ class TwoCcPaymentDataRequest implements BuilderInterface
         $year = str_replace('20', '', $payment->getAdditionalInformation('cc_exp_year'));
 
         $payments = [
+            self::DELAYED              => false,
             self::TYPE                 => self::CREDIT,
             self::AMOUNT               => $this->config->formatPrice($totalFirst),
             self::CURRENCY             => $currency,
@@ -246,6 +247,7 @@ class TwoCcPaymentDataRequest implements BuilderInterface
         $yearSecondary = str_replace('20', '', $payment->getAdditionalInformation('cc_secondary_exp_year'));
 
         $payments = [
+            self::DELAYED              => false,
             self::TYPE                 => self::CREDIT,
             self::AMOUNT               => $this->config->formatPrice($totalSecondary),
             self::CURRENCY             => $currency,

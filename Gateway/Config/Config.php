@@ -349,21 +349,25 @@ class Config extends PaymentConfig
         $limitSend = $this->getAddressLimitSend($field);
 
         if ($value === 0) {
-            return substr($adress->getStreetLine1(), 0, $limitSend);
+            $street = substr($adress->getStreetLine1(), 0, $limitSend);
+            return iconv('UTF-8', 'ASCII//TRANSLIT', $street);
         } elseif ($value === 1) {
             return substr($adress->getStreetLine2(), 0, $limitSend);
         } elseif ($value === 2) {
             if ($adress->getStreetLine3()) {
-                return substr($adress->getStreetLine3(), 0, $limitSend);
+                $street2 = substr($adress->getStreetLine3(), 0, $limitSend);
+                return iconv('UTF-8', 'ASCII//TRANSLIT', $street2);
             }
         } elseif ($value === 3) {
             if ($adress->getStreetLine4()) {
-                return substr($adress->getStreetLine4(), 0, $limitSend);
+                $street4 = substr($adress->getStreetLine4(), 0, $limitSend);
+                return iconv('UTF-8', 'ASCII//TRANSLIT', $street4);
             }
         }
 
         if ($field === AddressDataRequest::DISTRICT) {
-            return substr($adress->getStreetLine1(), 0, $limitSend);
+            $street1 = substr($adress->getStreetLine1(), 0, $limitSend);
+            return iconv('UTF-8', 'ASCII//TRANSLIT', $street1);
         }
 
         return '';
