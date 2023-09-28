@@ -34,6 +34,11 @@ class RefundHandler implements HandlerInterface
     public const RESPONSE_STATUS = 'status';
 
     /**
+     * Response Pay Status Canceled - Value.
+     */
+    public const RESPONSE_STATUS_CANCELED = 'CANCELED';
+
+    /**
      * Response Pay Status Approved - Value.
      */
     public const RESPONSE_STATUS_ACCEPTED = 'ACCEPTED';
@@ -64,17 +69,19 @@ class RefundHandler implements HandlerInterface
 
         $payment->setTransactionId($response[self::RESPONSE_CANCEL_CUSTOM_KEY]);
 
-        if ($response[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_ACCEPTED) {
+        if ($response[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_CANCELED) {
             $creditmemo = $payment->getCreditmemo();
             $creditmemo->setState(Creditmemo::STATE_REFUNDED);
         }
+
+        if ($response[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_ACCEPTED) {
+            $creditmemo = $payment->getCreditmemo();
+            $creditmemo->setState(Creditmemo::STATE_OPEN);
+        }
+
         if ($response[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_DENIED) {
             $creditmemo = $payment->getCreditmemo();
             $creditmemo->setState(Creditmemo::STATE_CANCELED);
-        }
-
-        if ($response[self::RESULT_CODE]) {
-            $paymentDO->getPayment();
         }
     }
 }

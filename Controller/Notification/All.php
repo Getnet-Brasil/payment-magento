@@ -129,19 +129,19 @@ class All extends Action
     protected $transaction;
 
     /**
-     * @param Context               $context
-     * @param Logger                $logger
-     * @param OrderInterfaceFactory $orderFactory
-     * @param SearchCriteriaBuilder $searchCriteria
-     * @param PageFactory           $pageFactory
-     * @param StoreManagerInterface $storeManager
-     * @param TransactionSearch     $transactionSearch
+     * @param Context                        $context
+     * @param Logger                         $logger
+     * @param OrderInterfaceFactory          $orderFactory
+     * @param SearchCriteriaBuilder          $searchCriteria
+     * @param PageFactory                    $pageFactory
+     * @param StoreManagerInterface          $storeManager
+     * @param TransactionSearch              $transactionSearch
      * @param TransactionRepositoryInterface $transaction
-     * @param DataObjectFactory     $dataObjectFactory
-     * @param JsonFactory           $resultJsonFactory
-     * @param Config                $config
-     * @param OrderService          $orderService
-     * @param InvoiceService        $invoiceService
+     * @param DataObjectFactory              $dataObjectFactory
+     * @param JsonFactory                    $resultJsonFactory
+     * @param Config                         $config
+     * @param OrderService                   $orderService
+     * @param InvoiceService                 $invoiceService
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -179,11 +179,13 @@ class All extends Action
      * Execute.
      *
      * @return ResultInterface
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
     {
         /** @var JsonFactory $resultPage */
         $resultPage = $this->resultJsonFactory->create();
+        $order = null;
 
         if (!$this->getRequest()->getParams()) {
             $resultPage->setHttpResponseCode(404);
@@ -290,7 +292,7 @@ class All extends Action
      * Update Payment Id
      *
      * @param OrderInterfaceFactory $order
-     * @param string $getnetDataPaymentId
+     * @param string                $getnetDataId
      */
     public function updatePayId($order, $getnetDataId)
     {

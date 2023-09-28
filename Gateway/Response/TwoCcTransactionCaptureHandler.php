@@ -137,13 +137,14 @@ class TwoCcTransactionCaptureHandler implements HandlerInterface
         }
 
         $transactionId = $response[self::COMBINED_ID];
-        $payment->setAuthorizationTransaction($transactionId);
+
         $payment->registerAuthorizationNotification($amount);
         $payment->setAmountAuthorized($amount);
         $payment->setBaseAmountAuthorized($baseAmount);
         $payment->setIsTransactionApproved($isApproved);
         $payment->setIsTransactionDenied($isDenied);
-        $payment->registerCaptureNotification($amount);
+        $payment->setIsTransactionPending(true);
+        $payment->setIsTransactionClosed(false);
         $payment->setTransactionId($transactionId);
         $payment->setTransactionDetails($this->json->serialize($response));
         $payment->setAdditionalData($this->json->serialize($response));
