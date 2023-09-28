@@ -114,8 +114,8 @@
             <getnet_paymentmagento_two_cc>
                 <active>1</active>
                 <model>PaymentMagentoTwoCcFacade</model>
-                <order_status>processing</order_status>
-                <payment_action>authorize_capture</payment_action>
+                <order_status>payment_review</order_status>
+                <payment_action>authorize</payment_action>
                 <title>Com 2 Cartões de Crédito</title>
                 <currency>BRL</currency>
                 <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
@@ -126,16 +126,18 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_authorize_vault>0</can_authorize_vault>
                 <can_capture_vault>0</can_capture_vault>
-                <can_authorize>0</can_authorize>
+                <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_capture_partial>0</can_capture_partial>
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
-                <can_review_payment>0</can_review_payment>
-                <can_deny_payment>0</can_deny_payment>
-                <can_accept_payment>0</can_accept_payment>
+                <can_review_payment>1</can_review_payment>
+                <can_deny_payment>1</can_deny_payment>
+                <can_accept_payment>1</can_accept_payment>
+                <can_fetch_transaction_info>0</can_fetch_transaction_info>
+                <can_fetch_transaction_information>0</can_fetch_transaction_information>
                 <group>getnet_group</group>
                 <cctypes>HC,ELO,AE,VI,MC</cctypes>
                 <min_order_total>500</min_order_total>
