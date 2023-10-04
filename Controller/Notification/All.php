@@ -19,12 +19,12 @@ use Magento\Framework\DataObjectFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
+use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
+use Magento\Sales\Api\TransactionRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Service\InvoiceService;
 use Magento\Sales\Model\Service\OrderService;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Sales\Api\TransactionRepositoryInterface;
-use Magento\Sales\Api\Data\TransactionSearchResultInterfaceFactory as TransactionSearch;
 
 /**
  * Controler Notification All - Notification of receivers for All Methods.
@@ -41,7 +41,7 @@ class All extends Action
     /**
      * @const string
      */
-    public const PENDING = "PENDING";
+    public const PENDING = 'PENDING';
 
     /**
      * @const string
@@ -179,6 +179,7 @@ class All extends Action
      * Execute.
      *
      * @return ResultInterface
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
@@ -226,17 +227,16 @@ class All extends Action
                     ]
                 );
             }
-           
+
             if ($order->getState() === Order::STATE_NEW) {
                 $paymentType = $getnetData->getPaymentType();
 
                 if ($paymentType === 'boleto') {
                     $getnetDataStatus = $getnetData->getStatus();
                     $getnetDataId = $getnetData->getId();
-                    
+
                     return $this->resolveStatusUpdate($getnetDataStatus, $order, $getnetDataId);
                 }
-               
             }
 
             if ($order->getState() !== Order::STATE_NEW) {
@@ -289,20 +289,18 @@ class All extends Action
     }
 
     /**
-     * Update Payment Id
+     * Update Payment Id.
      *
      * @param OrderInterfaceFactory $order
      * @param string                $getnetDataId
      */
     public function updatePayId($order, $getnetDataId)
     {
-        
         try {
             $orderId = $order->getId();
             $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
             $transaction->setTxnId($getnetDataId);
             $transaction->save();
-
         } catch (Exception $exc) {
             return $this->createResult(
                 500,
@@ -323,7 +321,7 @@ class All extends Action
             ]
         );
     }
-    
+
     /**
      * Find Magento Order.
      *
@@ -341,7 +339,6 @@ class All extends Action
             $transaction = $this->transaction->getList($searchCriteria)->getFirstItem();
 
             $order = $this->orderFactory->create()->load($transaction->getOrderId());
-
         } catch (Exception $exc) {
             return $this->createResult(
                 500,

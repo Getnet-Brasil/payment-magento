@@ -386,8 +386,8 @@ class Config extends PaymentConfig
     /**
      * Remove Accents Recursive.
      *
-     * @param array|string  $array
-     * @param array         $keysToProcess
+     * @param array|string $array
+     * @param array        $keysToProcess
      *
      * @return array|string
      */

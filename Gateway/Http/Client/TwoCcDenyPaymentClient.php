@@ -12,7 +12,6 @@ namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest;
 use InvalidArgumentException;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;

@@ -14,8 +14,6 @@ use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
 
@@ -107,12 +105,11 @@ class ConsultRefundManagement
                     'response' => $responseBody,
                 ]
             );
-
         } catch (\InvalidArgumentException $e) {
             $this->logger->debug(
                 [
                     'url'      => $url.'v1/payments/cancel/request',
-                    'request' => $request,
+                    'request'  => $request,
                 ]
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow

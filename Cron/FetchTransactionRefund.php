@@ -8,12 +8,11 @@
 
 namespace Getnet\PaymentMagento\Cron;
 
-use Getnet\PaymentMagento\Gateway\Config\ConfigGetpay;
+use Getnet\PaymentMagento\Model\ConsultRefundManagement;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Model\Order;
-use Magento\Sales\Model\ResourceModel\Order\Creditmemo\CollectionFactory;
-use Getnet\PaymentMagento\Model\ConsultRefundManagement;
 use Magento\Sales\Model\Order\Creditmemo;
+use Magento\Sales\Model\ResourceModel\Order\Creditmemo\CollectionFactory;
 
 /*
  * Class Fetch Transaction Refund - Cron fetch refund
@@ -21,12 +20,12 @@ use Magento\Sales\Model\Order\Creditmemo;
 class FetchTransactionRefund
 {
     /**
-     * @var String
+     * @var string
      */
     public const STATUS_PROCESSING_CANCEL_CODE_PENDING = 100;
 
     /**
-     * @var String
+     * @var string
      */
     public const STATUS_PROCESSING_CANCEL_CODE_SUCCESS = 0;
 
@@ -51,10 +50,10 @@ class FetchTransactionRefund
     protected $consultRefund;
 
     /**
-     * @param Order                     $order
-     * @param Logger                    $logger
-     * @param CollectionFactory         $collectionFactory
-     * @param ConsultRefundManagement   $consultRefund
+     * @param Order                   $order
+     * @param Logger                  $logger
+     * @param CollectionFactory       $collectionFactory
+     * @param ConsultRefundManagement $consultRefund
      */
     public function __construct(
         Order $order,
@@ -80,7 +79,6 @@ class FetchTransactionRefund
                     ->addFieldToFilter('state', 1);
 
         foreach ($creditMemos as $creditMemo) {
-
             if (!$creditMemo->getTransactionId()) {
                 continue;
             }
@@ -95,11 +93,11 @@ class FetchTransactionRefund
                 'cron'          => 'FetchTransactionRefund-Before',
                 'transactionId' => $transactionId,
                 'status'        => $creditMemo->getState(),
-                'data'          => $data
+                'data'          => $data,
             ]);
 
             $getnetState = (int) $data['status_processing_cancel_code'];
-            
+
             if ($getnetState === self::STATUS_PROCESSING_CANCEL_CODE_PENDING) {
                 $creditMemo->setState(Creditmemo::STATE_OPEN);
             }
@@ -124,9 +122,8 @@ class FetchTransactionRefund
                     'cron'          => 'FetchTransactionRefund-After',
                     'transactionId' => $transactionId,
                     'status'        => $creditMemo->getState(),
-                    'data'          => $data
+                    'data'          => $data,
                 ]);
-    
             } catch (\Exception $exc) {
                 continue;
             }

@@ -64,12 +64,12 @@ class DataForTwoCcRequest implements BuilderInterface
 
         $result['payments'][] = [
             self::GETNET_PAYMENT_ID => $firstPayId,
-            self::PAYMENT_TAG       => $firstPayTag
+            self::PAYMENT_TAG       => $firstPayTag,
         ];
 
         $result['payments'][] = [
             self::GETNET_PAYMENT_ID => $secondPayId,
-            self::PAYMENT_TAG       => $secondPayTag
+            self::PAYMENT_TAG       => $secondPayTag,
         ];
 
         return $result;
