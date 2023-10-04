@@ -85,7 +85,7 @@ class CustomerBillingAddressDataRequest implements BuilderInterface
                 AddressDataRequest::DISTRICT      => $this->config->getValueForAddress($billingAddress, AddressDataRequest::DISTRICT),
                 // phpcs:ignore Generic.Files.LineLength
                 AddressDataRequest::COMPLEMENT    => $this->config->getValueForAddress($billingAddress, AddressDataRequest::COMPLEMENT),
-                AddressDataRequest::LOCALITY      => iconv('UTF-8', 'ASCII//TRANSLIT', $billingAddress->getCity()),
+                AddressDataRequest::LOCALITY      => $billingAddress->getCity(),
                 AddressDataRequest::STATE         => $billingAddress->getRegionCode(),
                 AddressDataRequest::COUNTRY_CODE  => $billingAddress->getCountryId(),
             ];
