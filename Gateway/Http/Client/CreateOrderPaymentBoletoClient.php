@@ -109,7 +109,8 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
                 ]
             );
 
-            $client->setRawBody($this->json->serialize($request));
+            $body = $this->config->prepareBody($request);
+            $client->setRawBody($body);
             $client->setMethod(Request::METHOD_POST);
 
             $responseBody = $client->send()->getBody();
@@ -134,7 +135,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
                     'storeId'  => $storeId,
                     'url'      => $url.'v1/payments/boleto',
                     'auth'     => $apiBearer,
-                    'request'  => $this->json->serialize($transferObject->getBody()),
+                    'request'  => $body,
                     'response' => $responseBody,
                 ]
             );
@@ -144,7 +145,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
                     'storeId'   => $storeId,
                     'url'       => $url.'v1/payments/boleto',
                     'auth'      => $apiBearer,
-                    'request'   => $this->json->serialize($transferObject->getBody()),
+                    'request'   => $body,
                     'response'  => $client->send()->getBody(),
                     'error'     => $e->getMessage(),
                 ]

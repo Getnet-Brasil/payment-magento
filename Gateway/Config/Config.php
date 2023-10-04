@@ -349,27 +349,76 @@ class Config extends PaymentConfig
         $limitSend = $this->getAddressLimitSend($field);
 
         if ($value === 0) {
-            $street = substr($adress->getStreetLine1(), 0, $limitSend);
-            return iconv('UTF-8', 'ASCII//TRANSLIT', $street);
+            return substr($adress->getStreetLine1(), 0, $limitSend);
         } elseif ($value === 1) {
             return substr($adress->getStreetLine2(), 0, $limitSend);
         } elseif ($value === 2) {
             if ($adress->getStreetLine3()) {
-                $street2 = substr($adress->getStreetLine3(), 0, $limitSend);
-                return iconv('UTF-8', 'ASCII//TRANSLIT', $street2);
+                return substr($adress->getStreetLine3(), 0, $limitSend);
             }
         } elseif ($value === 3) {
             if ($adress->getStreetLine4()) {
-                $street4 = substr($adress->getStreetLine4(), 0, $limitSend);
-                return iconv('UTF-8', 'ASCII//TRANSLIT', $street4);
+                return substr($adress->getStreetLine4(), 0, $limitSend);
             }
         }
 
         if ($field === AddressDataRequest::DISTRICT) {
-            $street1 = substr($adress->getStreetLine1(), 0, $limitSend);
-            return iconv('UTF-8', 'ASCII//TRANSLIT', $street1);
+            return substr($adress->getStreetLine1(), 0, $limitSend);
         }
 
         return '';
+    }
+
+    /**
+     * Remove Accents.
+     *
+     * @param string $inputString
+     *
+     * @return string
+     */
+    public function removeAcents($inputString)
+    {
+        $filteredString = preg_replace('/[^a-zA-Z0-9áàâãéèêíìóòôõúùçñÁÀÂÃÉÈÊÍÌÓÒÔÕÚÙÇ ]/u', '', $inputString);
+
+        return iconv('UTF-8', 'ASCII//TRANSLIT', $filteredString);
+    }
+
+    /**
+     * Remove Accents Recursive.
+     *
+     * @param array|string  $array
+     * @param array         $keysToProcess
+     *
+     * @return array|string
+     */
+    public function removeAccentsRecursive($array, $keysToProcess)
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = $this->removeAccentsRecursive($value, $keysToProcess);
+            } elseif (in_array($key, $keysToProcess) && is_string($value)) {
+                $array[$key] = $this->removeAcents($value);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Prepare Body.
+     *
+     * @param array $request
+     *
+     * @return Json
+     */
+    public function prepareBody($request)
+    {
+        $keysToProcess = ['first_name', 'last_name', 'name', 'street', 'district', 'complement', 'city'];
+
+        if (is_array($request)) {
+            $request = $this->removeAccentsRecursive($request, $keysToProcess);
+        }
+
+        return $this->json->serialize($request);
     }
 }
