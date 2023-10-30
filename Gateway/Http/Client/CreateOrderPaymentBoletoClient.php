@@ -109,7 +109,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
             );
 
             $body = $this->config->prepareBody($request);
-            $client->setRawBody($body, 'application/json');
+            $client->setRawData($body, 'application/json');
             $client->setMethod(ZendClient::POST);
 
             $responseBody = $client->request()->getBody();
