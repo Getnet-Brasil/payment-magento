@@ -123,7 +123,7 @@ class TwoCcAcceptPaymentClient implements ClientInterface
                 ]
             );
             $client->setRawData($this->json->serialize($request));
-            $client->setMethod(RequZendClient::POST);
+            $client->setMethod(ZendClient::POST);
 
             $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
