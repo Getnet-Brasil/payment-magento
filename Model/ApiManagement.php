@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
-use Magento\Payment\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use Magento\Framework\Exception\LocalizedException;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Payment\Gateway\Http\ClientInterface;
-use Magento\Payment\Gateway\Http\TransferInterface;
+use Magento\Payment\Gateway\Config\Config;
 use Magento\Payment\Model\Method\Logger;
 
 /**
@@ -105,7 +103,7 @@ class ApiManagement
             $this->collectLogger(
                 $uri,
                 [
-                    'client_id' => $clientId,
+                    'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                 ],
                 $dataSend,
@@ -115,7 +113,7 @@ class ApiManagement
             $this->collectLogger(
                 $uri,
                 [
-                    'client_id' => $clientId,
+                    'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                 ],
                 $dataSend,
@@ -130,9 +128,9 @@ class ApiManagement
     /**
      * Send Post Request.
      *
-     * @param string            $path
-     * @param array             $request
-     * @param string|null       $additional
+     * @param string      $path
+     * @param array       $request
+     * @param string|null $additional
      *
      * @return array
      */
@@ -197,8 +195,8 @@ class ApiManagement
     /**
      * Send Get By Param.
      *
-     * @param string            $path
-     * @param array             $request
+     * @param string $path
+     * @param array  $request
      *
      * @return array
      */
@@ -256,8 +254,8 @@ class ApiManagement
     /**
      * Send Get Request.
      *
-     * @param string            $path
-     * @param array             $request
+     * @param string $path
+     * @param array  $request
      *
      * @return array
      */
@@ -345,10 +343,10 @@ class ApiManagement
             'Authorization',
             'customer_id',
             'name',
-            'last_name'
+            'last_name',
 
         ];
-        
+
         $headers = $this->filterDebugData(
             $headers,
             $protectedRequest

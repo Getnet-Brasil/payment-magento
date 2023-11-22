@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
+use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class Two Cc Refund Client - Returns refund data.
@@ -61,7 +61,7 @@ class TwoCcRefundClient implements ClientInterface
     {
         $request = $transferObject->getBody();
         $path = 'v1/payments/combined/cancel';
-        
+
         $data = $this->api->sendGetRequest(
             $transferObject,
             $path,
@@ -82,7 +82,7 @@ class TwoCcRefundClient implements ClientInterface
                 $data
             );
         }
-            
+
         return $response;
     }
 }

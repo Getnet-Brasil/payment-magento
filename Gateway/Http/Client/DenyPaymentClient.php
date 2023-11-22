@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
+use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class Deny Payment Client - Create authorization for payment deny.
@@ -132,7 +132,7 @@ class DenyPaymentClient implements ClientInterface
                 );
             }
         }
-        
+
         return $response;
     }
 }

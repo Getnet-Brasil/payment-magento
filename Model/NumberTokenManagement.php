@@ -12,7 +12,6 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
 use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
-use Getnet\PaymentMagento\Model\ApiManagement;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -119,7 +118,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     {
         $request = [
             'card_number' => $cardNumber,
-            'store_id'    => $storeId
+            'store_id'    => $storeId,
         ];
         $path = '/v1/tokens/card';
 

@@ -10,13 +10,11 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
-use Exception;
 use Getnet\PaymentMagento\Api\CreateVaultManagementInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
-use Getnet\PaymentMagento\Model\ApiManagement;
 
 /**
  * Class Create Vault Management - Generate number token by card number in API Cofre.
@@ -143,7 +141,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
         ];
 
         $path = 'v1/cards';
-        
+
         $data = $this->api->sendPostRequest(
             $path,
             $request,

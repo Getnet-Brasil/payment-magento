@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
+use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class Create Order Payment Two Cc Client - create authorization for payment by Cc.

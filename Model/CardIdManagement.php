@@ -12,8 +12,6 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\CardIdManagementInterface;
 use Getnet\PaymentMagento\Api\Data\CardIdInterface;
-use InvalidArgumentException;
-use Getnet\PaymentMagento\Model\ApiManagement;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;

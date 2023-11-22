@@ -11,12 +11,10 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest;
-use Magento\Framework\Exception\LocalizedException;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
 
@@ -97,7 +95,7 @@ class Api
             $this->collectLogger(
                 $uri,
                 [
-                    'client_id' => $clientId,
+                    'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                 ],
                 $dataSend,
@@ -107,7 +105,7 @@ class Api
             $this->collectLogger(
                 $uri,
                 [
-                    'client_id' => $clientId,
+                    'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
                 ],
                 $dataSend,
@@ -284,9 +282,9 @@ class Api
             'Authorization',
             'customer_id',
             'name',
-            'last_name'
+            'last_name',
         ];
-        
+
         $headers = $this->filterDebugData(
             $headers,
             $protectedRequest

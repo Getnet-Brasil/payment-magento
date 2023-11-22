@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
-use Magento\Payment\Gateway\Http\ClientInterface;
-use Magento\Payment\Gateway\Http\TransferInterface;
 use Getnet\PaymentMagento\Gateway\Http\Api;
 use Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest;
+use Magento\Payment\Gateway\Http\ClientInterface;
+use Magento\Payment\Gateway\Http\TransferInterface;
 
 /**
  * Class Accept Payment Client - Returns authorization to accept payment.
@@ -74,7 +74,7 @@ class AcceptPaymentClient implements ClientInterface
         $request = $transferObject->getBody();
         $paymentId = $request[ExtPaymentIdRequest::GETNET_PAYMENT_ID];
         unset($request[ExtPaymentIdRequest::GETNET_PAYMENT_ID]);
-        
+
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
             'v1/payments/credit/'.$paymentId.'/confirm',
@@ -83,7 +83,7 @@ class AcceptPaymentClient implements ClientInterface
 
         if (isset($responseBody[self::RESPONSE_STATUS]) &&
                 $responseBody[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_CONFIRMED
-            ) {
+        ) {
             $status = 1;
         }
 

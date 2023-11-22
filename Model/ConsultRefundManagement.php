@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
-use Getnet\PaymentMagento\Model\ApiManagement;
-
 /**
  * Class Consult Refund Management - refund data.
  */
@@ -25,7 +23,7 @@ class ConsultRefundManagement
     /**
      * NumberTokenManagement constructor.
      *
-     * @param ApiManagement   $api
+     * @param ApiManagement $api
      */
     public function __construct(
         ApiManagement $api

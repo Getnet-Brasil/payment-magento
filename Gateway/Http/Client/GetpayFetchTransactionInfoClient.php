@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
+use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Sales\Model\Order;
-use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class GetpayFetchTransactionInfoClient - create authorization for fetch.
