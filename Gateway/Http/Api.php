@@ -128,6 +128,8 @@ class Api
      * @param string|null       $additional
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function sendPostRequest($transferObject, $path, $request, $additional = null)
     {
@@ -195,6 +197,8 @@ class Api
      * @param array             $request
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function sendGetRequest($transferObject, $path, $request)
     {
