@@ -19,8 +19,5 @@
         <job name="status_update_refund" instance="Getnet\PaymentMagento\Cron\FetchTransactionRefund" method="execute">
             <schedule>10 */3 * * *</schedule>
         </job>
-        <job name="getnet_refresh_token" instance="Getnet\PaymentMagento\Cron\RefreshToken" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
     </group>
 </config>

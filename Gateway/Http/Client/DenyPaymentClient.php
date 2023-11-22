@@ -10,15 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
-use Exception;
-use Getnet\PaymentMagento\Gateway\Config\Config;
-use InvalidArgumentException;
-use Laminas\Http\ClientFactory;
-use Laminas\Http\Request;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Magento\Payment\Model\Method\Logger;
+use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class Deny Payment Client - Create authorization for payment deny.
@@ -68,41 +62,17 @@ class DenyPaymentClient implements ClientInterface
     public const CANCEL_AMOUNT = 'cancel_amount';
 
     /**
-     * @var Logger
+     * @var Api
      */
-    protected $logger;
+    protected $api;
 
     /**
-     * @var ClientFactory
-     */
-    protected $httpClientFactory;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var Json
-     */
-    protected $json;
-
-    /**
-     * @param Logger        $logger
-     * @param ClientFactory $httpClientFactory
-     * @param Config        $config
-     * @param Json          $json
+     * @param Api $api
      */
     public function __construct(
-        Logger $logger,
-        ClientFactory $httpClientFactory,
-        Config $config,
-        Json $json
+        Api $api
     ) {
-        $this->config = $config;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->logger = $logger;
-        $this->json = $json;
+        $this->api = $api;
     }
 
     /**
@@ -114,98 +84,56 @@ class DenyPaymentClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        /** @var LaminasClient $client */
-        $client = $this->httpClientFactory->create();
+        $status = 0;
         $request = $transferObject->getBody();
-        $storeId = $request[self::STORE_ID];
-        $url = $this->config->getApiUrl($storeId);
-        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
-        $uri = $url.'/v1/payments/cancel/request';
+        $path = '/v1/payments/cancel/request';
         $paymentId = $request[self::GETNET_PAYMENT_ID];
 
         if ($request[self::DAY_ZERO]) {
-            $uri = $url.'v1/payments/credit/'.$paymentId.'/cancel';
-
+            $path = 'v1/payments/credit/'.$paymentId.'/cancel';
             unset($request[self::CANCEL_AMOUNT]);
             unset($request[self::GETNET_PAYMENT_ID]);
         }
 
         unset($request[self::DAY_ZERO]);
-        unset($request[self::STORE_ID]);
 
-        try {
-            $client->setUri($uri);
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders(
-                [
-                    'Authorization'               => 'Bearer '.$apiBearer,
-                    'Content-Type'                => 'application/json',
-                    'x-transaction-channel-entry' => 'MG',
-                ]
-            );
-            $client->setRawBody($this->json->serialize($request));
-            $client->setMethod(Request::METHOD_POST);
+        $responseBody = $this->api->sendPostRequest(
+            $transferObject,
+            $path,
+            $request,
+        );
 
-            $responseBody = $client->send()->getBody();
-            $data = $this->json->unserialize($responseBody);
-
+        if (isset($responseBody[self::RESPONSE_CANCEL_REQUEST_ID])) {
             $response = array_merge(
                 [
-                    self::RESULT_CODE  => 0,
+                    self::RESULT_CODE                 => 1,
+                    self::RESPONSE_CANCEL_REQUEST_ID  => $responseBody[self::RESPONSE_CANCEL_REQUEST_ID],
                 ],
-                $data
+                $responseBody
             );
+            if ($responseBody[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_DENIED) {
+                $response = array_merge(
+                    [
+                        self::RESULT_CODE                 => 0,
+                        self::RESPONSE_CANCEL_REQUEST_ID  => $responseBody[self::RESPONSE_CANCEL_REQUEST_ID],
+                    ],
+                    $responseBody
+                );
+            }
+        }
 
-            if (isset($data[self::RESPONSE_CANCEL_REQUEST_ID])) {
+        if (isset($responseBody[self::RESPONSE_STATUS])) {
+            if ($responseBody[self::RESPONSE_STATUS] === 'CANCELED') {
                 $response = array_merge(
                     [
                         self::RESULT_CODE                 => 1,
-                        self::RESPONSE_CANCEL_REQUEST_ID  => $data[self::RESPONSE_CANCEL_REQUEST_ID],
+                        self::RESPONSE_CANCEL_REQUEST_ID  => $paymentId.'-cancel',
                     ],
-                    $data
+                    $responseBody
                 );
-                if ($data[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_DENIED) {
-                    $response = array_merge(
-                        [
-                            self::RESULT_CODE                 => 0,
-                            self::RESPONSE_CANCEL_REQUEST_ID  => $data[self::RESPONSE_CANCEL_REQUEST_ID],
-                        ],
-                        $data
-                    );
-                }
             }
-
-            if (isset($data[self::RESPONSE_STATUS])) {
-                if ($data[self::RESPONSE_STATUS] === 'CANCELED') {
-                    $response = array_merge(
-                        [
-                            self::RESULT_CODE                 => 1,
-                            self::RESPONSE_CANCEL_REQUEST_ID  => $paymentId.'-cancel',
-                        ],
-                        $data
-                    );
-                }
-            }
-
-            $this->logger->debug(
-                [
-                    'url'      => $uri,
-                    'request'  => $this->json->serialize($request),
-                    'response' => $this->json->serialize($response),
-                ]
-            );
-        } catch (InvalidArgumentException $e) {
-            $this->logger->debug(
-                [
-                    'url'       => $uri,
-                    'request'   => $this->json->serialize($request),
-                    'error'     => $e->getMessage(),
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new Exception('Invalid JSON was returned by the gateway');
         }
-
+        
         return $response;
     }
 }

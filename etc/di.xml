@@ -20,7 +20,7 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="refreshToken" xsi:type="object">Getnet\PaymentMagento\Console\Command\Basic\RefreshToken</item>
+                <!-- <item name="refreshToken" xsi:type="object">Getnet\PaymentMagento\Console\Command\Basic\RefreshToken</item> -->
                 <!-- <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item> -->
             </argument>
         </arguments>
@@ -1108,24 +1108,6 @@
         </arguments>
     </type>
 
-    <type name="Getnet\PaymentMagento\Model\NumberTokenManagement">
-        <arguments>
-            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\CreateVaultManagement">
-        <arguments>
-            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\CardIdManagement">
-        <arguments>
-            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
-        </arguments>
-    </type>
-
     <type name="Getnet\PaymentMagento\Gateway\Request\AuthorizationRequest">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
@@ -1162,116 +1144,8 @@
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
     </type>
-    
-    <type name="Getnet\PaymentMagento\Model\NumberTokenManagement">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\CreateVaultManagement">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\CardIdManagement">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\TwoCcDenyPaymentClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\TwoCcAcceptPaymentClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentCcClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentTwoCcClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentBoletoClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentPixClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentWalletClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\CreateOrderPaymentGetpayClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\AcceptPaymentClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\DenyPaymentClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-    
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\RefundClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\TwoCcRefundClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\WalletFetchTransactionInfoClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Gateway\Http\Client\GetpayFetchTransactionInfoClient">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
 
     <type name="Getnet\PaymentMagento\Controller\Notification\All">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Cron\RefreshToken">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
@@ -1295,21 +1169,34 @@
         </arguments>
     </type>
 
-    <type name="Getnet\PaymentMagento\Model\ConsultRefundManagement">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\Console\Command\Basic\Refresh">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
     <type name="Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>
     </type>
+
+    <type name="Getnet\PaymentMagento\Gateway\Client\Api">
+        <arguments>
+            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Gateway\Http\Api">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Model\ApiManagement">
+        <arguments>
+            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
+        </arguments>
+    </type>
+
+    <type name="Getnet\PaymentMagento\Model\ApiManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
+        </arguments>
+    </type>
+
 </config>

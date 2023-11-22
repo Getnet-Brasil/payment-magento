@@ -10,15 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client;
 
-use Exception;
-use Getnet\PaymentMagento\Gateway\Config\Config;
-use InvalidArgumentException;
-use Laminas\Http\ClientFactory;
-use Laminas\Http\Request;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
-use Magento\Payment\Model\Method\Logger;
+use Getnet\PaymentMagento\Gateway\Http\Api;
 
 /**
  * Class Create Order Payment Wallet Client - create order for payment by Wallet.
@@ -43,41 +37,17 @@ class CreateOrderPaymentWalletClient implements ClientInterface
     public const EXT_ORD_ID = 'EXT_ORD_ID';
 
     /**
-     * @var Logger
+     * @var Api
      */
-    protected $logger;
+    protected $api;
 
     /**
-     * @var ClientFactory
-     */
-    protected $httpClientFactory;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var Json
-     */
-    protected $json;
-
-    /**
-     * @param Logger        $logger
-     * @param ClientFactory $httpClientFactory
-     * @param Config        $config
-     * @param Json          $json
+     * @param Api $api
      */
     public function __construct(
-        Logger $logger,
-        ClientFactory $httpClientFactory,
-        Config $config,
-        Json $json
+        Api $api
     ) {
-        $this->config = $config;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->logger = $logger;
-        $this->json = $json;
+        $this->api = $api;
     }
 
     /**
@@ -89,63 +59,22 @@ class CreateOrderPaymentWalletClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        /** @var LaminasClient $client */
-        $client = $this->httpClientFactory->create();
         $request = $transferObject->getBody();
-        $storeId = $request[self::STORE_ID];
-        $url = $this->config->getApiUrl($storeId);
-        $apiBearer = $this->config->getMerchantGatewayOauth($storeId);
-        unset($request[self::STORE_ID]);
 
-        try {
-            $client->setUri($url.'/v1/payments/qrcode');
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders(
-                [
-                    'Authorization'               => 'Bearer '.$apiBearer,
-                    'Content-Type'                => 'application/json',
-                    'x-transaction-channel-entry' => 'MG',
-                ]
-            );
-            $client->setRawBody($this->json->serialize($request));
-            $client->setMethod(Request::METHOD_POST);
+        $responseBody = $this->api->sendPostRequest(
+            $transferObject,
+            'v1/payments/qrcode',
+            $request,
+        );
 
-            $responseBody = $client->send()->getBody();
-            $data = $this->json->unserialize($responseBody);
-            $response = array_merge(
-                [
-                    self::RESULT_CODE  => 0,
-                ],
-                $data
-            );
-            if (isset($data['payment_id'])) {
-                $response = array_merge(
-                    [
-                        self::RESULT_CODE => 1,
-                        self::EXT_ORD_ID  => $data['payment_id'],
-                    ],
-                    $data
-                );
-            }
-            $this->logger->debug(
-                [
-                    'url'      => $url.'v1/payments/qrcode',
-                    'request'  => $this->json->serialize($transferObject->getBody()),
-                    'response' => $responseBody,
-                ]
-            );
-        } catch (InvalidArgumentException $e) {
-            $this->logger->debug(
-                [
-                    'url'       => $url.'v1/payments/qrcode',
-                    'request'   => $this->json->serialize($transferObject->getBody()),
-                    'response'  => $client->send()->getBody(),
-                    'error'     => $e->getMessage(),
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new Exception('Invalid JSON was returned by the gateway');
-        }
+        $status = isset($responseBody['payment_id']) ? 1 : 0;
+        $response = array_merge(
+            [
+                self::RESULT_CODE => $status,
+                self::EXT_ORD_ID  => $responseBody['payment_id'] ? $responseBody['payment_id'] : null,
+            ],
+            $responseBody
+        );
 
         return $response;
     }

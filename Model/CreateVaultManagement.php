@@ -12,16 +12,11 @@ namespace Getnet\PaymentMagento\Model;
 
 use Exception;
 use Getnet\PaymentMagento\Api\CreateVaultManagementInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use Laminas\Http\ClientFactory;
-use Laminas\Http\Request;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Payment\Gateway\ConfigInterface;
-use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
+use Getnet\PaymentMagento\Model\ApiManagement;
 
 /**
  * Class Create Vault Management - Generate number token by card number in API Cofre.
@@ -31,9 +26,9 @@ use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
 class CreateVaultManagement implements CreateVaultManagementInterface
 {
     /**
-     * @var Logger
+     * @var ApiManagement
      */
-    private $logger;
+    private $api;
 
     /**
      * @var CartRepositoryInterface
@@ -41,49 +36,17 @@ class CreateVaultManagement implements CreateVaultManagementInterface
     protected $quoteRepository;
 
     /**
-     * @var ConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var ConfigBase
-     */
-    private $configBase;
-
-    /**
-     * @var ClientFactory
-     */
-    private $httpClientFactory;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
      * CreateVaultManagement constructor.
      *
-     * @param Logger                  $logger
+     * @param ApiManagement           $api
      * @param CartRepositoryInterface $quoteRepository
-     * @param ConfigInterface         $config
-     * @param ConfigBase              $configBase
-     * @param ClientFactory           $httpClientFactory
-     * @param Json                    $json
      */
     public function __construct(
-        Logger $logger,
-        CartRepositoryInterface $quoteRepository,
-        ConfigInterface $config,
-        ConfigBase $configBase,
-        ClientFactory $httpClientFactory,
-        Json $json
+        ApiManagement $api,
+        CartRepositoryInterface $quoteRepository
     ) {
-        $this->logger = $logger;
+        $this->api = $api;
         $this->quoteRepository = $quoteRepository;
-        $this->config = $config;
-        $this->configBase = $configBase;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->json = $json;
     }
 
     /**
@@ -132,54 +95,20 @@ class CreateVaultManagement implements CreateVaultManagementInterface
      */
     public function getTokenCcNumber($storeId, $vaultData)
     {
-        /** @var LaminasClient $client */
-        $client = $this->httpClientFactory->create();
-        $request = ['card_number' => $vaultData['card_number']];
-        $url = $this->configBase->getApiUrl($storeId);
-        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        $request = [
+            'card_number' => $vaultData['card_number'],
+            'store_id'    => $storeId,
+        ];
+        $path = '/v1/tokens/card';
         $response = null;
 
-        try {
-            $client->setUri($url.'/v1/tokens/card');
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders(
-                [
-                    'Authorization'               => 'Bearer '.$apiBearer,
-                    'Content-Type'                => 'application/json',
-                    'x-transaction-channel-entry' => 'MG',
-                ]
-            );
-            $client->setRawBody($this->json->serialize($request));
-            $client->setMethod(Request::METHOD_POST);
+        $data = $this->api->sendPostRequest(
+            $path,
+            $request,
+        );
 
-            $responseBody = $client->send()->getBody();
-            $data = $this->json->unserialize($responseBody);
-
-            if (isset($data['number_token'])) {
-                $response = $data['number_token'];
-            }
-            $this->logger->debug(
-                [
-                    'file'     => 'CreateVaultManagement',
-                    'url'      => $url.'v1/tokens/card',
-                    'storeId'  => $storeId,
-                    'response' => $responseBody,
-                    'request'  => $request,
-                ]
-            );
-        } catch (\InvalidArgumentException $exc) {
-            $this->logger->debug(
-                [
-                    'file'     => 'CreateVaultManagement',
-                    'url'      => $url.'v1/tokens/card',
-                    'msg'      => $exc->getMessage(),
-                    'response' => $client->send()->getBody(),
-                    'storeId'  => $storeId,
-                    'request'  => $request,
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new Exception('Invalid JSON was returned by the gateway');
+        if (isset($data['number_token'])) {
+            $response = $data['number_token'];
         }
 
         return $response;
@@ -196,10 +125,6 @@ class CreateVaultManagement implements CreateVaultManagementInterface
      */
     public function getVaultDetails($storeId, $numberToken, $vaultData)
     {
-        /** @var LaminasClient $client */
-        $client = $this->httpClientFactory->create();
-        $url = $this->configBase->getApiUrl($storeId);
-        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
         $response = [];
 
         $month = $vaultData['expiration_month'];
@@ -214,61 +139,32 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             'customer_id'       => $vaultData['customer_email'],
             'cardholder_name'   => $vaultData['cardholder_name'],
             'verify_card'       => false,
+            'store_id'          => $storeId,
         ];
 
-        try {
-            $client->setUri($url.'/v1/cards');
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders(
-                [
-                    'Authorization'               => 'Bearer '.$apiBearer,
-                    'Content-Type'                => 'application/json',
-                    'x-transaction-channel-entry' => 'MG',
-                ]
-            );
-            $client->setRawBody($this->json->serialize($request));
-            $client->setMethod(Request::METHOD_POST);
+        $path = 'v1/cards';
+        
+        $data = $this->api->sendPostRequest(
+            $path,
+            $request,
+        );
 
-            $responseBody = $client->send()->getBody();
-            $data = $this->json->unserialize($responseBody);
+        if (isset($data['card_id'])) {
+            $response = [
+                'success'      => 1,
+                'card_id'      => $data['card_id'],
+                'number_token' => $data['number_token'],
+            ];
+        }
 
-            if (isset($data['card_id'])) {
-                $response = [
-                    'success'      => 1,
-                    'card_id'      => $data['card_id'],
-                    'number_token' => $data['number_token'],
-                ];
-            }
-
-            if (isset($data['details'])) {
-                $response = [
-                    'success' => 0,
-                    'message' => [
-                        'code' => $data['details'][0]['error_code'],
-                        'text' => $data['details'][0]['description_detail'],
-                    ],
-                ];
-            }
-
-            $this->logger->debug(
-                [
-                    'file'     => 'CreateVaultManagement',
-                    'url'      => $url.'v1/cards',
-                    'request'  => $this->json->serialize($request),
-                    'response' => $responseBody,
-                ]
-            );
-        } catch (\InvalidArgumentException $e) {
-            $this->logger->debug(
-                [
-                    'file'     => 'CreateVaultManagement',
-                    'url'      => $url.'v1/cards',
-                    'request'  => $request,
-                    'response' => $client->send()->getBody(),
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new Exception('Invalid JSON was returned by the gateway');
+        if (isset($data['details'])) {
+            $response = [
+                'success' => 0,
+                'message' => [
+                    'code' => $data['details'][0]['error_code'],
+                    'text' => $data['details'][0]['description_detail'],
+                ],
+            ];
         }
 
         return $response;
