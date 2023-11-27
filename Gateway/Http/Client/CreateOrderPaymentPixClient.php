@@ -68,7 +68,7 @@ class CreateOrderPaymentPixClient implements ClientInterface
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
-            'v1/payments/qrcode/pix',
+            'v2/payments/qrcode/pix',
             $request,
             $request[self::PIX_EXPIRATION]
         );

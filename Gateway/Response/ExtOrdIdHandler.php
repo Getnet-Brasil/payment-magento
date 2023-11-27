@@ -20,7 +20,7 @@ class ExtOrdIdHandler implements HandlerInterface
     /**
      * @const string
      */
-    public const EXTERNAL_ORDER_ID = 'EXT_ORD_ID';
+    public const PAYMENT_ID = 'payment_id';
 
     /**
      * Handles.
@@ -44,6 +44,6 @@ class ExtOrdIdHandler implements HandlerInterface
 
         $order = $payment->getOrder();
 
-        $order->setExtOrderId($response[self::EXTERNAL_ORDER_ID]);
+        $order->setExtOrderId($response[self::PAYMENT_ID]);
     }
 }

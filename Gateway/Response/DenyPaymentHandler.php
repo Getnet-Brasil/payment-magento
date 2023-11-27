@@ -11,6 +11,7 @@ namespace Getnet\PaymentMagento\Gateway\Response;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Response\HandlerInterface;
+use Magento\Sales\Model\Order\Payment\Transaction;
 
 /**
  * Deny Payment Handler - Set the flow when denying a payment.
@@ -21,6 +22,11 @@ class DenyPaymentHandler implements HandlerInterface
      * Result Code - Block name.
      */
     public const RESULT_CODE = 'RESULT_CODE';
+
+    /**
+     * External Payment Id - Block Name.
+     */
+    public const GETNET_PAYMENT_ID = 'payment_id';
 
     /**
      * Response Pay Cancel Request Id - Block Name.
@@ -61,6 +67,10 @@ class DenyPaymentHandler implements HandlerInterface
         if ($response[self::RESULT_CODE]) {
             $paymentDO = $handlingSubject['payment'];
             $payment = $paymentDO->getPayment();
+            $paymentId = $response[self::GETNET_PAYMENT_ID];
+
+            $payment->setTransactionId($paymentId.'-void');
+            $payment->setParentTransactionId($paymentId);
 
             $order = $payment->getOrder();
             $amount = $order->getBaseGrandTotal();
@@ -71,6 +81,8 @@ class DenyPaymentHandler implements HandlerInterface
             $payment->setAmountCanceled($amount);
             $payment->setBaseAmountCanceled($amount);
             $payment->setShouldCloseParentTransaction(true);
+
+            $payment->addTransaction(Transaction::TYPE_VOID);
         }
     }
 }

@@ -91,14 +91,11 @@ class RefundClient implements ClientInterface
     {
         $request = $transferObject->getBody();
         $response = ['RESULT_CODE' => 0];
-        $path = 'v1/payments/cancel/request';
+        $path = 'v2/payments/cancel';
         $paymentId = $request[self::GETNET_PAYMENT_ID];
 
         if ($request[self::DAY_ZERO]) {
-            $path = 'v1/payments/credit/'.$paymentId.'/cancel';
-
             unset($request[self::CANCEL_AMOUNT]);
-            unset($request[self::GETNET_PAYMENT_ID]);
         }
 
         unset($request[self::DAY_ZERO]);

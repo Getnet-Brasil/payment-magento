@@ -43,6 +43,11 @@ class AcceptPaymentClient implements ClientInterface
     public const RESPONSE_STATUS_CONFIRMED = 'CONFIRMED';
 
     /**
+     * Response Pay Status Captured - Value.
+     */
+    public const RESPONSE_STATUS_CAPTURED = 'CAPTURED';
+
+    /**
      * Response Pay Status Denied - Value.
      */
     public const RESPONSE_STATUS_ERROR = 'ERROR';
@@ -70,28 +75,26 @@ class AcceptPaymentClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        $status = 0;
+        $success = 0;
         $request = $transferObject->getBody();
-        $paymentId = $request[ExtPaymentIdRequest::GETNET_PAYMENT_ID];
-        unset($request[ExtPaymentIdRequest::GETNET_PAYMENT_ID]);
-
-        $responseBody = $this->api->sendPostRequest(
+        
+        $data = $this->api->sendPostRequest(
             $transferObject,
-            'v1/payments/credit/'.$paymentId.'/confirm',
+            'v2/payments/capture',
             $request,
         );
 
-        if (isset($responseBody[self::RESPONSE_STATUS]) &&
-                $responseBody[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_CONFIRMED
-        ) {
-            $status = 1;
+        $state = isset($data[self::RESPONSE_STATUS]) ? $data[self::RESPONSE_STATUS] : 0;
+
+        if ($state === self::RESPONSE_STATUS_CONFIRMED || $state === self::RESPONSE_STATUS_CAPTURED) {
+            $success = 1;
         }
 
         $response = array_merge(
             [
-                self::RESULT_CODE => $status,
+                self::RESULT_CODE => $success,
             ],
-            $responseBody
+            $data
         );
 
         return $response;

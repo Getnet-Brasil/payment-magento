@@ -11,8 +11,12 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
+use Getnet\PaymentMagento\Model\Cache\Type\GetnetCache;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
+use Magento\Framework\App\CacheInterface;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\Cache\Manager as CacheManager;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Config\Config;
@@ -51,24 +55,77 @@ class ApiManagement
     protected $json;
 
     /**
-     * @param Logger        $logger
-     * @param ClientFactory $httpClientFactory
-     * @param Config        $config
-     * @param ConfigBase    $configBase
-     * @param Json          $json
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
+     * @var TypeListInterface
+     */
+    protected $cacheTypeList;
+
+    /**
+     * @var CacheManager
+     */
+    protected $cacheManager;
+
+    /**
+     * @param Logger            $logger
+     * @param ClientFactory     $httpClientFactory
+     * @param Config            $config
+     * @param ConfigBase        $configBase
+     * @param Json              $json
+     * @param CacheInterface    $cache
+     * @param TypeListInterface $cacheTypeList
+     * @param CacheManager      $cacheManager
      */
     public function __construct(
         Logger $logger,
         ClientFactory $httpClientFactory,
         Config $config,
         ConfigBase $configBase,
-        Json $json
+        Json $json,
+        CacheInterface $cache,
+        TypeListInterface $cacheTypeList,
+        CacheManager $cacheManager
     ) {
         $this->logger = $logger;
         $this->httpClientFactory = $httpClientFactory;
         $this->config = $config;
         $this->configBase = $configBase;
         $this->json = $json;
+        $this->cache = $cache;
+        $this->cacheTypeList = $cacheTypeList;
+        $this->cacheManager = $cacheManager;
+    }
+
+    /**
+     * Save Auth in Cache.
+     *
+     * @param string $auth
+     *
+     * @return void
+     */
+    public function saveAuthInCache($auth)
+    {
+        $cacheKey = GetnetCache::TYPE_IDENTIFIER;
+        $cacheTag = GetnetCache::CACHE_TAG;
+        $this->cacheTypeList->invalidate($cacheKey);
+        $this->cache->save($auth, $cacheKey, [$cacheTag], GetnetCache::CACHE_LIFETIME);
+    }
+
+    /**
+     * Get Auth in Cache.
+     *
+     * @param int|null $storeId
+     * @return boolean
+     */
+    public function getAuthInCache()
+    {
+        $cacheKey = GetnetCache::TYPE_IDENTIFIER;
+        $cacheTag = GetnetCache::CACHE_TAG;
+        $cacheExiste = $this->cache->load($cacheKey) ? : false;
+        return $cacheExiste;
     }
 
     /**
@@ -80,7 +137,13 @@ class ApiManagement
      */
     public function getAuth($storeId)
     {
-        $responseBody = [];
+        $authByCache = $this->getAuthInCache();
+
+        if ($authByCache) {
+            return $authByCache;
+        }
+
+        $responseBody = null;
         $uri = $this->configBase->getApiUrl($storeId);
         $clientId = $this->configBase->getMerchantGatewayClientId($storeId);
         $clientSecret = $this->configBase->getMerchantGatewayClientSecret($storeId);
@@ -109,6 +172,8 @@ class ApiManagement
                 $dataSend,
                 $responseBody,
             );
+            $responseBody = $responseBody['access_token'];
+            $this->saveAuthInCache($responseBody);
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
@@ -140,7 +205,7 @@ class ApiManagement
         unset($request['store_id']);
         $auth = $this->getAuth($storeId);
 
-        if (!isset($auth['access_token'])) {
+        if (!$auth) {
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Authentication Failed, please try again.');
         }
@@ -148,7 +213,7 @@ class ApiManagement
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
         $headers = [
-            'Authorization'               => 'Bearer '.$auth['access_token'],
+            'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
         ];
@@ -206,7 +271,7 @@ class ApiManagement
         unset($request['store_id']);
         $auth = $this->getAuth($storeId);
 
-        if (!isset($auth['access_token'])) {
+        if (!$auth) {
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Authentication Failed, please try again.');
         }
@@ -214,7 +279,7 @@ class ApiManagement
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
         $headers = [
-            'Authorization'               => 'Bearer '.$auth['access_token'],
+            'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
         ];
@@ -265,7 +330,7 @@ class ApiManagement
         unset($request['store_id']);
         $auth = $this->getAuth($storeId);
 
-        if (!isset($auth['access_token'])) {
+        if (!$auth) {
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Authentication Failed, please try again.');
         }
@@ -273,7 +338,7 @@ class ApiManagement
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
         $headers = [
-            'Authorization'               => 'Bearer '.$auth['access_token'],
+            'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
         ];

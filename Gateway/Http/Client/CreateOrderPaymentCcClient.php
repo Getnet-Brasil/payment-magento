@@ -63,7 +63,7 @@ class CreateOrderPaymentCcClient implements ClientInterface
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
-            'v1/payments/credit',
+            'v2/payments',
             $request,
         );
 
@@ -71,7 +71,7 @@ class CreateOrderPaymentCcClient implements ClientInterface
         $response = array_merge(
             [
                 self::RESULT_CODE => $status,
-                self::EXT_ORD_ID  => $responseBody['payment_id'] ? $responseBody['payment_id'] : null,
+                self::EXT_ORD_ID  => isset($responseBody['payment_id']) ? $responseBody['payment_id'] : null,
             ],
             $responseBody
         );

@@ -175,26 +175,26 @@ class TxnIdCcHandler implements HandlerInterface
 
         $payment = $paymentDO->getPayment();
 
-        $payCredit = $response[self::CREDIT];
+        // $payCredit = $response[self::CREDIT];
 
-        $payment->setAdditionalInformation(
-            self::PAYMENT_INFO_TERMINAL_NSU,
-            $payCredit[self::RESPONSE_TERMINAL_NSU]
-        );
+        // $payment->setAdditionalInformation(
+        //     self::PAYMENT_INFO_TERMINAL_NSU,
+        //     $payCredit[self::RESPONSE_TERMINAL_NSU]
+        // );
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_AUTHORIZATION_CODE,
-            $payCredit[self::RESPONSE_AUTHORIZATION_CODE]
+            $response[self::RESPONSE_AUTHORIZATION_CODE]
         );
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_ACQUIRER_TRANSACTION_ID,
-            $payCredit[self::RESPONSE_ACQUIRER_TRANSACTION_ID]
+            $response[self::RESPONSE_ACQUIRER_TRANSACTION_ID]
         );
 
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_TRANSACTION_ID,
-            $payCredit[self::RESPONSE_TRANSACTION_ID]
+            $response[self::RESPONSE_TRANSACTION_ID]
         );
 
         $ccType = $payment->getAdditionalInformation(self::PAYMENT_INFO_CC_TYPE);

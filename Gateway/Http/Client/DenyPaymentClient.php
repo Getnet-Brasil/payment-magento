@@ -84,14 +84,13 @@ class DenyPaymentClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
+        $response = [];
         $request = $transferObject->getBody();
-        $path = '/v1/payments/cancel/request';
+        $path = 'v1/payments/cancel';
         $paymentId = $request[self::GETNET_PAYMENT_ID];
 
         if ($request[self::DAY_ZERO]) {
-            $path = 'v1/payments/credit/'.$paymentId.'/cancel';
             unset($request[self::CANCEL_AMOUNT]);
-            unset($request[self::GETNET_PAYMENT_ID]);
         }
 
         unset($request[self::DAY_ZERO]);

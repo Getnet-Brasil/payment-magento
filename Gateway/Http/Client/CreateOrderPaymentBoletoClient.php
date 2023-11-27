@@ -63,7 +63,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
-            'v1/payments/boleto',
+            'v2/payments/boleto',
             $request,
         );
 
@@ -71,7 +71,7 @@ class CreateOrderPaymentBoletoClient implements ClientInterface
         $response = array_merge(
             [
                 self::RESULT_CODE => $status,
-                self::EXT_ORD_ID  => $responseBody['payment_id'] ? $responseBody['payment_id'] : null,
+                self::EXT_ORD_ID  => isset($responseBody['payment_id']) ? $responseBody['payment_id'] : null,
             ],
             $responseBody
         );

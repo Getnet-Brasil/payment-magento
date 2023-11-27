@@ -88,6 +88,7 @@ class TwoCcDenyPaymentClient implements ClientInterface
         $context = [];
         $paymentId = $request['payment_id'];
         $path = 'v1/payments/combined/cancel/request';
+
         if ($request[self::DAY_ZERO]) {
             $path = 'v1/payments/combined/cancel';
         }
@@ -95,7 +96,6 @@ class TwoCcDenyPaymentClient implements ClientInterface
         unset($request['payment_id']);
         unset($request[self::CANCEL_AMOUNT]);
         unset($request[self::DAY_ZERO]);
-        unset($request[self::STORE_ID]);
 
         $data = $this->api->sendGetRequest(
             $transferObject,
