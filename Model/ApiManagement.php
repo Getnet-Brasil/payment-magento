@@ -110,7 +110,7 @@ class ApiManagement
     {
         $cacheKey = GetnetCache::TYPE_IDENTIFIER;
         $cacheTag = GetnetCache::CACHE_TAG;
-        $this->cacheTypeList->invalidate($cacheKey);
+        $this->cacheTypeList->cleanType($cacheKey);
         $this->cache->save($auth, $cacheKey, [$cacheTag], GetnetCache::CACHE_LIFETIME);
     }
 
@@ -412,20 +412,26 @@ class ApiManagement
 
         ];
 
-        $headers = $this->filterDebugData(
-            $headers,
-            $protectedRequest
-        );
+        $env = $this->configBase->getEnvironmentMode();
 
-        $payload = $this->filterDebugData(
-            $payload,
-            $protectedRequest
-        );
+        $response = $this->json->unserialize($response);
 
-        $response = $this->filterDebugData(
-            $this->json->unserialize($response),
-            $protectedRequest
-        );
+        if ($env === 'production') {
+            $headers = $this->filterDebugData(
+                $headers,
+                $protectedRequest
+            );
+    
+            $payload = $this->filterDebugData(
+                $payload,
+                $protectedRequest
+            );
+    
+            $response = $this->filterDebugData(
+                $response,
+                $protectedRequest
+            );
+        }
 
         $this->logger->debug(
             [
