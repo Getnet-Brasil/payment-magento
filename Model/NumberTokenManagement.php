@@ -120,7 +120,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             'card_number' => $cardNumber,
             'store_id'    => $storeId,
         ];
-        $path = '/v1/tokens/card';
+        $path = 'v1/tokens/card';
 
         $response = [
             'success' => 0,

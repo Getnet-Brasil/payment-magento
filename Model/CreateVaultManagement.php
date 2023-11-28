@@ -97,7 +97,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             'card_number' => $vaultData['card_number'],
             'store_id'    => $storeId,
         ];
-        $path = '/v1/tokens/card';
+        $path = 'v1/tokens/card';
         $response = null;
 
         $data = $this->api->sendPostRequest(
