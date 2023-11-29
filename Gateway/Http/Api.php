@@ -107,15 +107,14 @@ class Api
     }
 
     /**
-     * Get Auth in Cache.
+     * Has Auth in Cache.
      *
      * @param int|null $storeId
      * @return boolean
      */
-    public function getAuthInCache()
+    public function hasAuthInCache()
     {
         $cacheKey = GetnetCache::TYPE_IDENTIFIER;
-        $cacheTag = GetnetCache::CACHE_TAG;
         $cacheExiste = $this->cache->load($cacheKey) ? : false;
         return $cacheExiste;
     }
@@ -129,7 +128,7 @@ class Api
      */
     public function getAuth($storeId)
     {
-        $authByCache = $this->getAuthInCache();
+        $authByCache = $this->hasAuthInCache();
 
         if ($authByCache) {
             return $authByCache;

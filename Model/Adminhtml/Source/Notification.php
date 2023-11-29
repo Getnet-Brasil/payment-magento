@@ -88,7 +88,6 @@ class Notification extends \Magento\Config\Block\System\Config\Form\Field
             $output .= '<p>'
                 .__('Informing the approval of the URL you registered in the dashboard.')
             .'</p>';
-            // phpcs:ignore Generic.Files.LineLength
             $output .= '</div></div></div></div>';
         }
 

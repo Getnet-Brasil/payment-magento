@@ -35,7 +35,7 @@ class AdditionalInitSchemaDataRequest implements BuilderInterface
      * @param SubjectReader $subjectReader
      */
     public function __construct(
-        SubjectReader $subjectReader,
+        SubjectReader $subjectReader
     ) {
         $this->subjectReader = $subjectReader;
     }

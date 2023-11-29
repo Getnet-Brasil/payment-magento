@@ -105,11 +105,8 @@ class CardInitSchemaDataRequest implements BuilderInterface
             ['order' => $payment->getOrder()]
         );
 
-        $storeId = $order->getStoreId();
-
         $result = [
             self::IDEMPOTENCY_KEY => $orderAdapter->getOrderIncrementId(),
-            // self::REQUEST_ID      => $this->config->getMerchantGatewaySellerId($storeId),
             self::ORDER_ID        => $orderAdapter->getOrderIncrementId(),
             self::DATA            => [],
         ];

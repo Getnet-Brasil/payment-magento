@@ -103,6 +103,7 @@
                         <label>Enabled Vault</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento_cc_vault/active</config_path>
+                        <comment><![CDATA[<div id="messages"><div class="messages"><div class="message message-warning warning"><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>]]></comment>
                     </field>
                     <field id="cctypes" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1"  showInStore="1" canRestore="1">
                             <label>Credit Card Types</label>
@@ -225,6 +226,9 @@
                 <group id="getnet_paymentmagento_two_cc" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>2 Cartões de Crédito</label>
                     <comment>Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -263,6 +267,9 @@
                 <group id="getnet_paymentmagento_pix" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label><![CDATA[PIX <sup>V2</sup>]]></label>
                     <comment>Instant payment with automatic status consolidation, offer a fast and convenient method.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -316,6 +323,9 @@
                 <group id="getnet_paymentmagento_boleto" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label><![CDATA[Boleto Bancário <sup>V2</sup>]]></label>
                     <comment>Boleto registered, fully integrated into your Santander account.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -389,6 +399,9 @@
                 <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Wallet</label>
                     <comment>Offer instant payment across multiple wallets.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

@@ -35,11 +35,6 @@ class PaymentMethodDataRequest implements BuilderInterface
             throw new InvalidArgumentException('Payment data object should be provided');
         }
 
-        $paymentDO = $buildSubject['payment'];
-
-        $payment = $paymentDO->getPayment();
-        $order = $payment->getOrder();
-
         return [
             self::PAYMENT_METHOD => 'CREDIT_AUTHORIZATION',
         ];

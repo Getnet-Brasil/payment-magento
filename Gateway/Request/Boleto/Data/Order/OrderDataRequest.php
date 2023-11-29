@@ -98,8 +98,6 @@ class OrderDataRequest implements BuilderInterface
             ['order' => $payment->getOrder()]
         );
 
-        $order = $paymentDO->getOrder();
-
         $result[BoletoInitSchemaDataRequest::DATA] = [
             self::ORDER => [
                 self::ORDER_ID  => $orderAdapter->getOrderIncrementId(),

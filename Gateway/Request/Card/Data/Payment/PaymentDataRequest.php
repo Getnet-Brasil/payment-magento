@@ -186,7 +186,7 @@ class PaymentDataRequest implements BuilderInterface
             self::NUMBER_INSTALLMENTS   => $installment,
             self::SOFT_DESCRIPTOR       => $this->config->getStatementDescriptor($storeId),
             self::DYNAMIC_MCC           => $this->config->getMerchantGatewayDynamicMcc($storeId),
-            self::CREDIT_CARD           => $this->getDataPaymetCc($payment, $storeId),
+            self::CREDIT_CARD           => $this->getDataPaymetCc($payment),
         ];
 
         return $result;
@@ -196,11 +196,10 @@ class PaymentDataRequest implements BuilderInterface
      * Data for CC.
      *
      * @param InfoInterface $payment
-     * @param int           $storeId
      *
      * @return array
      */
-    public function getDataPaymetCc($payment, $storeId)
+    public function getDataPaymetCc($payment)
     {
         $result = [];
         $month = $payment->getAdditionalInformation('cc_exp_month');

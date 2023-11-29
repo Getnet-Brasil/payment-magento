@@ -68,8 +68,6 @@ class AmountRefundDataRequest implements BuilderInterface
             throw new InvalidArgumentException('Payment data object should be provided');
         }
 
-        $dayZero = false;
-
         $result = [];
 
         $paymentDO = $this->subjectReader->readPayment($buildSubject);

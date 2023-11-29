@@ -33,7 +33,7 @@
         _ko,
         urlBuilder,
         urlFormatter,
-        customer,
+        customer
     ) {
     'use strict';
 
@@ -169,14 +169,14 @@
             if (!$(this.formElement).valid()) {
                 return;
             }
-            this.getTokenize();
+            this.getnetTokenizeCard();
         },
 
         /**
          * Get Tokenize
          * @returns {void}
          */
-        getTokenize() {
+        getnetTokenizeCard() {
             var self = this,
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
