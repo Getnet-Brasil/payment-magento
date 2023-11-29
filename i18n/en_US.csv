@@ -40,7 +40,6 @@ Close,Close
 "30 minutes - recommended","30 minutes - recommended"
 "This product is not enabled by default.","This product is not enabled by default."
 "To use it, <b>prior contracting is necessary</b>.","To use it, <b>prior contracting is necessary</b>."
-"Please get in touch with your Getnet representative.","Please get in touch with your Getnet representative."
 "Cash Carry","Cash Carry"
 "Digital Content","Digital Content"
 "Digital Goods","Digital Goods"
@@ -156,6 +155,7 @@ Environment,Environment
 Enabled,Enabled
 Title,Title
 "Enabled Vault","Enabled Vault"
+"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>"
 "Credit Card Types","Credit Card Types"
 "Minimum Order Total","Minimum Order Total"
 "Maximum Order Total","Maximum Order Total"
@@ -350,26 +350,3 @@ Timeout.,Timeout.
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500."
-cc_installments,Installment
-cc_type,Type
-cc_number,Number
-cc_cardholder_name,Holder
-cc_holder_tax_document,Holder CPF/CNPJ
-cc_holder_phone,Holder Phone
-device,Device
-terminal_nsu,Terminal NSU
-authorization_code,Authorization Code
-acquirer_transaction_id,Acquirer Transaction Id
-transaction_id,Transaction Id
-payment_id,Payment Id
-cc_payment_first_amount,First Amount
-payment_id_secondary,Payment Id Secondary
-cc_payment_secondary_amount,Amount Secondary
-cc_secondary_installments,Installments Secondary
-cc_secondary_type,Type Secondary
-cc_secondary_number,Number Secundário
-cc_secondary_cardholder_name,Holder Secondary
-terminal_nsu_secondary,Terminal NSU Secondary
-authorization_code_secondary,Authorization Code Secondary
-acquirer_transaction_id_secondary,Acquirer Transaction Id Secondary
-transaction_id_secondary,Transaction Id Secondary

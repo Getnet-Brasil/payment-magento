@@ -2,6 +2,14 @@
 
 Processos recomendados para testes de homologação.
 
+Dica use bash:
+grep -C 4 -m 1 '"idempotency_key":"{{NUMERO_DO_PEDIDO}}"' var/log/payment.log | grep -C 5 'url'
+
+onde {{NUMERO_DO_PEDIDO}} deve ser substituido pelo pedido corrente para coletar o log apropriado.
+
+Exemplo:
+grep -C 3 -m 1 '"idempotency_key":"000000520"' var/log/payment.log | grep -C 5 'url'
+
 ### Cartão de Crédito
 
 Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e somente a Autorização.

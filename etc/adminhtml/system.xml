@@ -99,7 +99,7 @@
                         <label>Title</label>
                         <config_path>payment/getnet_paymentmagento_cc/title</config_path>
                     </field>
-                    <field id="vault_active" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="vault_active" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled Vault</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento_cc_vault/active</config_path>
