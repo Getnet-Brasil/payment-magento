@@ -54,16 +54,6 @@ class Config extends PaymentConfig
     /**
      * @const string
      */
-    public const ENDPOINT_SANDBOX = 'https://api-sandbox.getnet.com.br/';
-
-    /**
-     * @const string
-     */
-    public const ENVIRONMENT_SANDBOX = 'sandbox';
-
-    /**
-     * @const string
-     */
     public const CLIENT = 'PaymentMagento';
 
     /**
@@ -116,10 +106,6 @@ class Config extends PaymentConfig
     {
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            return self::ENDPOINT_SANDBOX;
-        }
-
         if ($environment === 'homolog') {
             return self::ENDPOINT_HOMOLOG;
         }
@@ -137,10 +123,6 @@ class Config extends PaymentConfig
     public function getEnvironmentMode($storeId = null): ?string
     {
         $environment = $this->getAddtionalValue('environment', $storeId);
-
-        if ($environment === 'sandbox') {
-            return self::ENVIRONMENT_SANDBOX;
-        }
 
         if ($environment === 'homolog') {
             return self::ENVIRONMENT_HOMOLOG;
@@ -162,10 +144,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $sellerId = $this->getAddtionalValue('seller_id_sandbox', $storeId);
-        }
-
         if ($environment === 'homolog') {
             $sellerId = $this->getAddtionalValue('seller_id_homolog', $storeId);
         }
@@ -185,10 +163,6 @@ class Config extends PaymentConfig
         $clientId = $this->getAddtionalValue('client_id_production', $storeId);
 
         $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'sandbox') {
-            $clientId = $this->getAddtionalValue('client_id_sandbox', $storeId);
-        }
 
         if ($environment === 'homolog') {
             $clientId = $this->getAddtionalValue('client_id_homolog', $storeId);
@@ -210,10 +184,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $clientSecret = $this->getAddtionalValue('client_secret_sandbox', $storeId);
-        }
-
         if ($environment === 'homolog') {
             $clientSecret = $this->getAddtionalValue('client_secret_homolog', $storeId);
         }
@@ -234,10 +204,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $oauth = $this->getAddtionalValue('access_token_sandbox', $storeId);
-        }
-
         if ($environment === 'homolog') {
             $oauth = $this->getAddtionalValue('access_token_homolog', $storeId);
         }
@@ -257,10 +223,6 @@ class Config extends PaymentConfig
         $code = 'k8vif92e';
 
         $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'sandbox') {
-            $code = '1snn5n9w';
-        }
 
         if ($environment === 'homolog') {
             $code = '1snn5n9w';
