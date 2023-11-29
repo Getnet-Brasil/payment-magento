@@ -26,8 +26,7 @@ class ProductNotDefault extends \Magento\Config\Block\System\Config\Form\Field
     {
         $output = '<div id="messages"><div class="messages"><div class="message message-warning warning"><div>';
         $output .= '<p class="getnet-sub-title">'.__('This product is not enabled by default.').'</p>';
-        $output .= '<p>'.__('To use it, <b>prior contracting is necessary</b>.')
-        .__('Please get in touch with your Getnet representative.').'</p>';
+        $output .= '<p>'.__('To use it, <b>prior contracting is necessary</b>.').'</p>';
         $output .= '</div></div></div></div>';
 
         return '<div id="row_'.$element->getHtmlId().'">'.$output.'</div>';

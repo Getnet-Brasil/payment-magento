@@ -12,7 +12,7 @@ filter:
 build:
     environment:
             php:
-                version: 7.4
+                version: 8.2
     dependencies:
         before:
             - 'echo "{\"http-basic\":{\"repo.magento.com\":{\"username\":\"${MAGENTO_USERNAME}\",\"password\":\"${MAGENTO_PASSWORD}\"}}}" > auth.json'
