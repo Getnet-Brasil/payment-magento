@@ -98,8 +98,6 @@ class CardInitSchemaDataRequest implements BuilderInterface
 
         $payment = $paymentDO->getPayment();
 
-        $order = $paymentDO->getOrder();
-
         /** @var OrderAdapterFactory $orderAdapter * */
         $orderAdapter = $this->orderAdapterFactory->create(
             ['order' => $payment->getOrder()]

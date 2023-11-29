@@ -8,35 +8,35 @@ Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e some
 
 #### Com fluxo de apenas autorização
 
--  [] Pgto fazendo a criação do cofre (vault)
--  [] Pgto SEM a criação do cofre (vault)
--  [] Pgto via Cofre
+-  [ ] Pgto fazendo a criação do cofre (vault)
+-  [ ] Pgto SEM a criação do cofre (vault)
+-  [ ] Pgto via Cofre
 
 #### Com fluxo de autorização e captura
 
--  [] Pgto fazendo a criação do cofre (vault)
--  [] Pgto SEM a criação do cofre (vault)
--  [] Pgto via Cofre
+-  [ ] Pgto fazendo a criação do cofre (vault)
+-  [ ] Pgto SEM a criação do cofre (vault)
+-  [ ] Pgto via Cofre
 
 ### Boleto
 
--  [] Compra
+-  [ ] Compra
 
 ### Pix
 
--  [] Compra
+-  [ ] Compra
 
 ### Wallet
 
--  [] Compra
+-  [ ] Compra
 
 ### Getpay
 
--  [] Compra
+-  [ ] Compra
 
 ### TwoCc
 
--  [] Compra
+-  [ ] Compra
 
 
 ## Teste de operação
@@ -44,17 +44,29 @@ Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e some
 Ápos a compra é necessário homologar alguns processo de gestão do pedido.
 
 ### CC e Cofre
--  [] Capturar
--  [] Negar
--  [] Reembolsar
+-  [ ] Capturar
+-  [ ] Negar
+-  [ ] Reembolsar
 
 ### Two cc
--  [] Reembolsar
--  [] Capturar (server de homolog indisponível)
--  [] Negar  (server de homolog indisponível)
+-  [ ] Reembolsar
+-  [ ] Capturar (server de homolog indisponível)
+-  [ ] Negar  (server de homolog indisponível)
+
+### Pix
+-  [ ] Webhook - Aprovado
+-  [ ] Webhook - Cancelado
+
+### Pix
+-  [ ] Webhook - Boleto
+-  [ ] Webhook - Boleto
 
 ### Getpay
--  [] consultar a expiração
+-  [ ] consultar a expiração
+-  [ ] Webhook - Aprovado
+-  [ ] Webhook - Cancelado
 
 ### Wallet
--  [] consultar o pagamento
+-  [ ] consultar o pagamento
+-  [ ] Webhook - Aprovado
+-  [ ] Webhook - Cancelado

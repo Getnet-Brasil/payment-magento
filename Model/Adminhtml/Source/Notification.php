@@ -58,7 +58,7 @@ class Notification extends \Magento\Config\Block\System\Config\Form\Field
     public function render(AbstractElement $element)
     {
         $storeId = $this->storeManager->getDefaultStoreView()->getStoreId();
-        $sellerId = $this->config->getMerchantGatewaySellerId();
+        $sellerId = $this->config->getMerchantGatewaySellerId($storeId);
         $output = '<div class="getnet-featured-session">';
         $output .= '<h2 class="getnet-sub-title">'.__('Configure credentials first').'</h2>';
         $output .= '</div>';

@@ -123,7 +123,6 @@ class ApiManagement
     public function hasAuthInCache()
     {
         $cacheKey = GetnetCache::TYPE_IDENTIFIER;
-        $cacheTag = GetnetCache::CACHE_TAG;
         $cacheExiste = $this->cache->load($cacheKey) ? : false;
         return $cacheExiste;
     }
