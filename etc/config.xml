@@ -12,6 +12,7 @@
         <payment>
             <getnet_paymentmagento>
                 <debug>1</debug>
+                <use_auth_in_cache>1</use_auth_in_cache>
                 <active>1</active>
                 <environment>production</environment>
                 <statement_descriptor>Store Name</statement_descriptor>

@@ -130,12 +130,16 @@ class Api
      */
     public function getAuth($storeId)
     {
-        $authByCache = $this->hasAuthInCache();
+        $useCache = $this->config->useAuthInCache($storeId);
 
-        if ($authByCache) {
-            return $authByCache;
+        if ($useCache) {
+            $authByCache = $this->hasAuthInCache();
+
+            if ($authByCache) {
+                return $authByCache;
+            }
         }
-
+        
         $responseBody = null;
         $uri = $this->config->getApiUrl($storeId);
         $clientId = $this->config->getMerchantGatewayClientId($storeId);

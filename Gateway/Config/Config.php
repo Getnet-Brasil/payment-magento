@@ -232,6 +232,18 @@ class Config extends PaymentConfig
     }
 
     /**
+     * Use Auth In Cache.
+     *
+     * @param int|null $storeId
+     *
+     * @return bool
+     */
+    public function useAuthInCache($storeId = null): ?bool
+    {
+        return (bool) $this->getAddtionalValue('use_auth_in_cache', $storeId);
+    }
+
+    /**
      * Gets the Merchant Gateway Dynamic Mcc.
      *
      * @param int|null $storeId

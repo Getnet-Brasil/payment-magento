@@ -531,6 +531,11 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento/debug</config_path>
                     </field>
+                    <field id="use_auth_in_cache" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Use Auth in Cache</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento/use_auth_in_cache</config_path>
+                    </field>
                     <group id="attribute_relationship" translate="label comment" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Attribute Relationship Definition</label>
                         <comment>List the attributes of your Magento the data expected by our API.</comment>
