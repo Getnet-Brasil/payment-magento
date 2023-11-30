@@ -10,11 +10,11 @@ namespace Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Customer;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 
 /**
  * Class Customer Billing Address Data Builder - Customer Address structure.
@@ -76,9 +76,7 @@ class CustomerBillingAddressDataRequest implements BuilderInterface
 
         $billingAddress = $orderAdapter->getBillingAddress();
         if ($billingAddress) {
-            $result[BoletoInitSchemaDataRequest::DATA]
-                [CustomerDataRequest::CUSTOMER]
-                [AddressDataRequest::BILLING_ADDRESS]
+            $result[BoletoInitSchemaDataRequest::DATA][CustomerDataRequest::CUSTOMER][AddressDataRequest::BILLING_ADDRESS]
             = [
                 // phpcs:ignore Generic.Files.LineLength
                 AddressDataRequest::POSTAL_CODE   => preg_replace('/[^0-9]/', '', (string) $billingAddress->getPostcode()),

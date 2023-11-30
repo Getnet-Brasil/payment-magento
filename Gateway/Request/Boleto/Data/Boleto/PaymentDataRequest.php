@@ -11,11 +11,11 @@ namespace Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Boleto;
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Config\ConfigBoleto;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 
 /**
  * Class Payment Data Request - Payment data structure for boleto.

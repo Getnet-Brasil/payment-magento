@@ -14,9 +14,9 @@ use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Getnet\PaymentMagento\Model\Cache\Type\GetnetCache;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
-use Magento\Framework\App\CacheInterface;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Cache\Manager as CacheManager;
+use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Framework\App\CacheInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Config\Config;
@@ -118,12 +118,14 @@ class ApiManagement
      * Get Auth in Cache.
      *
      * @param int|null $storeId
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasAuthInCache()
     {
         $cacheKey = GetnetCache::TYPE_IDENTIFIER;
-        $cacheExiste = $this->cache->load($cacheKey) ? : false;
+        $cacheExiste = $this->cache->load($cacheKey) ?: false;
+
         return $cacheExiste;
     }
 
@@ -420,12 +422,12 @@ class ApiManagement
                 $headers,
                 $protectedRequest
             );
-    
+
             $payload = $this->filterDebugData(
                 $payload,
                 $protectedRequest
             );
-    
+
             $response = $this->filterDebugData(
                 $response,
                 $protectedRequest

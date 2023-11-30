@@ -10,8 +10,8 @@ namespace Getnet\PaymentMagento\Model\Adminhtml\Source;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Url;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Notification Block - Information to Notification.
@@ -64,7 +64,7 @@ class Notification extends \Magento\Config\Block\System\Config\Form\Field
         $output .= '</div>';
         if ($sellerId) {
             $param = ['seller_id' => $sellerId];
-            $webhookUrl =  $this->helperUrl->getUrl('getnet/notification/all', $param);
+            $webhookUrl = $this->helperUrl->getUrl('getnet/notification/all', $param);
 
             $output = '<div class="getnet-featured-session">';
 

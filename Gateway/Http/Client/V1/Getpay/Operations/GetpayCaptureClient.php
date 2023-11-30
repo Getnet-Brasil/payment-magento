@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client\V1\Getpay\Operations;
 
-use Getnet\PaymentMagento\Gateway\Request\V1\Getpay\ExtPaymentIdRequest;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 

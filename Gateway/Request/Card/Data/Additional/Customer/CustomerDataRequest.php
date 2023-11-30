@@ -9,12 +9,12 @@
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer;
 
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
+use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
-use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 
 /**
  * Class Customer Data Request - Customer structure.
@@ -90,9 +90,7 @@ class CustomerDataRequest implements BuilderInterface
         $billingAddress = $orderAdapter->getBillingAddress();
 
         $name = $billingAddress->getFirstname().' '.$billingAddress->getLastname();
-        $result[CardInitSchemaDataRequest::DATA]
-        [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-        [self::CUSTOMER] = [
+        $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][self::CUSTOMER] = [
             self::EMAIL         => $billingAddress->getEmail(),
             self::NAME          => $name,
             self::PHONE_NUMBER  => preg_replace('/[^0-9]/', '', (string) $billingAddress->getTelephone()),

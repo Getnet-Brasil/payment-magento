@@ -8,13 +8,13 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Boleto;
 
-use Getnet\PaymentMagento\Gateway\SubjectReader;
+use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
+use Magento\Framework\Encryption\Encryptor;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Magento\Framework\Encryption\Encryptor;
-use Getnet\PaymentMagento\Gateway\Config\Config;
 
 /**
  * Class Boleto Init Schema Data Request - Payment amount structure.
@@ -57,10 +57,10 @@ class BoletoInitSchemaDataRequest implements BuilderInterface
     protected $orderAdapterFactory;
 
     /**
-     * @param SubjectReader         $subjectReader
-     * @param Encryptor             $encrytor
-     * @param Config                $config
-     * @param OrderAdapterFactory   $orderAdapterFactory
+     * @param SubjectReader       $subjectReader
+     * @param Encryptor           $encrytor
+     * @param Config              $config
+     * @param OrderAdapterFactory $orderAdapterFactory
      */
     public function __construct(
         SubjectReader $subjectReader,
@@ -90,7 +90,7 @@ class BoletoInitSchemaDataRequest implements BuilderInterface
         $paymentDO = $this->subjectReader->readPayment($buildSubject);
 
         $result = [];
-        
+
         $payment = $paymentDO->getPayment();
 
         $order = $paymentDO->getOrder();
@@ -105,7 +105,7 @@ class BoletoInitSchemaDataRequest implements BuilderInterface
         $result = [
             self::IDEMPOTENCY_KEY => $orderAdapter->getOrderIncrementId(),
             self::REQUEST_ID      => $this->config->getMerchantGatewaySellerId($storeId),
-            self::DATA            => []
+            self::DATA            => [],
         ];
 
         return $result;

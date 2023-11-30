@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\Card;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
-use Getnet\PaymentMagento\Gateway\Request\ExtPaymentIdRequest;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -77,7 +76,7 @@ class AcceptPaymentClient implements ClientInterface
     {
         $success = 0;
         $request = $transferObject->getBody();
-        
+
         $data = $this->api->sendPostRequest(
             $transferObject,
             'v2/payments/capture',

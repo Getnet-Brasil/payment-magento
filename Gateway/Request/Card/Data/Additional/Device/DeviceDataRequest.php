@@ -8,6 +8,8 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Device;
 
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
+use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Framework\HTTP\Header as HeaderClient;
@@ -15,8 +17,6 @@ use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Session\SessionManager;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
-use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 
 /**
  * Class Device Data Request - User Device Data Structure.
@@ -116,9 +116,7 @@ class DeviceDataRequest implements BuilderInterface
 
         $paymentInfo->setAdditionalInformation(
             self::DEVICE_DATA,
-            $result[CardInitSchemaDataRequest::DATA]
-                [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-                [self::DEVICE_DATA]
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][self::DEVICE_DATA]
         );
 
         return $result;

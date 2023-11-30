@@ -10,13 +10,13 @@ namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
+use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Model\InfoInterface;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
-use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 
 /**
  * Class Tax Document Data Request - Fiscal document data structure.
@@ -115,9 +115,7 @@ class TaxDocumentDataRequest implements BuilderInterface
         }
 
         if ($typeDocument) {
-            $result[CardInitSchemaDataRequest::DATA]
-                [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-                [CustomerDataRequest::CUSTOMER] = [
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][CustomerDataRequest::CUSTOMER] = [
                     self::TAX_DOCUMENT        => $typeDocument,
                     self::TAX_DOCUMENT_NUMBER => $taxDocument,
                 ];

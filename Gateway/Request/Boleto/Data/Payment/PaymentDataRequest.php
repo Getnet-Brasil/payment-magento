@@ -8,11 +8,11 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Payment;
 
+use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 
 /**
  * Class Payment Data Request - Payment amount structure.
@@ -69,7 +69,7 @@ class PaymentDataRequest implements BuilderInterface
 
         $result[BoletoInitSchemaDataRequest::DATA][self::PAYMENT] = [
             self::PAYMENT_ID        => $order->getOrderIncrementId(),
-            self::PAYMENT_METHOD    => 'BOLETO'
+            self::PAYMENT_METHOD    => 'BOLETO',
         ];
 
         return $result;

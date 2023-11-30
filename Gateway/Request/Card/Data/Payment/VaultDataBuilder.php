@@ -8,13 +8,12 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Payment;
 
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Model\InfoInterface;
 use Magento\Vault\Model\Ui\VaultConfigProvider;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
-use Getnet\PaymentMagento\Gateway\Request\Card\Data\Payment\PaymentDataRequest;
 
 class VaultDataBuilder implements BuilderInterface
 {

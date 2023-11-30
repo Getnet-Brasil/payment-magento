@@ -8,13 +8,13 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Card;
 
-use Getnet\PaymentMagento\Gateway\SubjectReader;
+use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
+use Magento\Framework\Encryption\Encryptor;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Magento\Framework\Encryption\Encryptor;
-use Getnet\PaymentMagento\Gateway\Config\Config;
 
 /**
  * Class Card Init Schema Data Request - Payment amount structure.
@@ -62,10 +62,10 @@ class CardInitSchemaDataRequest implements BuilderInterface
     protected $orderAdapterFactory;
 
     /**
-     * @param SubjectReader         $subjectReader
-     * @param Encryptor             $encrytor
-     * @param Config                $config
-     * @param OrderAdapterFactory   $orderAdapterFactory
+     * @param SubjectReader       $subjectReader
+     * @param Encryptor           $encrytor
+     * @param Config              $config
+     * @param OrderAdapterFactory $orderAdapterFactory
      */
     public function __construct(
         SubjectReader $subjectReader,

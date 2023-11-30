@@ -8,13 +8,11 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional;
 
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Magento\Framework\Encryption\Encryptor;
-use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
 
 /**
  * Class Additional Init Schema Data Request - Payment amount structure.

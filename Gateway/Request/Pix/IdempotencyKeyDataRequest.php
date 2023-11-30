@@ -8,8 +8,8 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Pix;
 
-use Getnet\PaymentMagento\Gateway\SubjectReader;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
@@ -58,7 +58,7 @@ class IdempotencyKeyDataRequest implements BuilderInterface
         ) {
             throw new InvalidArgumentException('Payment data object should be provided');
         }
-        
+
         $paymentDO = $this->subjectReader->readPayment($buildSubject);
 
         $payment = $paymentDO->getPayment();

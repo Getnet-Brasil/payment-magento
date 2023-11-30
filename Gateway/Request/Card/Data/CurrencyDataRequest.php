@@ -10,11 +10,11 @@ namespace Getnet\PaymentMagento\Gateway\Request\Card\Data;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
 
 /**
  * Class Currency Data Request - Payment Currency structure.

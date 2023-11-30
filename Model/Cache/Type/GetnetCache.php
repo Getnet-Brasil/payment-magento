@@ -12,22 +12,22 @@ use Magento\Framework\App\Cache\Type\FrontendPool;
 use Magento\Framework\Cache\Frontend\Decorator\TagScope;
 
 /**
- * System / Cache Management / Cache type "Your Cache Type Label"
+ * System / Cache Management / Cache type "Your Cache Type Label".
  */
 class GetnetCache extends TagScope
 {
     /**
-     * Cache type code unique among all cache types
+     * Cache type code unique among all cache types.
      */
     public const TYPE_IDENTIFIER = 'getnet';
 
     /**
-     * The tag name that limits the cache cleaning scope within a particular tag
+     * The tag name that limits the cache cleaning scope within a particular tag.
      */
     public const CACHE_TAG = 'OAUTH';
 
     /**
-     * The lifetime from cache
+     * The lifetime from cache.
      */
     public const CACHE_LIFETIME = 3000;
 

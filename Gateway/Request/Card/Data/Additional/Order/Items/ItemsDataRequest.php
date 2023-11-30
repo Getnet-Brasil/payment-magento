@@ -8,14 +8,14 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Order\Items;
 
+use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
+use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest;
-use Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest;
 
 /**
  * Class Items Data Request - Item structure for orders.
@@ -130,9 +130,7 @@ class ItemsDataRequest implements BuilderInterface
                 continue;
             }
 
-            $result[CardInitSchemaDataRequest::DATA]
-                [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-                [self::ORDER][self::ITEMS][] = [
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][self::ORDER][self::ITEMS][] = [
                     self::ITEM_NAME     => $item->getName(),
                     self::ITEM_PRICE    => $this->config->formatPrice($item->getPrice()),
                     self::ITEM_QUANTITY => (int) $item->getQtyOrdered(),

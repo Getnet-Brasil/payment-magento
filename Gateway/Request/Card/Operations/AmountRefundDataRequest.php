@@ -12,8 +12,8 @@ use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
-use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
+use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
  * Class Refund Request - Refund data structure.

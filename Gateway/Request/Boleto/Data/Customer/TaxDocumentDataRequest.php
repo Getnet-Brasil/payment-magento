@@ -10,12 +10,12 @@ namespace Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Customer;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
+use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 use Magento\Payment\Model\InfoInterface;
-use Getnet\PaymentMagento\Gateway\Request\Boleto\BoletoInitSchemaDataRequest;
 
 /**
  * Class Tax Document Data Request - Fiscal document data structure.
