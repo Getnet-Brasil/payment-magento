@@ -41,6 +41,7 @@ Close,Fechar
 "15 minutes","15 minutos"
 "30 minutes - recommended","30 minutos - recomendado"
 "Please get in touch with your Getnet representative.","Esse produto não é habilitado por padrão, contrate com seu representante Getnet."
+"This product is not enabled by default, you need to contract it before activating it.","Esse produto não é habilitado por padrão, contrate com seu representante Getnet."
 "This product is not enabled by default.","Esse produto não é habilitado por padrão."
 "To use it, <b>prior contracting is necessary</b>.","Para usa-lo <b>é necessário prévia contratação</b>, entre em contato com seu representante da Getnet."
 "Please get in touch with your Getnet representative.","Por favor, contacte seu representante Getnet."
@@ -159,6 +160,7 @@ Environment,Ambiente
 "Client Secret - homolog","Client Secret - Homologação"
 Debug,Debug
 "Cartão de Crédito <sup>V2</sup>","Cartão de Crédito <sup>V2</sup>"
+"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>Este produto não está habilitado por padrão, você precisa contratá-lo antes de ativá-lo.</div></div></div></div>"
 "Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.","Receba transações com cartões de crédito American Express, Elo, Mastercard, Visa e Hipercard."
 Enabled,Habilitar
 Title,Título

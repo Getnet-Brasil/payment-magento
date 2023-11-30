@@ -103,7 +103,7 @@
                         <label>Enabled Vault</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento_cc_vault/active</config_path>
-                        <comment><![CDATA[<div id="messages"><div class="messages"><div class="message message-warning warning"><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>]]></comment>
+                        <comment><![CDATA[<div id="messages"><div class="messages"><div class="message message-warning warning"><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>]]></comment>
                     </field>
                     <field id="cctypes" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1"  showInStore="1" canRestore="1">
                             <label>Credit Card Types</label>

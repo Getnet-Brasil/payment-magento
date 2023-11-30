@@ -155,7 +155,7 @@ Environment,Environment
 Enabled,Enabled
 Title,Title
 "Enabled Vault","Enabled Vault"
-"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default; you need to contract it before activating it.</div></div></div></div>"
+"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>"
 "Credit Card Types","Credit Card Types"
 "Minimum Order Total","Minimum Order Total"
 "Maximum Order Total","Maximum Order Total"
