@@ -139,7 +139,7 @@ class Api
                 return $authByCache;
             }
         }
-        
+
         $responseBody = null;
         $uri = $this->config->getApiUrl($storeId);
         $clientId = $this->config->getMerchantGatewayClientId($storeId);
