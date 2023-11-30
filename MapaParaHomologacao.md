@@ -1,8 +1,11 @@
-## Teste compra
+## Captura de logs das Transações
 
 Processos recomendados para testes de homologação.
 
-Dica use bash:
+### Captura de log de transações na V2
+
+Para transações por Cartão, Cofre, Pix e Boleto use:
+
 ```bash
 grep -C 4 -m 1 '"idempotency_key":"{{NUMERO_DO_PEDIDO}}"' var/log/payment.log | grep -C 5 'url'
 ```
@@ -23,6 +26,25 @@ Saida:
   'error_msg' => NULL,
 ) [] []
 ```
+
+### Captura de log de transações na V1
+
+Para transações por 2 Cartões e Wallet, use:
+
+```bash
+grep -C 4 -m 1 '"order_id":"{{NUMERO_DO_PEDIDO}}"' var/log/payment.log | grep -C 5 'url'
+```
+
+Para Getpay, use:
+
+```bash
+ grep -C 3 -m 1 '"order_prefix":"000000528"' var/log/payment.log | grep -C 5 'url'
+```
+
+## Cenários para teste de compra
+
+Verificar métodos presentes em seu contrato e então realizar os testes.
+
 
 ### Cartão de Crédito
 
@@ -60,6 +82,13 @@ Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e some
 
 -  [ ] Compra
 
+## Callback
+
+Em Homolog
+  Soliticar cadastro e liberação da url para recebimento do Callback no ambiente de homologação.
+
+Em Produção
+  Cadastrar no painel da Getnet a url e solicitar a liberação no firewall.
 
 ## Teste de operação
 
@@ -92,3 +121,4 @@ Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e some
 -  [ ] consultar o pagamento
 -  [ ] Webhook - Aprovado
 -  [ ] Webhook - Cancelado
+
