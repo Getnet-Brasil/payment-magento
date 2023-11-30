@@ -85,10 +85,10 @@ Há 2 fluxos distintos com a Captura e Autorização (default no módulo) e some
 ## Callback
 
 Em Homolog
-  Soliticar cadastro e liberação da url para recebimento do Callback no ambiente de homologação.
+- Soliticar cadastro e liberação da url para recebimento do Callback no ambiente de homologação.
 
 Em Produção
-  Cadastrar no painel da Getnet a url e solicitar a liberação no firewall.
+- Cadastrar no painel da Getnet a url e solicitar a liberação no firewall.
 
 ## Teste de operação
 
