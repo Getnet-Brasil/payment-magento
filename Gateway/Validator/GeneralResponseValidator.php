@@ -54,7 +54,16 @@ class GeneralResponseValidator extends AbstractValidator
         $errorCodes = [];
         $errorMessages = [];
         if (!$isValid) {
-            if (isset($response['details'])) {
+            if (isset($response['status_code'])) {
+                unset($errorCodes);
+                unset($errorMessages);
+                $errorCodes[] = $response['status_code'];
+                $errorMessages[] = __('Payment Erro');
+            }
+
+            if (isset($response['details'][0]['error_code'])) {
+                unset($errorCodes);
+                unset($errorMessages);
                 foreach ($response['details'] as $message) {
                     if (isset($message['antifraud'])) {
                         $errorCodes[] = $message['antifraud']['status_code'];
@@ -63,11 +72,7 @@ class GeneralResponseValidator extends AbstractValidator
                     if (isset($message['error_code'])) {
                         $errorCodes[] = $message['error_code'];
                         $errorMessages[] = isset($message['description_detail']) ?: $message['description'];
-                        if ($message['error_code'] === 'PAYMENTS-402') {
-                            $detailCode = preg_replace('/[^0-9]/', '', (string) $message['description_detail']);
-                            $errorCodes[] = $message['error_code'].'-'.$detailCode;
-                            $errorMessages[] = $message['description_detail'];
-                        }
+                        
                     }
                 }
             }

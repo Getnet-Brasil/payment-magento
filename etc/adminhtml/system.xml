@@ -23,10 +23,11 @@
                         <config_path>payment/getnet_paymentmagento/statement_descriptor</config_path>
                         <validate>required-entry</validate>
                     </field>
-                    <field id="dynamic_mcc" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="dynamic_mcc" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
                         <label>Dynamic Mcc</label>
+                        <comment>Leave it blank if you don't have it.</comment>
                         <config_path>payment/getnet_paymentmagento/dynamic_mcc</config_path>
-                        <validate>required-entry validate-number minimum-length-4 maximum-length-4</validate>
+                        <validate>validate-number minimum-length-4 maximum-length-4</validate>
                     </field>
                     <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Environment</label>

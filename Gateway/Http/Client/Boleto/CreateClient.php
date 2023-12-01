@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\Boleto;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Config\Config;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -42,12 +43,20 @@ class CreateClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @param Api       $api
+     * @param Config    $config
      */
     public function __construct(
-        Api $api
+        Api $api,
+        Config $config
     ) {
         $this->api = $api;
+        $this->config = $config;
     }
 
     /**
@@ -60,6 +69,8 @@ class CreateClient implements ClientInterface
     public function placeRequest(TransferInterface $transferObject)
     {
         $request = $transferObject->getBody();
+
+        $request = $this->config->prepareBody($request);
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,

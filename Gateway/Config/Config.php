@@ -260,7 +260,7 @@ class Config extends PaymentConfig
      *
      * @param int|null $storeId
      *
-     * @return string
+     * @return string|null
      */
     public function getMerchantGatewayDynamicMcc($storeId = null): ?string
     {
@@ -405,6 +405,6 @@ class Config extends PaymentConfig
             $request = $this->removeAccentsRecursive($request, $keysToProcess);
         }
 
-        return $this->json->serialize($request);
+        return $request;
     }
 }
