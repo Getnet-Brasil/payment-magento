@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client\Boleto;
 
-use Getnet\PaymentMagento\Gateway\Http\Api;
 use Getnet\PaymentMagento\Gateway\Config\Config;
+use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -48,8 +48,8 @@ class CreateClient implements ClientInterface
     protected $config;
 
     /**
-     * @param Api       $api
-     * @param Config    $config
+     * @param Api    $api
+     * @param Config $config
      */
     public function __construct(
         Api $api,

@@ -72,7 +72,6 @@ class GeneralResponseValidator extends AbstractValidator
                     if (isset($message['error_code'])) {
                         $errorCodes[] = $message['error_code'];
                         $errorMessages[] = isset($message['description_detail']) ?: $message['description'];
-                        
                     }
                 }
             }
