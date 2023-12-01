@@ -100,8 +100,8 @@ class OrderDataRequest implements BuilderInterface
 
         $result[BoletoInitSchemaDataRequest::DATA] = [
             self::ORDER => [
-                // self::ORDER_ID  => $orderAdapter->getOrderIncrementId(),
-                // self::SALES_TAX => $this->config->formatPrice($orderAdapter->getTaxAmount()),
+                self::ORDER_ID  => $orderAdapter->getOrderIncrementId(),
+                self::SALES_TAX => $this->config->formatPrice($orderAdapter->getTaxAmount()),
             ],
         ];
 
