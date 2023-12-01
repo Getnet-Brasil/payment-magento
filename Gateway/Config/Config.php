@@ -232,6 +232,18 @@ class Config extends PaymentConfig
     }
 
     /**
+     * Get Private Keys.
+     *
+     * @param int|null $storeId
+     *
+     * @return array
+     */
+    public function getPrivateKeys($storeId = null): array
+    {
+        return explode(',', $this->getAddtionalValue('private_keys', $storeId));
+    }
+
+    /**
      * Use Auth In Cache.
      *
      * @param int|null $storeId

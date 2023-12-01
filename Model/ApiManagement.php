@@ -138,7 +138,7 @@ class ApiManagement
      */
     public function getAuth($storeId)
     {
-        $useCache = $this->config->useAuthInCache($storeId);
+        $useCache = $this->configBase->useAuthInCache($storeId);
 
         if ($useCache) {
             $authByCache = $this->hasAuthInCache();
@@ -402,20 +402,7 @@ class ApiManagement
             $response = $this->json->serialize($response);
         }
 
-        $protectedRequest = [
-            'card_number',
-            'email',
-            'tax_id',
-            'number',
-            'client_id',
-            'client_secret',
-            'access_token',
-            'Authorization',
-            'customer_id',
-            'name',
-            'last_name',
-
-        ];
+        $protectedRequest = $this->configBase->getPrivateKeys();
 
         $env = $this->configBase->getEnvironmentMode();
 

@@ -212,10 +212,12 @@ class Api
 
         $data = [];
         $uri = $this->config->getApiUrl($storeId);
+        $sellerId = $this->config->getMerchantGatewaySellerId($storeId);
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
+            'seller_id'                   => $sellerId
         ];
 
         if ($additional) {
@@ -343,19 +345,7 @@ class Api
             $response = $this->json->serialize($response);
         }
 
-        $protectedRequest = [
-            'card_number',
-            'email',
-            'tax_id',
-            'number',
-            'client_id',
-            'client_secret',
-            'access_token',
-            'Authorization',
-            'customer_id',
-            'name',
-            'last_name',
-        ];
+        $protectedRequest = $this->config->getPrivateKeys();
         $env = $this->config->getEnvironmentMode();
 
         $response = $this->json->unserialize($response);
