@@ -11,9 +11,9 @@
     <message_list>
         <!-- GENERIC -->
         <message code="GENERIC-400" translate="true">Erro genérico.</message>
+        <message code="GENERIC-412" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
         <!-- CONFIG -->
         <message code="CONFIG-403" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
-        <message code="GENERIC-412" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
         
         <!-- PAYMENTS -->
         <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
