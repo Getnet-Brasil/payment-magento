@@ -87,6 +87,7 @@ class FetchTransactionOrderWallet
 
             try {
                 $payment->update();
+                $loadedOrder->save();
                 $this->logger->debug([
                     'cron'   => 'FetchTransactionOrderWallet',
                     'type'   => ConfigWallet::METHOD,

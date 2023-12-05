@@ -284,7 +284,7 @@
                 return;
             }
             fullScreenLoader.startLoader();
-            this.getTokenize();
+            this.getnetTokenizeCard();
             this.placeOrder();
         },
 
@@ -292,7 +292,7 @@
          * Get Tokenize
          * @returns {void}
          */
-        getTokenize() {
+        getnetTokenizeCard() {
             var self = this,
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
@@ -333,7 +333,7 @@
                 function (response) {
                     token = response[0].number_token;
                     self.creditCardNumberToken(token);
-                    self.getTokenizeSecondary();
+                    self.getnetTokenizeCardSecondary();
                     fullScreenLoader.stopLoader(true);
                 }
             );
@@ -344,7 +344,7 @@
          * Get Tokenize Seconday
          * @returns {void}
          */
-        getTokenizeSecondary() {
+        getnetTokenizeCardSecondary() {
             var self = this,
                 cardSecondaryNumber = this.creditCardSecondaryNumber().replace(/\D/g, ''),
                 serviceUrl,
