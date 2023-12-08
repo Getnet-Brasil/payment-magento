@@ -9,9 +9,10 @@
     'underscore',
     'jquery',
     'Magento_Checkout/js/model/quote',
+    'Magento_Checkout/js/model/totals',
     'Magento_Catalog/js/price-utils',
     'mage/translate'
-], function (ko, _, $, quote, priceUtils, $t) {
+], function (ko, _, $, quote, totals, priceUtils, $t) {
     'use strict';
 
     return {
@@ -40,13 +41,18 @@
                 limit,
                 idx,
                 interest,
+                interestTotal,
                 installment,
                 totalInstallment,
-                taxa;
+                taxa,
+                previewInterest = 0;
 
             grandTotal = calcBy;
             if (!calcBy) {
-                grandTotal = quote.totals().base_grand_total;
+                if (this.totals() && totals.getSegment('getnet_interest_amount')) {
+                    previewInterest = totals.getSegment('getnet_interest_amount').value;
+                }
+                grandTotal = quote.totals().base_grand_total - previewInterest;
             }
             info_interest = window.checkoutConfig.payment[this.getAuxiliaryCode()].info_interest;
 
@@ -78,14 +84,15 @@
                 interest = info_interest[idx];
                 if (interest > 0) {
                     taxa = interest / 100;
-                    installment = (grandTotal * taxa + grandTotal) / idx;
-                    totalInstallment = installment * idx;
+                    interestTotal = grandTotal * Math.pow((1 + taxa), idx) - grandTotal;
+                    installment = (grandTotal + interestTotal) / idx;
+                    totalInstallment = interestTotal + grandTotal;
                     if (installment > 5 && installment > min_installment) {
                         installmentsCalcValues[idx] = {
                             'installment': priceUtils.formatPrice(installment, quote.getPriceFormat()),
                             'totalInstallment': priceUtils.formatPrice(totalInstallment, quote.getPriceFormat()),
                             // eslint-disable-next-line max-len
-                            'totalInterest': priceUtils.formatPrice(totalInstallment - grandTotal, quote.getPriceFormat()),
+                            'totalInterest': priceUtils.formatPrice(interestTotal, quote.getPriceFormat()),
                             'interest': interest
                         };
                     }

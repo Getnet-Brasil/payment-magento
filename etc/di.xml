@@ -38,6 +38,18 @@
     <preference for="Getnet\PaymentMagento\Api\Data\CardIdInterface" type="Getnet\PaymentMagento\Model\Data\CardId" />
     <preference for="Getnet\PaymentMagento\Api\CardIdManagementInterface" type="Getnet\PaymentMagento\Model\CardIdManagement" />
 
+    <!-- API - Interest -->
+    <preference for="Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface" type="Getnet\PaymentMagento\Model\Api\Data\InstallmentSelected" />
+    <preference for="Getnet\PaymentMagento\Api\InterestManagementInterface" type="Getnet\PaymentMagento\Model\Api\InterestManagement" />
+    <preference for="Getnet\PaymentMagento\Api\GuestInterestManagementInterface" type="Getnet\PaymentMagento\Model\Api\GuestInterestManagement" />
+
+    <!-- API - For Two Cc Interest -->
+    <preference for="Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface" type="Getnet\PaymentMagento\Model\Api\TwoCc\Data\AmountForCalc" />
+    <preference for="Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface" type="Getnet\PaymentMagento\Model\Api\TwoCc\Data\IdxInTwoCc" />
+    <preference for="Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface" type="Getnet\PaymentMagento\Model\Api\TwoCc\Data\TwoCcInstallment" />
+    <preference for="Getnet\PaymentMagento\Api\TwoCc\TwoCcInterestManagementInterface" type="Getnet\PaymentMagento\Model\Api\TwoCc\TwoCcInterestManagement" />
+    <preference for="Getnet\PaymentMagento\Api\TwoCc\GuestTwoCcInterestManagementInterface" type="Getnet\PaymentMagento\Model\Api\TwoCc\GuestTwoCcInterestManagement" />
+
     <!-- All - Adapter Interface -->
     <preference for="Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterInterface" type="Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapter"/>
     <preference for="Getnet\PaymentMagento\Gateway\Data\Order\AddressAdapterInterface" type="Getnet\PaymentMagento\Gateway\Data\Order\AddressAdapter"/>
@@ -355,7 +367,7 @@
             <argument name="builders" xsi:type="array">
                 <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
 
-                <item name="amount" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\AmountAndInterestDataRequest</item>
+                <item name="amount" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\AmountDataRequest</item>
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\CurrencyDataRequest</item>
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\OrderDataRequest</item>
                 <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\CustomerDataRequest</item>
@@ -515,7 +527,7 @@
                 <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="card_init_schema" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest</item>
 
-                <item name="data_amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\AmountAndInterestDataRequest</item>
+                <item name="data_amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\AmountDataRequest</item>
                 <item name="data_currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CurrencyDataRequest</item>
                 <item name="data_customer_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CustomerIdDataRequest</item>
                 <item name="data_payment_data" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Payment\PaymentDataRequest</item>
@@ -620,7 +632,7 @@
                 <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="card_init_schema" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest</item>
 
-                <item name="data_amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\AmountAndInterestDataRequest</item>
+                <item name="data_amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\AmountDataRequest</item>
                 <item name="data_currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CurrencyDataRequest</item>
                 <item name="data_customer_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CustomerIdDataRequest</item>
                 <item name="data_payment_data" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Payment\PaymentDataRequest</item>
@@ -671,8 +683,8 @@
                 <item name="authorize" xsi:type="string">PaymentMagentoCaptureTwoCcCommand</item>
                 <item name="capture" xsi:type="string">PaymentMagentoCaptureTwoCcCommand</item>
                 <item name="refund" xsi:type="string">PaymentMagentoTwoCcRefundCommand</item>
-                <item name="cancel" xsi:type="string">PaymentMagentoDenyPaymentCommand</item>
-                <item name="void" xsi:type="string">PaymentMagentoDenyPaymentCommand</item>
+                <item name="cancel" xsi:type="string">PaymentMagentoTwoCcDenyPaymentCommand</item>
+                <item name="void" xsi:type="string">PaymentMagentoTwoCcDenyPaymentCommand</item>
                 <item name="accept_payment" xsi:type="string">PaymentMagentoTwoCcAcceptPaymentCommand</item>
                 <item name="deny_payment" xsi:type="string">PaymentMagentoTwoCcDenyPaymentCommand</item>
             </argument>
@@ -764,7 +776,7 @@
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PaymentMagentoRefundRequest</argument>
             <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\RefundClient</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations\RefundClient</argument>
             <argument name="handler" xsi:type="object">PaymentMagentoRefundResponseHandlerComposite</argument>
             <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
             <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
@@ -845,7 +857,7 @@
             <argument name="requestBuilder" xsi:type="object">PaymentMagentoTwoCcDenyPaymentRequest</argument>
             <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
             <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\V1\TwoCc\Operations\DenyPaymentClient</argument>
-            <argument name="handler" xsi:type="object">PaymentMagentoDenyPaymentResponseHandlerComposite</argument>
+            <argument name="handler" xsi:type="object">PaymentMagentoTwoCcDenyPaymentResponseHandlerComposite</argument>
             <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
             <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
         </arguments>
@@ -865,7 +877,7 @@
     </virtualType>
     
     <!-- Two Cc - Deny Payment handlers -->
-    <virtualType name="PaymentMagentoDenyPaymentResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+    <virtualType name="PaymentMagentoTwoCcDenyPaymentResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
                 <item name="deny" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\V1\TwoCc\Operations\DenyPaymentHandler</item>
@@ -876,26 +888,26 @@
 
 
 
-    <!-- Base - Accept Payment Command -->
+    <!-- Cc - Accept Payment Command -->
     <virtualType name="PaymentMagentoAcceptPaymentCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PaymentMagentoAcceptPaymentRequest</argument>
             <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\V1\TwoCc\Operations\AcceptPaymentClient</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations\AcceptPaymentClient</argument>
             <argument name="handler" xsi:type="object">PaymentMagentoAccpetPaymentResponseHandlerComposite</argument>
             <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
             <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
-    <!-- Base - Accept Payment Request -->
+    <!-- Cc - Accept Payment Request -->
     <virtualType name="PaymentMagentoAcceptPaymentRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
                 <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
                 <item name="idempotency_key" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Operations\IdempotencyKeyDataRequest</item>
                 <item name="payment_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Operations\ExtPaymentIdDataRequest</item>
-                <item name="amount" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Operations\AmountAndInterestDataRequest</item>
+                <item name="amount" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Operations\AmountAcceptDataRequest</item>
                 <item name="payment_method" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Operations\PaymentMethodDataRequest</item>
             </argument>
         </arguments>
@@ -910,19 +922,19 @@
         </arguments>
     </virtualType>
 
-    <!-- Base - Deny Payment Command -->
+    <!-- Cc - Deny Payment Command -->
     <virtualType name="PaymentMagentoDenyPaymentCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
         <arguments>
             <argument name="requestBuilder" xsi:type="object">PaymentMagentoDenyPaymentRequest</argument>
             <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\V1\TwoCc\Operations\DenyPaymentClient</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations\DenyPaymentClient</argument>
             <argument name="handler" xsi:type="object">PaymentMagentoDenyPaymentResponseHandlerComposite</argument>
             <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
             <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
         </arguments>
     </virtualType>
 
-    <!-- Base - Deny Payment Request -->
+    <!-- Cc - Deny Payment Request -->
     <virtualType name="PaymentMagentoDenyPaymentRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
         <arguments>
             <argument name="builders" xsi:type="array">
@@ -936,7 +948,7 @@
         </arguments>
     </virtualType>
     
-    <!-- Base - Deny Payment handlers -->
+    <!-- Cc - Deny Payment handlers -->
     <virtualType name="PaymentMagentoDenyPaymentResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
         <arguments>
             <argument name="handlers" xsi:type="array">
@@ -945,6 +957,19 @@
         </arguments>
     </virtualType>
    
+
+    <!-- TwoCc - Deny Payment Command -->
+    <virtualType name="PaymentMagentoTwoCcDenyPaymentCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoDenyPaymentRequest</argument>
+            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations\DenyPaymentClient</argument>
+            <argument name="handler" xsi:type="object">PaymentMagentoTwoCcDenyPaymentResponseHandlerComposite</argument>
+            <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
     <!-- Base - Error Mapping -->
     <virtualType name="PaymentMagentoErrorMappingConfigReader" type="Magento\Payment\Gateway\ErrorMapper\VirtualConfigReader">
         <arguments>

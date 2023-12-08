@@ -9,7 +9,6 @@
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
@@ -36,23 +35,15 @@ class AmountDenyDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var ConfigCc
-     */
-    protected $configCc;
-
-    /**
      * @param SubjectReader $subjectReader
      * @param Config        $config
-     * @param ConfigCc      $configCc
      */
     public function __construct(
         SubjectReader $subjectReader,
-        Config $config,
-        ConfigCc $configCc
+        Config $config
     ) {
         $this->subjectReader = $subjectReader;
         $this->config = $config;
-        $this->configCc = $configCc;
     }
 
     /**
@@ -76,21 +67,7 @@ class AmountDenyDataRequest implements BuilderInterface
 
         $grandTotal = $order->getGrandTotalAmount();
 
-        $payment = $paymentDO->getPayment();
-
-        $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
-
         $result[self::AMOUNT] = $this->config->formatPrice($grandTotal);
-
-        if ($installment > 1) {
-            $order = $paymentDO->getOrder();
-            $storeId = $order->getStoreId();
-            $amountInterest = $this->configCc->getInterestToAmount($installment, $grandTotal, $storeId);
-            $total = $grandTotal + $amountInterest;
-            $result = [
-                self::AMOUNT     => $this->config->formatPrice($total),
-            ];
-        }
 
         return $result;
     }

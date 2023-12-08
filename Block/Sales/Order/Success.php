@@ -6,7 +6,7 @@
  * See LICENSE for license details.
  */
 
-namespace Getnet\PaymentMagento\Block\Order;
+namespace Getnet\PaymentMagento\Block\Sales\Order;
 
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Http\Context as HttpContext;

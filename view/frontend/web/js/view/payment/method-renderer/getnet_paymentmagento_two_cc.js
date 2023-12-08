@@ -13,6 +13,7 @@
     'Getnet_PaymentMagento/js/view/payment/gateway/custom-validation',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
     'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment',
+    'Getnet_PaymentMagento/js/action/checkout/set-two-interest',
     'Magento_Checkout/js/model/quote',
     'ko',
     'Magento_Checkout/js/model/url-builder',
@@ -29,6 +30,7 @@
         _customValidation,
         _mask,
         getnetInstallment,
+        getnetSetInterest,
         quote,
         _ko,
         urlBuilder,
@@ -122,6 +124,13 @@
 
             tel.mask('(00)00000-0000', { clearIfNotMatch: true });
 
+            self.active.subscribe(function (value) {
+                let installmentActive = self.creditCardInstallment() ? self.creditCardInstallment() : 0,
+                    clearInterest = value ? installmentActive : 0;
+
+                getnetSetInterest.getnetInterest(clearInterest);
+            });
+
             self.creditCardHolderTaxDocument.subscribe(function (value) {
                 typeMaskVat = value.replace(/\D/g, '').length <= 11 ? '000.000.000-009' : '00.000.000/0000-00';
 
@@ -134,6 +143,7 @@
             });
 
             self.creditCardInstallment.subscribe(function (value) {
+                self.addInterest(0);
                 creditCardData.creditCardInstallment = value;
             });
 
@@ -238,6 +248,7 @@
             });
 
             self.creditCardSecondaryInstallment.subscribe(function (value) {
+                self.addInterest(1);
                 creditCardData.creditCardSecondaryInstallment = value;
             });
 
@@ -253,6 +264,30 @@
                 creditCardData.creditCardSecondaryType = value;
                 creditCardData.selectedCardSecondaryType = value;
             });
+        },
+
+        /**
+         * Add Interest in totals
+         * @param {Integer} idx
+         * @returns {void}
+         */
+        addInterest(idx) {
+            var self = this,
+                amount = parseFloat(self.firstPaymentAmount()).toFixed(2),
+                selectInstallment = self.creditCardInstallment();
+
+            if (idx) {
+                amount = parseFloat(self.secondaryPaymentAmount()).toFixed(2),
+                selectInstallment = parseFloat(self.creditCardSecondaryInstallment());
+            }
+
+            if (selectInstallment >= 0) {
+                getnetSetInterest.getnetInterest(amount, idx, selectInstallment);
+            }
+
+            if (!idx) {
+                self.addInterest(1);
+            }
         },
 
         /**

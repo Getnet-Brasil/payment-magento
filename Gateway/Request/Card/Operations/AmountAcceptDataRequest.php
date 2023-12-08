@@ -9,17 +9,15 @@
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
-use Getnet\PaymentMagento\Gateway\Data\Order\OrderAdapterFactory;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
 
 /**
- * Class Amount And Interest Data Request - Payment amount structure.
+ * Class Amount Accept Data Request - Payment amount structure.
  */
-class AmountAndInterestDataRequest implements BuilderInterface
+class AmountAcceptDataRequest implements BuilderInterface
 {
     /**
      * Amount block name.
@@ -32,36 +30,20 @@ class AmountAndInterestDataRequest implements BuilderInterface
     protected $subjectReader;
 
     /**
-     * @var OrderAdapterFactory
-     */
-    protected $orderAdapterFactory;
-
-    /**
      * @var Config
      */
     protected $config;
 
     /**
-     * @var ConfigCc
-     */
-    protected $configCc;
-
-    /**
-     * @param SubjectReader       $subjectReader
-     * @param OrderAdapterFactory $orderAdapterFactory
-     * @param Config              $config
-     * @param ConfigCc            $configCc
+     * @param SubjectReader $subjectReader
+     * @param Config        $config
      */
     public function __construct(
         SubjectReader $subjectReader,
-        OrderAdapterFactory $orderAdapterFactory,
-        Config $config,
-        ConfigCc $configCc
+        Config $config
     ) {
         $this->subjectReader = $subjectReader;
-        $this->orderAdapterFactory = $orderAdapterFactory;
         $this->config = $config;
-        $this->configCc = $configCc;
     }
 
     /**
@@ -85,20 +67,7 @@ class AmountAndInterestDataRequest implements BuilderInterface
 
         $grandTotal = $order->getGrandTotalAmount();
 
-        $payment = $paymentDO->getPayment();
-
-        $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
-
-        $total = $grandTotal;
-
-        $result[self::AMOUNT] = $this->config->formatPrice($total);
-
-        if ($installment > 1) {
-            $storeId = $order->getStoreId();
-            $amountInterest = $this->configCc->getInterestToAmount($installment, $grandTotal, $storeId);
-            $total = $grandTotal + $amountInterest;
-            $result[self::AMOUNT] = $this->config->formatPrice($total);
-        }
+        $result[self::AMOUNT] = $this->config->formatPrice($grandTotal);
 
         return $result;
     }

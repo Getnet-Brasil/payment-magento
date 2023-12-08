@@ -9,7 +9,6 @@
 namespace Getnet\PaymentMagento\Gateway\Request\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
@@ -36,23 +35,15 @@ class AmountRefundDataRequest implements BuilderInterface
     protected $config;
 
     /**
-     * @var ConfigCc
-     */
-    protected $configCc;
-
-    /**
      * @param SubjectReader $subjectReader
      * @param Config        $config
-     * @param ConfigCc      $configCc
      */
     public function __construct(
         SubjectReader $subjectReader,
-        Config $config,
-        ConfigCc $configCc
+        Config $config
     ) {
         $this->subjectReader = $subjectReader;
         $this->config = $config;
-        $this->configCc = $configCc;
     }
 
     /**
@@ -80,20 +71,9 @@ class AmountRefundDataRequest implements BuilderInterface
 
         $totalCreditmemo = $creditmemo->getGrandTotal();
 
-        $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
-
         $result = [
             self::AMOUNT => $this->config->formatPrice($totalCreditmemo),
         ];
-
-        if ($installment > 1) {
-            $storeId = $order->getStoreId();
-            $amountInterest = $this->configCc->getInterestToAmount($installment, $totalCreditmemo, $storeId);
-            $total = $totalCreditmemo + $amountInterest;
-            $result = [
-                self::AMOUNT => $this->config->formatPrice($total),
-            ];
-        }
 
         return $result;
     }

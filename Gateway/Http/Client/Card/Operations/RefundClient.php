@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Getnet\PaymentMagento\Gateway\Http\Client\Card;
+namespace Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
@@ -34,7 +34,7 @@ class RefundClient implements ClientInterface
     /**
      * Amount block name.
      */
-    public const CANCEL_AMOUNT = 'cancel_amount';
+    public const CANCEL_AMOUNT = 'amount';
 
     /**
      * Result Code - Block name.

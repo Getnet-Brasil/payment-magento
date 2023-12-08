@@ -222,6 +222,16 @@ class OrderAdapter implements OrderAdapterInterface
     }
 
     /**
+     * Returns order base getnet interest amount.
+     *
+     * @return float|null
+     */
+    public function getBaseGetnetInterestAmount()
+    {
+        return $this->order->getBaseGetnetInterestAmount();
+    }
+
+    /**
      * Returns order quote id.
      *
      * @return float|null

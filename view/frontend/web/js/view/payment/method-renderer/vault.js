@@ -14,7 +14,8 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/model/url-builder',
     'mage/url',
-    'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment'
+    'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment',
+    'Getnet_PaymentMagento/js/action/checkout/set-interest'
 ], function (
     _,
     $,
@@ -25,7 +26,8 @@ define([
     quote,
     urlBuilder,
     urlFormatter,
-    getnetInstallment
+    getnetInstallment,
+    getnetSetInterest
     ) {
     'use strict';
 
@@ -88,8 +90,16 @@ define([
 
             this._super();
 
+            self.active.subscribe(function (value) {
+                let installmentActive = self.creditCardInstallment() ? self.creditCardInstallment() : 0,
+                    clearInterest = value ? installmentActive : 0;
+
+                getnetSetInterest.getnetInterest(clearInterest);
+            });
+
             self.creditCardInstallment.subscribe(function (value) {
                 creditCardData.creditCardInstallment = value;
+                self.addInterest();
             });
 
             self.creditCardVerificationNumber.subscribe(function (value) {
@@ -119,6 +129,19 @@ define([
             self.creditCardType.subscribe(function (value) {
                 creditCardData.creditCardType = value;
             });
+        },
+
+        /**
+         * Add Interest in totals
+         * @returns {void}
+         */
+        addInterest() {
+            var self = this,
+                selectInstallment = self.creditCardInstallment();
+
+            if (selectInstallment >= 0) {
+                getnetSetInterest.getnetInterest(selectInstallment);
+            }
         },
 
         /**

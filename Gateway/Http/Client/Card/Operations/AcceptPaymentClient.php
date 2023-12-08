@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Getnet\PaymentMagento\Gateway\Http\Client\Card;
+namespace Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
