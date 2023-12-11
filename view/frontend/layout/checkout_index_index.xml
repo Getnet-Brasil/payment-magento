@@ -56,6 +56,26 @@
                                         </item>
                                     </item>
                                 </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="getnet_interest_amount" xsi:type="array">
+                                                            <item name="component"  xsi:type="string">Getnet_PaymentMagento/js/view/checkout/cart/totals/getnet_interest</item>
+                                                            <item name="sortOrder" xsi:type="string">20</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="template" xsi:type="string">Getnet_PaymentMagento/checkout/cart/totals/getnet_interest</item>
+                                                                <item name="title" xsi:type="string" translate="true">Getnet Interest</item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
                             </item>
                         </item>
                     </item>

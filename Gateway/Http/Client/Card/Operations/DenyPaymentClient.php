@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Getnet\PaymentMagento\Gateway\Http\Client\Card;
+namespace Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
 use Magento\Payment\Gateway\Http\ClientInterface;
@@ -59,7 +59,7 @@ class DenyPaymentClient implements ClientInterface
     /**
      * Amount block name.
      */
-    public const CANCEL_AMOUNT = 'cancel_amount';
+    public const CANCEL_AMOUNT = 'amount';
 
     /**
      * @var Api
@@ -84,9 +84,9 @@ class DenyPaymentClient implements ClientInterface
      */
     public function placeRequest(TransferInterface $transferObject)
     {
-        $response = [];
+        $response = [self::RESULT_CODE => 0];
         $request = $transferObject->getBody();
-        $path = 'v1/payments/cancel';
+        $path = 'v2/payments/cancel';
         $paymentId = $request[self::GETNET_PAYMENT_ID];
 
         if ($request[self::DAY_ZERO]) {

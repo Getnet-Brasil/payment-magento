@@ -18,7 +18,7 @@ Detectado Problema, posso usar o QuoteId ele é único até o request aprovado (
 
 ## Testar multistore
 
-[x] Usar duas contas e ver se autenticação persiste por store ou não (tomará que sim), persiste a solução é desativar o cache se for uma multistore
+[x] Usar duas contas e ver se autenticação persiste por store ou não (tomará que sim), persiste a solução é desativar o cache se for uma multistore!
 
 
 ## Tradução

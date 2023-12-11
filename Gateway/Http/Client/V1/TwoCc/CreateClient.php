@@ -71,7 +71,7 @@ class CreateClient implements ClientInterface
         $response = array_merge(
             [
                 self::RESULT_CODE => $status,
-                self::EXT_ORD_ID  => $responseBody['combined_id'] ? $responseBody['combined_id'] : null,
+                self::EXT_ORD_ID  => isset($responseBody['combined_id']) ? $responseBody['combined_id'] : null,
             ],
             $responseBody
         );

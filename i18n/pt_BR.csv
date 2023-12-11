@@ -1,9 +1,12 @@
+"Installments Interest","Juros de Parcelamento"
+"Discount in cash","Desconto à vista"
 "x of ","x de "
 "Order not found.","Pedido não encontrado."
 "Not available.","Não disponível."
 "Order Canceled.","Pedido Cancelado."
 "Transaction has been declined. Please try again later.","Transação não pode ser processada. Por favor tente de novo mais tarde."
 "Authentication Failed, please try again.","Falha de Autenticação, por favor tente novamente."
+"Payment is not New.","Esse não é um pagamento no state New."
 "Payment data object should be provided","Informações para pagamento indisponíveis."
 "Payment for order #%1","Pagamento do pedido #%1"
 "Payment link","Link de pagamento"
@@ -12,6 +15,7 @@
 "Awaiting payment of the Getpay.","Aguardando pagamento via Getpay."
 "Awaiting payment of the Wallet.","Aguardando pagamento via Wallet."
 "Gateway rejected the transaction.","Transação rejeitada."
+"Payment Erro","Erro ao processar pagamento"
 Credit,Crédito
 Debit,Débito
 Pix,Pix
@@ -64,6 +68,7 @@ Service,Service
 "Juros Simples","Juros Simples"
 "Juros Composto","Juros Composto"
 "Cart %1 doesn't contain products","O carrinho %1 não contém produtos"
+"Unable to save interest.","Não foi possível salvar o juros de parcelamento."
 Finished,Concluido
 "Token Refresh Successfully.","Token renovado com sucesso."
 "Error saving information in database: %1","Erro ao salvar a informação no banco de dados: %1"
@@ -151,6 +156,7 @@ Credentials,Credenciais
 "Statement Descriptor","Nome da Loja"
 Environment,Ambiente
 "Dynamic Mcc","Dinâmico Mcc"
+"Leave it blank if you don't have it.","Deixe em branco, caso não tenha."
 Environment,Ambiente
 "Seller Id - production","Seller Id - Produção"
 "Client Id - production","Client Id - Produção"
@@ -159,6 +165,7 @@ Environment,Ambiente
 "Client Id - homolog","Client Id - Homologação"
 "Client Secret - homolog","Client Secret - Homologação"
 Debug,Debug
+"Use Auth in Cache","Usar cache para armazenar a Autenticação"
 "Cartão de Crédito <sup>V2</sup>","Cartão de Crédito <sup>V2</sup>"
 "<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>Este produto não está habilitado por padrão, você precisa contratá-lo antes de ativá-lo.</div></div></div></div>"
 "Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.","Receba transações com cartões de crédito American Express, Elo, Mastercard, Visa e Hipercard."
@@ -213,7 +220,6 @@ Getpay,Getpay
 Notification,Notificação
 "Receive status tracking for your transactions.","Receba atualizações de status de suas transações."
 Developer,Desenvolvedor
-Debug,Debug
 "Attribute Relationship Definition","Definição de Relacionamento de Campos"
 "List the attributes of your Magento the data expected by our API.","Liste os campos do seu Magento com os dados esperados pela nossa API."
 "The CPF/CNPJ will be an attribute obtained from the","O CPF/CNPJ será um atributo obtido do"
@@ -222,6 +228,7 @@ Debug,Debug
 "The address district is","O campo bairro é a"
 "The address complement is","O campo de complemento é a"
 "Erro genérico.","Erro genérico."
+"Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.","Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento."
 "O pagamento por boleto não está habilitado para esse estabelecimento.","O pagamento por boleto não está habilitado para esse estabelecimento."
 "Valor da entrada maior ou igual ao valor da transação.","Valor da entrada maior ou igual ao valor da transação."
 "Valor da parcela inválido.","Valor da parcela inválido."
@@ -356,6 +363,7 @@ Timeout.,Timeout.
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500."
+"Getnet Interest","Getnet Juros de Parcelamento"
 cc_installments,Parcelamento
 cc_type,Bandeira
 cc_number,Número

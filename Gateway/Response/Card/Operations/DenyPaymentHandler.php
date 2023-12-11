@@ -64,7 +64,7 @@ class DenyPaymentHandler implements HandlerInterface
             throw new InvalidArgumentException('Payment data object should be provided');
         }
 
-        if ($response[self::RESULT_CODE]) {
+        if (isset($response[self::RESULT_CODE])) {
             $paymentDO = $handlingSubject['payment'];
             $payment = $paymentDO->getPayment();
             $paymentId = $response[self::GETNET_PAYMENT_ID];
