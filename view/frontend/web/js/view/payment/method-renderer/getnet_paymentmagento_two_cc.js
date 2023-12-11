@@ -124,11 +124,9 @@
 
             tel.mask('(00)00000-0000', { clearIfNotMatch: true });
 
-            self.active.subscribe(function (value) {
-                let installmentActive = self.creditCardInstallment() ? self.creditCardInstallment() : 0,
-                    clearInterest = value ? installmentActive : 0;
-
-                getnetSetInterest.getnetInterest(clearInterest);
+            self.active.subscribe(() => {
+                self.creditCardInstallment(null);
+                getnetSetInterest.getnetInterest(0);
             });
 
             self.creditCardHolderTaxDocument.subscribe(function (value) {
@@ -144,6 +142,7 @@
 
             self.creditCardInstallment.subscribe(function (value) {
                 self.addInterest(0);
+                self.creditCardSecondaryInstallment(null);
                 creditCardData.creditCardInstallment = value;
             });
 
@@ -278,15 +277,11 @@
 
             if (idx) {
                 amount = parseFloat(self.secondaryPaymentAmount()).toFixed(2),
-                selectInstallment = parseFloat(self.creditCardSecondaryInstallment());
+                selectInstallment = parseFloat(self.creditCardSecondahisryInstallment());
             }
 
             if (selectInstallment >= 0) {
                 getnetSetInterest.getnetInterest(amount, idx, selectInstallment);
-            }
-
-            if (!idx) {
-                self.addInterest(1);
             }
         },
 

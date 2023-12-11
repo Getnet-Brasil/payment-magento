@@ -1,9 +1,12 @@
+"Installments Interest","Installments Interest"
+"Discount in cash","Discount in cash"
 "x of ","x of "
 "Order not found.","Order not found."
 "Not available.","Not available."
 "Order Canceled.","Order Canceled."
 "Transaction has been declined. Please try again later.","Transaction has been declined. Please try again later."
 "Authentication Failed, please try again.","Authentication Failed, please try again."
+"Payment is not New.","Payment is not New."
 "Payment data object should be provided","Payment data object should be provided"
 "Payment for order #%1","Payment for order #%1"
 "Payment link","Payment link"
@@ -11,6 +14,7 @@
 "Awaiting payment of the Pix.","Awaiting payment of the Pix."
 "Awaiting payment of the Getpay.","Awaiting payment of the Getpay."
 "Awaiting payment of the Wallet.","Awaiting payment of the Wallet."
+"Payment Erro","Payment Erro"
 "Gateway rejected the transaction.","Gateway rejected the transaction."
 Credit,Credit
 Debit,Debit
@@ -59,6 +63,7 @@ Service,Service
 "Juros Simples","Juros Simples"
 "Juros Composto","Juros Composto"
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
+"Unable to save interest.","Unable to save interest."
 Finished,Finished
 "Unable to get order transaction","Unable to get order transaction"
 "Unable to get order transaction marketplace","Unable to get order transaction marketplace"
@@ -143,6 +148,7 @@ Credentials,Credentials
 "Configure the settings for your store.","Configure the settings for your store."
 "Statement Descriptor","Statement Descriptor"
 "Dynamic Mcc","Dynamic Mcc"
+"Leave it blank if you don't have it.","Leave it blank if you don't have it."
 Environment,Environment
 "Seller Id - production","Seller Id - production"
 "Client Id - production","Client Id - production"
@@ -205,6 +211,7 @@ Notification,Notification
 "Receive status tracking for your transactions.","Receive status tracking for your transactions."
 Developer,Developer
 Debug,Debug
+"Use Auth in Cache","Use Auth in Cache"
 "Attribute Relationship Definition","Attribute Relationship Definition"
 "List the attributes of your Magento the data expected by our API.","List the attributes of your Magento the data expected by our API."
 "The CPF/CNPJ will be an attribute obtained from the","The CPF/CNPJ will be an attribute obtained from the"
@@ -215,7 +222,7 @@ Debug,Debug
 "Getnet Cache","Getnet Cache"
 "Cache for oAuth","Cache for oAuth"
 "Erro genérico.","Erro genérico."
-"Essa forma de pagamento não está habilitada para esse estabelecimento.","Essa forma de pagamento não está habilitada para esse estabelecimento."
+"Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.","Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento."
 "Valor da entrada maior ou igual ao valor da transação.","Valor da entrada maior ou igual ao valor da transação."
 "Valor da parcela inválido.","Valor da parcela inválido."
 "Contatar emissor.","Contatar emissor."
@@ -350,3 +357,27 @@ Timeout.,Timeout.
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500."
+"Getnet Interest","Getnet Interest"
+cc_installments,Installment
+cc_type,Type
+cc_number,Number
+cc_cardholder_name,Holder
+cc_holder_tax_document,Holder CPF/CNPJ
+cc_holder_phone,Holder Phone
+device,Device
+terminal_nsu,Terminal NSU
+authorization_code,Authorization Code
+acquirer_transaction_id,Acquirer Transaction Id
+transaction_id,Transaction Id
+payment_id,Payment Id
+cc_payment_first_amount,First Amount
+payment_id_secondary,Payment Id Secondary
+cc_payment_secondary_amount,Amount Secondary
+cc_secondary_installments,Installments Secondary
+cc_secondary_type,Type Secondary
+cc_secondary_number,Number Secundário
+cc_secondary_cardholder_name,Holder Secondary
+terminal_nsu_secondary,Terminal NSU Secondary
+authorization_code_secondary,Authorization Code Secondary
+acquirer_transaction_id_secondary,Acquirer Transaction Id Secondary
+transaction_id_secondary,Transaction Id Secondary
