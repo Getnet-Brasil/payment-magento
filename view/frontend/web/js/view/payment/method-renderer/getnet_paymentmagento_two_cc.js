@@ -192,22 +192,7 @@
          * @returns {void}
          */
         subscribeDataTwoCard() {
-            var self = this,
-                inputCcNumber = $('#getnet_paymentmagento_two_cc_secondary_number');
-
-            self.selectedCardSecondaryType.subscribe(function (value) {
-                inputCcNumber.unmask();
-                if (value === 'VI' || value === 'MC' || value === 'ELO' || value === 'HC' || value === 'HI') {
-                    inputCcNumber.mask('0000 0000 0000 0000');
-                }
-                if (value === 'DN') {
-                    inputCcNumber.mask('0000 000000 0000');
-                }
-                if (value === 'AE') {
-                    inputCcNumber.mask('0000 000000 00000');
-                }
-                creditCardData.selectedCardSecondaryType = value;
-            });
+            var self = this;
 
             self.creditCardSecondaryNumber.subscribe(function (value) {
                 var result;
@@ -277,7 +262,7 @@
 
             if (idx) {
                 amount = parseFloat(self.secondaryPaymentAmount()).toFixed(2),
-                selectInstallment = parseFloat(self.creditCardSecondahisryInstallment());
+                selectInstallment = parseFloat(self.creditCardSecondaryInstallment());
             }
 
             if (selectInstallment >= 0) {
