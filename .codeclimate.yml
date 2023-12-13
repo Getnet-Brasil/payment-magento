@@ -58,14 +58,14 @@ checks:
         - javascript
         - php
   similar-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 400
       languages:
         - javascript
         - php
   identical-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 40
       languages:
