@@ -272,8 +272,6 @@
                 <item name="data_customer_address" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Customer\CustomerBillingAddressDataRequest</item>
                 <item name="data_customer_taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Customer\TaxDocumentDataRequest</item>
                 <item name="data_boleto" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Boleto\Data\Boleto\PaymentDataRequest</item>
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -322,8 +320,6 @@
                 <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\CurrencyDataRequest</item>
                 <item name="order_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\OrderIdDataRequest</item>
                 <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\CustomerIdDataRequest</item>
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -376,8 +372,6 @@
                 <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\TaxDocumentDataRequest</item>
                 <item name="device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\DeviceDataRequest</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Wallet\WalletPaymentDataRequest</item>
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -454,8 +448,6 @@
 
                 <item name="order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Getpay\OrderDataGetpayRequest</item>
                 <item name="payment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\Getpay\GetpayPaymentDataRequest</item>
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -542,9 +534,6 @@
                 <item name="data_additional_data_customer_address" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer\AddressDataRequest</item>
 
                 <item name="data_additional_data_order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Order\Items\ItemsDataRequest</item>
-                
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -647,9 +636,6 @@
                 <item name="data_additional_data_customer_address" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer\AddressDataRequest</item>
 
                 <item name="data_additional_data_order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Order\Items\ItemsDataRequest</item>
-
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
@@ -723,8 +709,6 @@
                 <item name="shippings" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\TwoCc\ShippingsDataRequest</item>
                 <item name="taxDocument" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\TwoCc\TaxDocumentDataRequest</item>
                 <item name="paymentMethod" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\V1\TwoCc\TwoCcPaymentDataRequest</item>
-
-                <item name="splitPayment" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\SplitPaymentDataRequest</item>
             </argument>
         </arguments>
     </virtualType>
