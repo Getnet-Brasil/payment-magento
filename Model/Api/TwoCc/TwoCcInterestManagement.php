@@ -10,17 +10,17 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api\TwoCc;
 
+use Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface;
+use Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface;
+use Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface;
+use Getnet\PaymentMagento\Api\TwoCc\TwoCcInterestManagementInterface;
+use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
+use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
-use Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface;
-use Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface;
-use Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface;
-use Getnet\PaymentMagento\Api\TwoCc\TwoCcInterestManagementInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 
 /**
  * Class Two Cc Interest Management - Generate Interest in order.
@@ -82,10 +82,10 @@ class TwoCcInterestManagement implements TwoCcInterestManagementInterface
     /**
      * Generate List Installments.
      *
-     * @param int                                                               $cartId
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface      $amountForCalc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface         $idxInTwoCc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface   $twoCcInstallment
+     * @param int                                                             $cartId
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface    $amountForCalc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface       $idxInTwoCc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface $twoCcInstallment
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException

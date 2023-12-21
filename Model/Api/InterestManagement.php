@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api;
 
+use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
+use Getnet\PaymentMagento\Api\InterestManagementInterface;
+use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
+use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
-use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
-use Getnet\PaymentMagento\Api\InterestManagementInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use Getnet\PaymentMagento\Gateway\Config\ConfigCc;
 
 /**
  * Class List Interest Management - Generate Interest in order.

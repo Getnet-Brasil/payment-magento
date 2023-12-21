@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api\TwoCc\Data;
 
-use Magento\Framework\Api\AbstractSimpleObject;
 use Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface;
+use Magento\Framework\Api\AbstractSimpleObject;
 
 /**
  * Class Two Cc Installment - Model data.

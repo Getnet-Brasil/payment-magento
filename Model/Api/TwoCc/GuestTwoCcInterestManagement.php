@@ -10,13 +10,12 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api\TwoCc;
 
-use Magento\Quote\Model\QuoteIdMaskFactory;
-use Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface;
 use Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface;
+use Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface;
 use Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface;
-
 use Getnet\PaymentMagento\Api\TwoCc\GuestTwoCcInterestManagementInterface;
 use Getnet\PaymentMagento\Api\TwoCc\TwoCcInterestManagementInterface;
+use Magento\Quote\Model\QuoteIdMaskFactory;
 
 /**
  * Class Two Cc Interest Management - Generate Interest in order.
@@ -50,10 +49,10 @@ class GuestTwoCcInterestManagement implements GuestTwoCcInterestManagementInterf
     /**
      * Generate List Installments.
      *
-     * @param int                                                               $cartId
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface      $amountForCalc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface         $idxInTwoCc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface   $twoCcInstallment
+     * @param int                                                             $cartId
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface    $amountForCalc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface       $idxInTwoCc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface $twoCcInstallment
      *
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException

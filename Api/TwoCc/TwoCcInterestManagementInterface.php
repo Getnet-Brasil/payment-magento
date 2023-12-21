@@ -20,10 +20,10 @@ interface TwoCcInterestManagementInterface
     /**
      * Generate the list installments by credit card number.
      *
-     * @param int                                                               $cartId
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface      $amountForCalc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface         $idxInTwoCc
-     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface   $twoCcInstallment
+     * @param int                                                             $cartId
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface    $amountForCalc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface       $idxInTwoCc
+     * @param \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface $twoCcInstallment
      *
      * @return \Magento\Quote\Api\Data\TotalsInterface Quote totals data.
      */

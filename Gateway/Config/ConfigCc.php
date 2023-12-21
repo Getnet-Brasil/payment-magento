@@ -462,7 +462,7 @@ class ConfigCc extends PaymentConfig
 
         if ($interest) {
             $interest = $interest / 100;
-            $valinterest = $amount * pow((1 + $interest), $installment) - $amount;
+            $valinterest = $amount * pow(1 + $interest, $installment) - $amount;
         }
 
         return $valinterest;

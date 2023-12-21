@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api\Data;
 
-use Magento\Framework\Api\AbstractSimpleObject;
 use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
+use Magento\Framework\Api\AbstractSimpleObject;
 
 /**
  * Class Installment Selected - Model data.

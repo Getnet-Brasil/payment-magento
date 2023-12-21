@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model\Api;
 
-use Magento\Quote\Model\QuoteIdMaskFactory;
 use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
 use Getnet\PaymentMagento\Api\GuestInterestManagementInterface;
 use Getnet\PaymentMagento\Api\InterestManagementInterface;
+use Magento\Quote\Model\QuoteIdMaskFactory;
 
 /**
  * Class Guest Interest Management - Generate interest.

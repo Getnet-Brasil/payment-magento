@@ -115,12 +115,11 @@ class TaxDocumentDataRequest implements BuilderInterface
         }
 
         if ($typeDocument) {
-            $result[CardInitSchemaDataRequest::DATA]
-            [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-            [CustomerDataRequest::CUSTOMER] = [
-                    self::TAX_DOCUMENT        => $typeDocument,
-                    self::TAX_DOCUMENT_NUMBER => $taxDocument,
-                ];
+            // phpcs:ignore Generic.Files.LineLength
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][CustomerDataRequest::CUSTOMER] = [
+                self::TAX_DOCUMENT        => $typeDocument,
+                self::TAX_DOCUMENT_NUMBER => $taxDocument,
+            ];
         }
 
         return $result;

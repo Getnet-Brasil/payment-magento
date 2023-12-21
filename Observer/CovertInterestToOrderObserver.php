@@ -8,9 +8,9 @@
 
 namespace Getnet\PaymentMagento\Observer;
 
+use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Getnet\PaymentMagento\Api\Data\InstallmentSelectedInterface;
 
 /**
  * Class Covert Interest To Order Observer - Observer Class from Covert Interest To Order.

@@ -146,36 +146,33 @@ class AddressDataRequest implements BuilderInterface
 
         $billingAddress = $orderAdapter->getBillingAddress();
         if ($billingAddress) {
-            $result[CardInitSchemaDataRequest::DATA]
-            [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-            [CustomerDataRequest::CUSTOMER][self::BILLING_ADDRESS] = [
-                    self::POSTAL_CODE       => $billingAddress->getPostcode(),
-                    self::STREET            => $this->config->getValueForAddress($billingAddress, self::STREET),
-                    self::NUMBER            => $this->config->getValueForAddress($billingAddress, self::NUMBER),
-                    self::DISTRICT          => $this->config->getValueForAddress($billingAddress, self::DISTRICT),
-                    self::COMPLEMENT        => $this->config->getValueForAddress($billingAddress, self::COMPLEMENT),
-                    self::LOCALITY          => $billingAddress->getCity(),
-                    self::STATE             => $billingAddress->getRegionCode(),
-                    self::COUNTRY_CODE      => 'BRA',
-                    self::TYPE              => 'COBRANCA',
-                ];
+            // phpcs:ignore Generic.Files.LineLength
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][CustomerDataRequest::CUSTOMER][self::BILLING_ADDRESS] = [
+                self::POSTAL_CODE       => $billingAddress->getPostcode(),
+                self::STREET            => $this->config->getValueForAddress($billingAddress, self::STREET),
+                self::NUMBER            => $this->config->getValueForAddress($billingAddress, self::NUMBER),
+                self::DISTRICT          => $this->config->getValueForAddress($billingAddress, self::DISTRICT),
+                self::COMPLEMENT        => $this->config->getValueForAddress($billingAddress, self::COMPLEMENT),
+                self::LOCALITY          => $billingAddress->getCity(),
+                self::STATE             => $billingAddress->getRegionCode(),
+                self::COUNTRY_CODE      => 'BRA',
+                self::TYPE              => 'COBRANCA',
+            ];
         }
 
         $shippingAddress = $orderAdapter->getShippingAddress();
         if ($shippingAddress) {
-            $result[CardInitSchemaDataRequest::DATA]
-            [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-            [CustomerDataRequest::CUSTOMER]
-            [self::SHIPPING][self::ADDRESS] = [
-                    self::POSTAL_CODE       => $shippingAddress->getPostcode(),
-                    self::STREET            => $this->config->getValueForAddress($shippingAddress, self::STREET),
-                    self::NUMBER            => $this->config->getValueForAddress($shippingAddress, self::NUMBER),
-                    self::DISTRICT          => $this->config->getValueForAddress($shippingAddress, self::DISTRICT),
-                    self::COMPLEMENT        => $this->config->getValueForAddress($shippingAddress, self::COMPLEMENT),
-                    self::LOCALITY          => $shippingAddress->getCity(),
-                    self::STATE             => $shippingAddress->getRegionCode(),
-                    self::COUNTRY_CODE      => 'BRA',
-                ];
+            // phpcs:ignore Generic.Files.LineLength
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][CustomerDataRequest::CUSTOMER][self::SHIPPING][self::ADDRESS] = [
+                self::POSTAL_CODE       => $shippingAddress->getPostcode(),
+                self::STREET            => $this->config->getValueForAddress($shippingAddress, self::STREET),
+                self::NUMBER            => $this->config->getValueForAddress($shippingAddress, self::NUMBER),
+                self::DISTRICT          => $this->config->getValueForAddress($shippingAddress, self::DISTRICT),
+                self::COMPLEMENT        => $this->config->getValueForAddress($shippingAddress, self::COMPLEMENT),
+                self::LOCALITY          => $shippingAddress->getCity(),
+                self::STATE             => $shippingAddress->getRegionCode(),
+                self::COUNTRY_CODE      => 'BRA',
+            ];
         }
 
         return $result;

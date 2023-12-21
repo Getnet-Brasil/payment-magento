@@ -130,14 +130,13 @@ class ItemsDataRequest implements BuilderInterface
                 continue;
             }
 
-            $result[CardInitSchemaDataRequest::DATA]
-            [AdditionalInitSchemaDataRequest::ADDITIONAL_DATA]
-            [self::ORDER][self::ITEMS][] = [
-                    self::ITEM_NAME     => $item->getName(),
-                    self::ITEM_PRICE    => $this->config->formatPrice($item->getPrice()),
-                    self::ITEM_QUANTITY => (int) $item->getQtyOrdered(),
-                    self::ITEM_SKU      => $item->getSku(),
-                ];
+            // phpcs:ignore Generic.Files.LineLength
+            $result[CardInitSchemaDataRequest::DATA][AdditionalInitSchemaDataRequest::ADDITIONAL_DATA][self::ORDER][self::ITEMS][] = [
+                self::ITEM_NAME     => $item->getName(),
+                self::ITEM_PRICE    => $this->config->formatPrice($item->getPrice()),
+                self::ITEM_QUANTITY => (int) $item->getQtyOrdered(),
+                self::ITEM_SKU      => $item->getSku(),
+            ];
         }
 
         return $result;
