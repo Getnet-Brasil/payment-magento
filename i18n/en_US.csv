@@ -1,14 +1,20 @@
+"Installments Interest","Installments Interest"
+"Discount in cash","Discount in cash"
 "x of ","x of "
 "Order not found.","Order not found."
 "Not available.","Not available."
 "Order Canceled.","Order Canceled."
 "Transaction has been declined. Please try again later.","Transaction has been declined. Please try again later."
+"Authentication Failed, please try again.","Authentication Failed, please try again."
+"Payment is not New.","Payment is not New."
+"Payment data object should be provided","Payment data object should be provided"
 "Payment for order #%1","Payment for order #%1"
 "Payment link","Payment link"
 "Awaiting payment of the boleto.","Awaiting payment of the boleto."
-"Awaiting payment of the Getpay.","Awaiting payment of the Getpay."
 "Awaiting payment of the Pix.","Awaiting payment of the Pix."
+"Awaiting payment of the Getpay.","Awaiting payment of the Getpay."
 "Awaiting payment of the Wallet.","Awaiting payment of the Wallet."
+"Payment Erro","Payment Erro"
 "Gateway rejected the transaction.","Gateway rejected the transaction."
 Credit,Credit
 Debit,Debit
@@ -16,23 +22,28 @@ Pix,Pix
 "Qr Code","Qr Code"
 Production,Production
 Homolog,Homolog
-"Sandbox - Environment for tests","Sandbox - Environment for tests"
 "Attention, a new cookie will be created.","Attention, a new cookie will be created."
 "Adjust your cookie information page.","Adjust your cookie information page."
 "New cookie name: ""thx_guid""","New cookie name: ""thx_guid"""
 "Description of use: User identification cookie with Getnet payment method.","Description of use: User identification cookie with Getnet payment method."
 "Configure credentials first","Configure credentials first"
-"Payment callback PIX","Payment callback PIX"
-"Enter your store url followed by ""getnet/notification/pix/seller_id/%1/","Enter your store url followed by ""getnet/notification/pix/seller_id/%1/"
-"Example: https://yourstoreurl.com/getnet/notification/pix/seller_id/%1/","Example: https://yourstoreurl.com/getnet/notification/pix/seller_id/%1/"
-"Callback from boleto","Callback from boleto"
-"Enter your store url followed by ""getnet/notification/boleto/seller_id/%1/","Enter your store url followed by ""getnet/notification/boleto/seller_id/%1/"
-"Example: https://yourstoreurl.com/getnet/notification/boleto/seller_id/%1/","Example: https://yourstoreurl.com/getnet/notification/boleto/seller_id/%1/"
+"Register the Callback URL","Register the Callback URL"
+"1st - Access your Getnet account dashboard.","1st - Access your Getnet account dashboard."
+"2nd - Look for Products and Services.","2nd - Look for Products and Services."
+"3rd - In any Callback request, paste the URL provided: <strong>%1</strong>","3rd - In any Callback request, paste the URL provided: <strong>%1</strong>"
+"After registering your URL, you need to request approval in Getnet firewall.","After registering your URL, you need to request approval in Getnet firewall."
+"To do this, send an email to %1.","To do this, send an email to %1."
+"Informing the approval of the URL you registered in the dashboard.","Informing the approval of the URL you registered in the dashboard."
 Authorize,Authorize
 "Authorize and Capture","Authorize and Capture"
 Order,Order
 Configure,Configure
 Close,Close
+"2:30 minutes","2:30 minutes"
+"15 minutes","15 minutes"
+"30 minutes - recommended","30 minutes - recommended"
+"This product is not enabled by default.","This product is not enabled by default."
+"To use it, <b>prior contracting is necessary</b>.","To use it, <b>prior contracting is necessary</b>."
 "Cash Carry","Cash Carry"
 "Digital Content","Digital Content"
 "Digital Goods","Digital Goods"
@@ -52,12 +63,10 @@ Service,Service
 "Juros Simples","Juros Simples"
 "Juros Composto","Juros Composto"
 "Cart %1 doesn't contain products","Cart %1 doesn't contain products"
+"Unable to save interest.","Unable to save interest."
 Finished,Finished
-"Token Refresh Successfully.","Token Refresh Successfully."
-"Error saving information in database: %1","Error saving information in database: %1"
-"Refresh Token Error: %1","Refresh Token Error: %1"
-"Token update request error: %1","Token update request error: %1"
 "Unable to get order transaction","Unable to get order transaction"
+"Unable to get order transaction marketplace","Unable to get order transaction marketplace"
 "Releasing payment from seller %1, for date of %2","Releasing payment from seller %1, for date of %2"
 "Payment release requested successfully","Payment release requested successfully"
 "Error: %1, description: %2","Error: %1, description: %2"
@@ -139,6 +148,7 @@ Credentials,Credentials
 "Configure the settings for your store.","Configure the settings for your store."
 "Statement Descriptor","Statement Descriptor"
 "Dynamic Mcc","Dynamic Mcc"
+"Leave it blank if you don't have it.","Leave it blank if you don't have it."
 Environment,Environment
 "Seller Id - production","Seller Id - production"
 "Client Id - production","Client Id - production"
@@ -146,16 +156,12 @@ Environment,Environment
 "Seller Id - homolog","Seller Id - homolog"
 "Client Id - homolog","Client Id - homolog"
 "Client Secret - homolog","Client Secret - homolog"
-"Seller Id - Sandbox","Seller Id - Sandbox"
-"Client Id - Sandbox","Client Id - Sandbox"
-"Client Secret - Sandbox","Client Secret - Sandbox"
-Debug,Debug
-"Attention, you cannot use debug in production mode.","Attention, you cannot use debug in production mode."
-"Cartão de Crédito","Cartão de Crédito"
+"Cartão de Crédito <sup>V2</sup>","Cartão de Crédito <sup>V2</sup>"
 "Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.","Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions."
 Enabled,Enabled
 Title,Title
 "Enabled Vault","Enabled Vault"
+"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>"
 "Credit Card Types","Credit Card Types"
 "Minimum Order Total","Minimum Order Total"
 "Maximum Order Total","Maximum Order Total"
@@ -182,9 +188,11 @@ Title,Title
 "Interest on the 11nd tranche","Interest on the 11nd tranche"
 "Interest on the 12nd tranche","Interest on the 12nd tranche"
 "2 Cartões de Crédito","2 Cartões de Crédito"
+"PIX <sup>V2</sup>","PIX <sup>V2</sup>"
 "Instant payment with automatic status consolidation, offer a fast and convenient method.","Instant payment with automatic status consolidation, offer a fast and convenient method."
+Expiration,Expiration
 "Instruction during checkout","Instruction during checkout"
-"Boleto Bancário","Boleto Bancário"
+"Boleto Bancário <sup>V2</sup>","Boleto Bancário <sup>V2</sup>"
 "Boleto registered, fully integrated into your Santander account.","Boleto registered, fully integrated into your Santander account."
 "Days due","Days due"
 "Consecutive days.","Consecutive days."
@@ -201,6 +209,9 @@ Getpay,Getpay
 "Fraud Manager","Fraud Manager"
 Notification,Notification
 "Receive status tracking for your transactions.","Receive status tracking for your transactions."
+Developer,Developer
+Debug,Debug
+"Use Auth in Cache","Use Auth in Cache"
 "Attribute Relationship Definition","Attribute Relationship Definition"
 "List the attributes of your Magento the data expected by our API.","List the attributes of your Magento the data expected by our API."
 "The CPF/CNPJ will be an attribute obtained from the","The CPF/CNPJ will be an attribute obtained from the"
@@ -208,8 +219,10 @@ Notification,Notification
 "The address number is","The address number is"
 "The address district is","The address district is"
 "The address complement is","The address complement is"
+"Getnet Cache","Getnet Cache"
+"Cache for oAuth","Cache for oAuth"
 "Erro genérico.","Erro genérico."
-"Essa forma de pagamento não está habilitada para esse estabelecimento.","Essa forma de pagamento não está habilitada para esse estabelecimento."
+"Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.","Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento."
 "Valor da entrada maior ou igual ao valor da transação.","Valor da entrada maior ou igual ao valor da transação."
 "Valor da parcela inválido.","Valor da parcela inválido."
 "Contatar emissor.","Contatar emissor."
@@ -322,6 +335,7 @@ Timeout.,Timeout.
 "Transação negada. Cód: 0700.","Transação negada. Cód: 0700."
 "Transação negada. Cód: 2000.","Transação negada. Cód: 2000."
 "Transação negada. Cód: 480.","Transação negada. Cód: 480."
+"Transação negada. Cód: 481.","Transação negada. Cód: 481."
 "Transação enviada com o campo ""amount"" preenchido com o valor nulo ou inválido. Cód: 0150.","Transação enviada com o campo ""amount"" preenchido com o valor nulo ou inválido. Cód: 0150."
 "Transação enviada com o campo ""required"" preenchido com o valor nulo ou inválido. Cód: 0902.","Transação enviada com o campo ""required"" preenchido com o valor nulo ou inválido. Cód: 0902."
 "Transação enviada com o campo ""required"" preenchido com o valor nulo ou inválido. Cód: 101.","Transação enviada com o campo ""required"" preenchido com o valor nulo ou inválido. Cód: 101."
@@ -343,6 +357,7 @@ Timeout.,Timeout.
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500."
+"Getnet Interest","Getnet Interest"
 cc_installments,Installment
 cc_type,Type
 cc_number,Number

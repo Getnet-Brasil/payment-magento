@@ -87,6 +87,7 @@ class FetchTransactionOrderGetpay
 
             try {
                 $payment->update();
+                $loadedOrder->save();
                 $this->logger->debug([
                     'cron'   => 'FetchTransactionOrderGetpay',
                     'type'   => ConfigGetpay::METHOD,

@@ -1,15 +1,21 @@
+"Installments Interest","Juros de Parcelamento"
+"Discount in cash","Desconto à vista"
 "x of ","x de "
 "Order not found.","Pedido não encontrado."
 "Not available.","Não disponível."
 "Order Canceled.","Pedido Cancelado."
 "Transaction has been declined. Please try again later.","Transação não pode ser processada. Por favor tente de novo mais tarde."
+"Authentication Failed, please try again.","Falha de Autenticação, por favor tente novamente."
+"Payment is not New.","Esse não é um pagamento no state New."
+"Payment data object should be provided","Informações para pagamento indisponíveis."
 "Payment for order #%1","Pagamento do pedido #%1"
 "Payment link","Link de pagamento"
 "Awaiting payment of the boleto.","Aguardando pagamento do Boleto."
-"Awaiting payment of the Getpay.","Aguardando pagamento via Getpay."
 "Awaiting payment of the Pix.","Aguardando pagamento do Pix."
+"Awaiting payment of the Getpay.","Aguardando pagamento via Getpay."
 "Awaiting payment of the Wallet.","Aguardando pagamento via Wallet."
 "Gateway rejected the transaction.","Transação rejeitada."
+"Payment Erro","Erro ao processar pagamento"
 Credit,Crédito
 Debit,Débito
 Pix,Pix
@@ -23,16 +29,26 @@ Homolog,Homologação
 "Description of use: User identification cookie with Getnet payment method.","Descrição de uso: Cookie de identificação do usuário com método de pagamento Getnet."
 "Payment callback PIX","Callback de pagamento PIX"
 "Configure credentials first","Configure primeiro a suas credenciais"
-"Enter your store url followed by ""getnet/notification/pix/seller_id/%1/","Informe a url da loja seguida de ""getnet/notification/pix/seller_id/%1/"
-"Example: https://yourstoreurl.com/getnet/notification/pix/seller_id/%1/","Exemplo: https://urldaloja.com.br/getnet/notification/pix/seller_id/%1/"
-"Callback from boleto","Callback do boleto"
-"Enter your store url followed by ""getnet/notification/boleto/seller_id/%1/","Informe a url da loja seguida de ""getnet/notification/boleto/seller_id/%1/"
-"Example: https://yourstoreurl.com/getnet/notification/boleto/seller_id/%1/","Exemplo: https://urldaloja.com.br/getnet/notification/boleto/seller_id/%1/"
+"Register the Callback URL","Cadastrar URL de Callback"
+"1st - Access your Getnet account dashboard.","1º - Acesse o Painel da sua conta na Getnet."
+"2nd - Look for Products and Services.","2º - Procure por Produtos e Serviços."
+"3rd - In any Callback request, paste the URL provided: <strong>%1</strong>","3ª - Em qualquer solicitação de Callback, cole a url informada: <strong>%1</strong>"
+"After registering your URL, you need to request approval in Getnet firewall.","Após cadastrar a sua url você precisa solicitar a liberação no firewall da Getnet."
+"To do this, send an email to %1.","Para isso envie um email para %1."
+"Informing the approval of the URL you registered in the dashboard.","Informando a liberação da URL que cadastrou no painel."
 Authorize,Autorização
 "Authorize and Capture","Autorização e Captura"
 Order,Pedido
 Configure,Configurar
 Close,Fechar
+"2:30 minutes","2:30 minutos"
+"15 minutes","15 minutos"
+"30 minutes - recommended","30 minutos - recomendado"
+"Please get in touch with your Getnet representative.","Esse produto não é habilitado por padrão, contrate com seu representante Getnet."
+"This product is not enabled by default, you need to contract it before activating it.","Esse produto não é habilitado por padrão, contrate com seu representante Getnet."
+"This product is not enabled by default.","Esse produto não é habilitado por padrão."
+"To use it, <b>prior contracting is necessary</b>.","Para usa-lo <b>é necessário prévia contratação</b>, entre em contato com seu representante da Getnet."
+"Please get in touch with your Getnet representative.","Por favor, contacte seu representante Getnet."
 "Cash Carry","Transporte de dinheiro"
 "Digital Content","Conteúdo digital"
 "Digital Goods","Produtos digitais"
@@ -52,6 +68,7 @@ Service,Service
 "Juros Simples","Juros Simples"
 "Juros Composto","Juros Composto"
 "Cart %1 doesn't contain products","O carrinho %1 não contém produtos"
+"Unable to save interest.","Não foi possível salvar o juros de parcelamento."
 Finished,Concluido
 "Token Refresh Successfully.","Token renovado com sucesso."
 "Error saving information in database: %1","Erro ao salvar a informação no banco de dados: %1"
@@ -139,6 +156,7 @@ Credentials,Credenciais
 "Statement Descriptor","Nome da Loja"
 Environment,Ambiente
 "Dynamic Mcc","Dinâmico Mcc"
+"Leave it blank if you don't have it.","Deixe em branco, caso não tenha."
 Environment,Ambiente
 "Seller Id - production","Seller Id - Produção"
 "Client Id - production","Client Id - Produção"
@@ -146,12 +164,10 @@ Environment,Ambiente
 "Seller Id - homolog","Seller Id - Homologação"
 "Client Id - homolog","Client Id - Homologação"
 "Client Secret - homolog","Client Secret - Homologação"
-"Seller Id - Sandbox","Seller Id - Sandbox"
-"Client Id - Sandbox","Client Id - Sandbox"
-"Client Secret - Sandbox","Client Secret - Sandbox"
 Debug,Debug
-"Attention, you cannot use debug in production mode.","Atenção, você não pode usar depuração no modo de produção."
-"Cartão de Crédito","Cartão de Crédito"
+"Use Auth in Cache","Usar cache para armazenar a Autenticação"
+"Cartão de Crédito <sup>V2</sup>","Cartão de Crédito <sup>V2</sup>"
+"<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>","<div id=""messages""><div class=""messages""><div class=""message message-warning warning""><div>Este produto não está habilitado por padrão, você precisa contratá-lo antes de ativá-lo.</div></div></div></div>"
 "Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.","Receba transações com cartões de crédito American Express, Elo, Mastercard, Visa e Hipercard."
 Enabled,Habilitar
 Title,Título
@@ -182,9 +198,11 @@ Title,Título
 "Interest on the 11nd tranche","Juros da 11ª parcela"
 "Interest on the 12nd tranche","Juros da 12ª parcela"
 "2 Cartões de Crédito","2 Cartões de Crédito"
+"PIX <sup>V2</sup>","PIX <sup>V2</sup>"
 "Instant payment with automatic status consolidation, offer a fast and convenient method.","Pagamento instantâneo com consolidação automática de status, oferece um método rápido e conveniente."
+Expiration,Expiration
 "Instruction during checkout","Instrução durante o checkout"
-"Boleto Bancário","Boleto Bancário"
+"Boleto Bancário <sup>V2</sup>","Boleto Bancário <sup>V2</sup>"
 "Boleto registered, fully integrated into your Santander account.","Boleto registado, totalmente integrado à sua conta Santander."
 "Days due","Dias de vencimento"
 "Consecutive days.","Dias consecutivos."
@@ -201,6 +219,7 @@ Getpay,Getpay
 "Fraud Manager","Antifraude"
 Notification,Notificação
 "Receive status tracking for your transactions.","Receba atualizações de status de suas transações."
+Developer,Desenvolvedor
 "Attribute Relationship Definition","Definição de Relacionamento de Campos"
 "List the attributes of your Magento the data expected by our API.","Liste os campos do seu Magento com os dados esperados pela nossa API."
 "The CPF/CNPJ will be an attribute obtained from the","O CPF/CNPJ será um atributo obtido do"
@@ -209,6 +228,7 @@ Notification,Notificação
 "The address district is","O campo bairro é a"
 "The address complement is","O campo de complemento é a"
 "Erro genérico.","Erro genérico."
+"Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.","Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento."
 "O pagamento por boleto não está habilitado para esse estabelecimento.","O pagamento por boleto não está habilitado para esse estabelecimento."
 "Valor da entrada maior ou igual ao valor da transação.","Valor da entrada maior ou igual ao valor da transação."
 "Valor da parcela inválido.","Valor da parcela inválido."
@@ -343,6 +363,7 @@ Timeout.,Timeout.
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121."
 "Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.","Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500."
+"Getnet Interest","Getnet Juros de Parcelamento"
 cc_installments,Parcelamento
 cc_type,Bandeira
 cc_number,Número

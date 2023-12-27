@@ -9,6 +9,6 @@
 -->
 <body>
     <referenceContainer name="order.success.additional.info">
-        <block class="Getnet\PaymentMagento\Block\Order\Success" name="order.success.additional.info.getnet" template="Getnet_PaymentMagento::order/success/additional.phtml" after="-" />
+        <block class="Getnet\PaymentMagento\Block\Sales\Order\Success" name="order.success.additional.info.getnet" template="Getnet_PaymentMagento::order/success/additional.phtml" after="-" />
     </referenceContainer>
 </body>

@@ -10,17 +10,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="getnet_paymentmagento_base">
         <job name="status_update_order_getpay" instance="Getnet\PaymentMagento\Cron\FetchTransactionOrderGetpay" method="execute">
-            <!-- <schedule>0 * * * *</schedule> -->
-            <schedule>* * * * *</schedule>
+            <schedule>0 8 * * *</schedule>
         </job>
         <job name="status_update_order_wallet" instance="Getnet\PaymentMagento\Cron\FetchTransactionOrderWallet" method="execute">
-            <schedule>* * * * *</schedule>
+            <schedule>0 10 * * *</schedule>
         </job>
         <job name="status_update_refund" instance="Getnet\PaymentMagento\Cron\FetchTransactionRefund" method="execute">
             <schedule>10 */3 * * *</schedule>
-        </job>
-        <job name="getnet_refresh_token" instance="Getnet\PaymentMagento\Cron\RefreshToken" method="execute">
-            <schedule>*/15 * * * *</schedule>
         </job>
     </group>
 </config>
