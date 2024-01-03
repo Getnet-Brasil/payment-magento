@@ -13,6 +13,8 @@ use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Pix - Pix payment information.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Pix extends ConfigurableInfo
 {

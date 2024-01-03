@@ -21,7 +21,8 @@
                                     'data-validate': JSON.stringify({'required':true})},
                             enable: isActive($parents),
                             value: creditCardHolderTaxDocument,
-                            valueUpdate: 'keyup' "/>
+                            valueUpdate: 'keyup' ">
+            </input>
             <label data-bind="attr: {for: getCode() + '_tax_document'}" class="label">
                 <span><!-- ko i18n: 'Credit Card Holder Tax Document'--><!-- /ko --></span>
             </label>
@@ -41,7 +42,8 @@
                                     'data-validate': JSON.stringify({'required':true})},
                             enable: isActive($parents),
                             value: creditCardHolderPhone,
-                            valueUpdate: 'keyup' "/>
+                            valueUpdate: 'keyup' ">
+            </input>
             <label data-bind="attr: {for: getCode() + '_holder_phone'}" class="label">
                 <span><!-- ko i18n: 'Credit Card Holder Phone'--><!-- /ko --></span>
             </label>
@@ -74,6 +76,7 @@
                                 enable: isActive($parents),
                                 value: firstPaymentAmount,
                                 valueUpdate: 'keyup'">
+                    </input>
                     <label data-bind="attr: {for: getCode() + '_first_payment_amount'}" class="label">
                         <span><!-- ko i18n: 'Payment Amount on the First Card'--><!-- /ko --></span>
                     </label>
@@ -138,6 +141,7 @@
                         data-bind="attr: {id: getCode() + '_type', 'data-container': getCode() + '-cc-type'},
                         value: creditCardType
                         ">
+                    </input>
                 </div>
             </div>
             <div class="field getnet-input-group number required">
@@ -152,7 +156,8 @@
                                             'data-validate': JSON.stringify({'required-number':true, 'validate-card-type-getnet':getCcAvailableTypesValues(), 'validate-card-number-getnet':'#' + getCode() + '_number', 'validate-cc-type-getnet':'#' + getCode() + '_type'})},
                                     enable: isActive($parents),
                                     value: creditCardNumber,
-                                    valueUpdate: 'keyup' "/>
+                                    valueUpdate: 'keyup' ">
+                    </input>
                     <label data-bind="attr: {for: getCode() + '_number'}" class="label">
                         <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
                     </label>
@@ -191,7 +196,8 @@
                                 'data-container': getCode() + '-cc-cvv',
                                 'data-validate': JSON.stringify({'required-number':true, 'validate-card-cvv-getnet':'#' + getCode() + '_type'})},
                                 enable: isActive($parents),
-                                value: creditCardVerificationNumber" />
+                                value: creditCardVerificationNumber">
+                    </input>
                     <div class="field-tooltip toggle">
                         <span class="field-tooltip-action action-cvv"
                             tabindex="-1"
@@ -261,7 +267,8 @@
                                             'data-validate': JSON.stringify({'required':true})},
                                     enable: isActive($parents),
                                     value: creditCardHolderName,
-                                    valueUpdate: 'keyup' "/>
+                                    valueUpdate: 'keyup' ">
+                    </input>
                     <label data-bind="attr: {for: getCode() + '_cardholder_name'}" class="label">
                         <span><!-- ko i18n: 'Credit Card Holder Full Name'--><!-- /ko --></span>
                     </label>
@@ -323,6 +330,7 @@
                         data-bind="attr: {id: getCode() + '_secondary_type', 'data-container': getCode() + '-cc-secondary-type'},
                         value: creditCardSecondaryType
                         ">
+                    </input>
                 </div>
             </div>
             <div class="field getnet-input-group number required">
@@ -338,7 +346,8 @@
                                             'data-validate': JSON.stringify({'required-number':true, 'validate-card-type-getnet':getCcAvailableTypesValues(), 'validate-card-number-getnet':'#' + getCode() + '_secondary_number', 'validate-cc-type-getnet':'#' + getCode() + '_secondary_type'})},
                                     enable: isActive($parents),
                                     value: creditCardSecondaryNumber,
-                                    valueUpdate: 'keyup' "/>
+                                    valueUpdate: 'keyup' ">
+                    </input>
                     <label data-bind="attr: {for: getCode() + '_number'}" class="label">
                         <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
                     </label>
@@ -377,7 +386,8 @@
                                 'data-container': getCode() + '-secondary-cc-cvv',
                                 'data-validate': JSON.stringify({'required-number':true, 'validate-card-cvv-getnet':'#' + getCode() + '_secondary_type'})},
                                 enable: isActive($parents),
-                                value: creditCardSecondaryVerificationNumber" />
+                                value: creditCardSecondaryVerificationNumber">
+                    </input>
                     <div class="field-tooltip toggle">
                         <span class="field-tooltip-action action-cvv"
                             tabindex="0"
@@ -448,7 +458,8 @@
                                             'data-validate': JSON.stringify({'required':true})},
                                     enable: isActive($parents),
                                     value: creditCardSecondaryHolderName,
-                                    valueUpdate: 'keyup' "/>
+                                    valueUpdate: 'keyup' ">
+                    </input>
                     <label data-bind="attr: {for: getCode() + 'secondary_cardholder_name'}" class="label">
                         <span><!-- ko i18n: 'Credit Card Holder Full Name'--><!-- /ko --></span>
                     </label>

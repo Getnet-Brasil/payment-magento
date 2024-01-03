@@ -11,8 +11,9 @@
     'Magento_Payment/js/model/credit-card-validation/credit-card-data',
     'mage/translate',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
-    'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment'
-], function (_, $, Component, walletData, $t, _mask, getnetInstallment) {
+    'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment',
+    'Getnet_PaymentMagento/js/action/checkout/set-interest'
+], function (_, $, Component, walletData, $t, _mask, getnetInstallment, getnetSetInterest) {
     'use strict';
 
     return Component.extend({
@@ -83,8 +84,16 @@
                 }
             });
 
+            self.active.subscribe(function (value) {
+                let installmentActive = self.walletCcInstallments() ? self.walletCcInstallments() : 0,
+                    clearInterest = value ? installmentActive : 0;
+
+                getnetSetInterest.getnetInterest(clearInterest);
+            });
+
             self.walletCcInstallments.subscribe(function (value) {
                 walletData.walletCcInstallments = value;
+                self.addInterest();
             });
 
             self.walletPayerPhone.subscribe(function (value) {
@@ -101,6 +110,19 @@
 
             this.active(active);
             return active;
+        },
+
+        /**
+         * Add Interest in totals
+         * @returns {void}
+         */
+        addInterest() {
+            var self = this,
+                selectInstallment = self.walletCcInstallments();
+
+            if (selectInstallment >= 0) {
+                getnetSetInterest.getnetInterest(selectInstallment);
+            }
         },
 
         /**

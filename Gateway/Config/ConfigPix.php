@@ -15,9 +15,11 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\Filesystem\Io\File;
+use Magento\Framework\Phrase;
 use Magento\Payment\Gateway\Config\Config as PaymentConfig;
 use Magento\Store\Model\ScopeInterface;
 
@@ -46,12 +48,12 @@ class ConfigPix extends PaymentConfig
     /**
      * @const string
      */
-    public const INSTRUCTION_CHECKOUT = 'instruction_checkout';
+    public const EXPIRATION = 'expiration';
 
     /**
      * @const string
      */
-    public const EXPIRATION = 'expiration';
+    public const INSTRUCTION_CHECKOUT = 'instruction_checkout';
 
     /**
      * @var ScopeConfigInterface
@@ -72,6 +74,11 @@ class ConfigPix extends PaymentConfig
      * @var Config
      */
     protected $config;
+
+    /**
+     * @var DirectoryList
+     */
+    protected $directoryList;
 
     /**
      * @param ScopeConfigInterface $scopeConfig

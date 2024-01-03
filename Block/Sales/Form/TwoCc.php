@@ -20,6 +20,8 @@ use Magento\Payment\Model\Config;
 
 /**
  * Class TwoCc - Form for payment by cc.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class TwoCc extends NativeCc
 {

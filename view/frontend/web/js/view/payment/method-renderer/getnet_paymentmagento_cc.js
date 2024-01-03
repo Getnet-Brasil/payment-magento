@@ -14,6 +14,7 @@
     'Getnet_PaymentMagento/js/view/payment/gateway/custom-validation',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
     'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment',
+    'Getnet_PaymentMagento/js/action/checkout/set-interest',
     'Magento_Checkout/js/model/quote',
     'ko',
     'Magento_Checkout/js/model/url-builder',
@@ -29,11 +30,12 @@
         _customValidation,
         _mask,
         getnetInstallment,
+        getnetSetInterest,
         quote,
         _ko,
         urlBuilder,
         urlFormatter,
-        customer,
+        customer
     ) {
     'use strict';
 
@@ -103,8 +105,16 @@
 
             tel.mask('(00)00000-0000', { clearIfNotMatch: true });
 
+            self.active.subscribe(function (value) {
+                let installmentActive = self.creditCardInstallment() ? self.creditCardInstallment() : 0,
+                    clearInterest = value ? installmentActive : 0;
+
+                getnetSetInterest.getnetInterest(clearInterest);
+            });
+
             self.creditCardInstallment.subscribe(function (value) {
                 creditCardData.creditCardInstallment = value;
+                self.addInterest();
             });
 
             self.creditCardNumberToken.subscribe(function (value) {
@@ -169,14 +179,27 @@
             if (!$(this.formElement).valid()) {
                 return;
             }
-            this.getTokenize();
+            this.getnetTokenizeCard();
+        },
+
+        /**
+         * Add Interest in totals
+         * @returns {void}
+         */
+        addInterest() {
+            var self = this,
+                selectInstallment = self.creditCardInstallment();
+
+            if (selectInstallment >= 0) {
+                getnetSetInterest.getnetInterest(selectInstallment);
+            }
         },
 
         /**
          * Get Tokenize
          * @returns {void}
          */
-        getTokenize() {
+        getnetTokenizeCard() {
             var self = this,
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
@@ -243,9 +266,8 @@
                     }
 
                     if (!response[0].success) {
-                        self.messageContainer.addErrorMessage({"message": response[0].message.text});
+                        self.messageContainer.addErrorMessage({'message': response[0].message.text});
                     }
-                    
                 }
             ).always(
                 function () {
