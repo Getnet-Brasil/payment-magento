@@ -12,12 +12,12 @@ namespace Getnet\PaymentMagento\Gateway\Http;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Model\Cache\Type\GetnetCache;
-use Laminas\Http\ClientFactory;
-use Laminas\Http\Request;
 use Magento\Framework\App\Cache\Manager as CacheManager;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\HTTP\ZendClient;
+use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Http\TransferInterface;
 use Magento\Payment\Model\Method\Logger;
@@ -35,7 +35,7 @@ class Api
     protected $logger;
 
     /**
-     * @var ClientFactory
+     * @var ZendClientFactory
      */
     protected $httpClientFactory;
 
@@ -66,7 +66,7 @@ class Api
 
     /**
      * @param Logger            $logger
-     * @param ClientFactory     $httpClientFactory
+     * @param ZendClientFactory $httpClientFactory
      * @param Config            $config
      * @param Json              $json
      * @param CacheInterface    $cache
@@ -75,7 +75,7 @@ class Api
      */
     public function __construct(
         Logger $logger,
-        ClientFactory $httpClientFactory,
+        ZendClientFactory $httpClientFactory,
         Config $config,
         Json $json,
         CacheInterface $cache,
@@ -152,13 +152,13 @@ class Api
         $client = $this->httpClientFactory->create();
         $client->setUri($uri.'auth/oauth/v2/token');
         $client->setAuth($clientId, $clientSecret);
-        $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
+        $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
         $client->setHeaders(['content' => 'application/x-www-form-urlencoded']);
         $client->setParameterPost($dataSend);
-        $client->setMethod(Request::METHOD_POST);
+        $client->setMethod(ZendClient::POST);
 
         try {
-            $result = $client->send()->getBody();
+            $result = $client->request()->getBody();
             $responseBody = $this->json->unserialize($result);
             $this->collectLogger(
                 $uri,
@@ -217,7 +217,7 @@ class Api
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
-            'seller_id'                   => $sellerId,
+            'x-seller-id'                   => $sellerId,
         ];
 
         if ($additional) {
@@ -234,10 +234,10 @@ class Api
         try {
             $client->setUri($uri);
             $client->setHeaders($headers);
-            $client->setRawBody($payload);
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
-            $client->setMethod(Request::METHOD_POST);
-            $responseBody = $client->send()->getBody();
+            $client->setRawData($payload, 'application/json');
+            $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
+            $client->setMethod(ZendClient::POST);
+            $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
@@ -297,23 +297,23 @@ class Api
         try {
             $client->setUri($uri);
             $client->setHeaders($headers);
-            $client->setMethod(Request::METHOD_GET);
-            $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
-            $client->setRawBody($this->json->serialize($request));
-            $responseBody = $client->send()->getBody();
+            $client->setMethod(ZendClient::GET);
+            $client->setConfig(['maxredirects' => 0, 'timeout' => 30]);
+            $client->setRawData($this->json->serialize($request), 'application/json');
+            $responseBody = $client->request()->getBody();
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
                 $headers,
                 $request,
-                $client->send()->getBody(),
+                $client->request()->getBody(),
             );
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
                 $headers,
                 $request,
-                $client->send()->getBody(),
+                $client->request()->getBody(),
                 $exc->getMessage(),
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
