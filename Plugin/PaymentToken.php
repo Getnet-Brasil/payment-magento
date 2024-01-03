@@ -22,7 +22,7 @@ class PaymentToken
     /**
      * Around Save Token With Payment Link.
      *
-     * @param PaymentTokenManagementInterface $paymentTokenManagement
+     * @param PaymentTokenManagementInterface $payTokenManagement
      * @param callable                        $proceed
      * @param PaymentTokenInterface           $token
      * @param OrderPaymentInterface           $payment
@@ -30,7 +30,7 @@ class PaymentToken
      * @return $proceed
      */
     public function aroundSaveTokenWithPaymentLink(
-        PaymentTokenManagementInterface $paymentTokenManagement,
+        PaymentTokenManagementInterface $payTokenManagement,
         callable $proceed,
         PaymentTokenInterface $token,
         OrderPaymentInterface $payment
@@ -41,7 +41,7 @@ class PaymentToken
             return $proceed($token, $payment);
         }
 
-        $existingToken = $paymentTokenManagement->getByGatewayToken(
+        $existingToken = $payTokenManagement->getByGatewayToken(
             $token->getGatewayToken(),
             $payment->getMethodInstance()->getCode(),
             $order->getCustomerId()

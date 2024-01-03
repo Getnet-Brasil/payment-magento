@@ -70,4 +70,11 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Getnet\PaymentMagento\Model\Adminhtml\Source\Notification">
+        <arguments>
+            <argument name="config" xsi:type="object">Getnet\PaymentMagento\Gateway\Config\Config</argument>
+            <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface</argument>
+        </arguments>
+    </type>
 </config>

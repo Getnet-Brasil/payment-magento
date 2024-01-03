@@ -11,7 +11,7 @@
       <!-- ko if: NameCapture() -->
       <div class="field getnet-input-group payer fullname required">
           <div class="control">
-              <input type="text" name="payment[boleto_payer_fullname]" class="input-text" value=""
+                <input type="text" name="payment[boleto_payer_fullname]" class="input-text" value=""
                      data-bind="attr: {
                                       autocomplete: 'boleto-name',
                                       id: getCode() + '_payer_fullname',
@@ -21,17 +21,18 @@
                                       'data-validate': JSON.stringify({'required':true})},
                                 enable: isActive($parents),
                                 value: payerFullName,
-                                valueUpdate: 'keyup' "/>
-               <label data-bind="attr: {for: getCode() + '_payer_fullname'}" class="label">
-                  <span><!-- ko i18n: 'Payer Full Name'--><!-- /ko --></span>
-              </label>
+                                valueUpdate: 'keyup' ">
+                </input>
+                <label data-bind="attr: {for: getCode() + '_payer_fullname'}" class="label">
+                    <span><!-- ko i18n: 'Payer Full Name'--><!-- /ko --></span>
+                </label>
           </div>
       </div>
       <!-- /ko -->
       <!-- ko if: TaxDocumentCapture() -->
       <div class="field getnet-input-group payer tax-document required">
           <div class="control">
-              <input type="text" name="payment[boleto_payer_document]" class="input-text" value=""
+                <input type="text" name="payment[boleto_payer_document]" class="input-text" value=""
                      data-bind="attr: {
                                       autocomplete: 'off',
                                       id: getCode() + '_payer_tax_document',
@@ -41,10 +42,11 @@
                                       'data-validate': JSON.stringify({'required':true})},
                                 enable: isActive($parents),
                                 value: payerTaxDocument,
-                                valueUpdate: 'keyup' "/>
-               <label data-bind="attr: {for: getCode() + '_payer_tax_document'}" class="label">
-                  <span><!-- ko i18n: 'Payer Tax Document'--><!-- /ko --></span>
-              </label>
+                                valueUpdate: 'keyup' ">
+                </input>
+                <label data-bind="attr: {for: getCode() + '_payer_tax_document'}" class="label">
+                    <span><!-- ko i18n: 'Payer Tax Document'--><!-- /ko --></span>
+                </label>
           </div>
       </div>
       <!-- /ko -->

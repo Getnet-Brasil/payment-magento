@@ -12,6 +12,8 @@ use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Boleto - Boleto payment information.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Boleto extends ConfigurableInfo
 {

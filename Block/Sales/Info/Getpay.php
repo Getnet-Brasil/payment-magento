@@ -12,6 +12,8 @@ use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Getpay - Getpay payment information.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Getpay extends ConfigurableInfo
 {
