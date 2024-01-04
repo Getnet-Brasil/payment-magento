@@ -255,6 +255,7 @@ class ApiManagement
                 $client->request()->getBody(),
                 $exc->getMessage()
             );
+
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Invalid JSON was returned by the gateway');
         }
@@ -314,6 +315,7 @@ class ApiManagement
                 $client->request()->getBody(),
                 $exc->getMessage(),
             );
+
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Invalid JSON was returned by the gateway');
         }
@@ -373,6 +375,7 @@ class ApiManagement
                 $client->request()->getBody(),
                 $exc->getMessage(),
             );
+
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Invalid JSON was returned by the gateway');
         }

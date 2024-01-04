@@ -214,9 +214,9 @@ class Api
         $uri = $this->config->getApiUrl($storeId);
         $sellerId = $this->config->getMerchantGatewaySellerId($storeId);
         $headers = [
-            'Authorization'               => 'Bearer '.$auth,
-            'Content-Type'                => 'application/json',
-            'x-transaction-channel-entry' => 'MG',
+            'Authorization'                 => 'Bearer '.$auth,
+            'Content-Type'                  => 'application/json',
+            'x-transaction-channel-entry'   => 'MG',
             'x-seller-id'                   => $sellerId,
         ];
 
@@ -253,6 +253,7 @@ class Api
                 $client->request()->getBody(),
                 $exc->getMessage()
             );
+
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Invalid JSON was returned by the gateway');
         }
@@ -316,6 +317,7 @@ class Api
                 $client->request()->getBody(),
                 $exc->getMessage(),
             );
+
             // phpcs:ignore Magento2.Exceptions.DirectThrow
             throw new LocalizedException('Invalid JSON was returned by the gateway');
         }
