@@ -29,7 +29,7 @@ class ErrorCodeProvider
     public function getErrorCodes($response): array
     {
         $result = [];
-        if (!$response instanceof Error) {
+        if (!$response instanceof \Error) {
             return $result;
         }
 
@@ -40,10 +40,11 @@ class ErrorCodeProvider
         }
 
         if (isset($response->transaction) && $response->transaction) {
+            // @phpstan-ignore-next-line
             if ($response->transaction->status === Transaction::GATEWAY_REJECTED) {
                 $result[] = $response->transaction->gatewayRejectionReason;
             }
-
+            // @phpstan-ignore-next-line
             if ($response->transaction->status === Transaction::PROCESSOR_DECLINED) {
                 $result[] = $response->transaction->processorResponseCode;
             }

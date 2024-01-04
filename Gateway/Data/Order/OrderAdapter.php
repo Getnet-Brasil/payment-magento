@@ -70,6 +70,16 @@ class OrderAdapter implements OrderAdapterInterface
     }
 
     /**
+     * Get Created At.
+     *
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->order->getCreatedAt();
+    }
+
+    /**
      * Returns billing address.
      *
      * @return AddressAdapterInterface|null
@@ -209,6 +219,16 @@ class OrderAdapter implements OrderAdapterInterface
     public function getTaxAmount()
     {
         return $this->order->getTaxAmount();
+    }
+
+    /**
+     * Returns order base getnet interest amount.
+     *
+     * @return float|null
+     */
+    public function getBaseGetnetInterestAmount()
+    {
+        return $this->order->getBaseGetnetInterestAmount();
     }
 
     /**

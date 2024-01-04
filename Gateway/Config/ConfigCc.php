@@ -246,6 +246,7 @@ class ConfigCc extends PaymentConfig
      * @param int|null $storeId
      *
      * @return string
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function getCcAvailableTypes($storeId = null): string
@@ -439,8 +440,8 @@ class ConfigCc extends PaymentConfig
     {
         $interest = 0.00;
         $interestByInstall = $this->getInfoInterest($storeId);
-        if ($interestByInstall[$installment] > 0) {
-            $interest = $this->getInterestSimple($amount, $interestByInstall[$installment]);
+        if (isset($interestByInstall[$installment]) && $interestByInstall[$installment] > 0) {
+            $interest = $this->getInterestSimple($amount, $interestByInstall[$installment], $installment);
         }
 
         return round($interest, 2);
@@ -451,18 +452,19 @@ class ConfigCc extends PaymentConfig
      *
      * @param float $amount
      * @param float $interest
+     * @param int   $installment
      *
      * @return float
      */
-    public function getInterestSimple($amount, $interest): float
+    public function getInterestSimple($amount, $interest, $installment): float
     {
         $valinterest = 0.00;
 
         if ($interest) {
-            $taxa = $interest / 100;
-            $valinterest = $amount * $taxa;
+            $interest = $interest / 100;
+            $valinterest = $amount * pow(1 + $interest, $installment) - $amount;
         }
 
-        return round($valinterest, 2);
+        return $valinterest;
     }
 }

@@ -84,13 +84,19 @@ class FetchTransactionOrderWallet
             }
             $loadedOrder = $this->order->load($order->getEntityId());
             $payment = $loadedOrder->getPayment();
-            $payment->update();
-            $this->logger->debug([
-                'cron'   => 'FetchTransactionOrderWallet',
-                'type'   => ConfigWallet::METHOD,
-                'order'  => $loadedOrder->getIncrementId(),
-                'status' => $loadedOrder->getStatus(),
-            ]);
+
+            try {
+                $payment->update();
+                $loadedOrder->save();
+                $this->logger->debug([
+                    'cron'   => 'FetchTransactionOrderWallet',
+                    'type'   => ConfigWallet::METHOD,
+                    'order'  => $loadedOrder->getIncrementId(),
+                    'status' => $loadedOrder->getStatus(),
+                ]);
+            } catch (\Exception $exc) {
+                continue;
+            }
         }
     }
 }

@@ -11,7 +11,7 @@
     <system>
         <section id="payment">
             <group id="getnet_base" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                <label><![CDATA[<div class='getnet-payment-logo'></div><div class='getnet-payment-byline'><p><b>Pagamentos Digitais Getnet</b></p><p>Com os Pagamentos Digitais Getnet, você tem acesso a soluções completas para oferecer a melhor experiência de pagamento online. Além disso, você pode contar com uma tecnologia de ponta e segurança em todas as transações.</p></div>]]></label>
+                <label><![CDATA[<div class='getnet-payment-logo'></div><div class='getnet-payment-byline'><p><b>Getnet Payment</b></p><p>With Getnet Digital Payments, you have access to comprehensive solutions to provide the best online payment experience. Additionally, you can rely on cutting-edge technology and security in all transactions.</p></div>]]></label>
                 <fieldset_css>complex getnet-payment-section</fieldset_css>
                 <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PaymentGroup</frontend_model>
                 <comment><![CDATA[Technical support available <a href="https://github.com/getnet-adquirencia/payment-magento/issues/new/choose">here</a>.]]></comment>
@@ -23,18 +23,19 @@
                         <config_path>payment/getnet_paymentmagento/statement_descriptor</config_path>
                         <validate>required-entry</validate>
                     </field>
-                    <field id="dynamic_mcc" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="dynamic_mcc" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
                         <label>Dynamic Mcc</label>
+                        <comment>Leave it blank if you don't have it.</comment>
                         <config_path>payment/getnet_paymentmagento/dynamic_mcc</config_path>
-                        <validate>required-entry validate-number minimum-length-4 maximum-length-4</validate>
+                        <validate>validate-number minimum-length-4 maximum-length-4</validate>
                     </field>
-                    <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="environment" translate="label select comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Environment</label>
                         <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Environment</source_model>
                         <config_path>payment/getnet_paymentmagento/environment</config_path>
                         <validate>required-entry validate-select</validate>
                     </field>
-                    <field id="seller_id_production" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="seller_id_production" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - production</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_production</config_path>
                         <validate>required-entry</validate>
@@ -42,7 +43,7 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="client_id_production" translate="label" type="obscure" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_id_production" translate="label" type="obscure" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Id - production</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_id_production</config_path>
@@ -51,7 +52,7 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="client_secret_production" translate="label" type="obscure" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_secret_production" translate="label" type="obscure" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Secret - production</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_secret_production</config_path>
@@ -60,7 +61,7 @@
                             <field id="*/*/*/environment">production</field>
                         </depends>
                     </field>
-                    <field id="seller_id_homolog" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="seller_id_homolog" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Seller Id - homolog</label>
                         <config_path>payment/getnet_paymentmagento/seller_id_homolog</config_path>
                         <validate>required-entry</validate>
@@ -68,7 +69,7 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="client_id_homolog" translate="label" type="obscure" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_id_homolog" translate="label" type="obscure" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Id - homolog</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_id_homolog</config_path>
@@ -77,7 +78,7 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="client_secret_homolog" translate="label" type="obscure" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
+                    <field id="client_secret_homolog" translate="label" type="obscure" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
                         <label>Client Secret - homolog</label>
                         <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                         <config_path>payment/getnet_paymentmagento/client_secret_homolog</config_path>
@@ -86,41 +87,9 @@
                             <field id="*/*/*/environment">homolog</field>
                         </depends>
                     </field>
-                    <field id="seller_id_sandbox" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
-                        <label>Seller Id - Sandbox</label>
-                        <config_path>payment/getnet_paymentmagento/seller_id_sandbox</config_path>
-                        <validate>required-entry</validate>
-                        <depends>
-                            <field id="*/*/*/environment">sandbox</field>
-                        </depends>
-                    </field>
-                    <field id="client_id_sandbox" translate="label" type="obscure" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
-                        <label>Client Id - Sandbox</label>
-                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                        <config_path>payment/getnet_paymentmagento/client_id_sandbox</config_path>
-                        <validate>required-entry</validate>
-                        <depends>
-                            <field id="*/*/*/environment">sandbox</field>
-                        </depends>
-                    </field>
-                    <field id="client_secret_sandbox" translate="label" type="obscure" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="0">
-                        <label>Client Secret - Sandbox</label>
-                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                        <config_path>payment/getnet_paymentmagento/client_secret_sandbox</config_path>
-                        <validate>required-entry</validate>
-                        <depends>
-                            <field id="*/*/*/environment">sandbox</field>
-                        </depends>
-                    </field>
-                    <field id="debug" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>Debug</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <config_path>payment/getnet_paymentmagento/debug</config_path>
-                        <comment>Attention, you cannot use debug in production mode.</comment>
-                    </field>
                 </group>
                 <group id="getnet_paymentmagento_cc" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Cartão de Crédito</label>
+                    <label><![CDATA[Cartão de Crédito <sup>V2</sup>]]></label>
                     <comment>Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.</comment>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
@@ -131,10 +100,11 @@
                         <label>Title</label>
                         <config_path>payment/getnet_paymentmagento_cc/title</config_path>
                     </field>
-                    <field id="vault_active" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <field id="vault_active" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled Vault</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <config_path>payment/getnet_paymentmagento_cc_vault/active</config_path>
+                        <comment><![CDATA[<div id="messages"><div class="messages"><div class="message message-warning warning"><div>This product is not enabled by default, you need to contract it before activating it.</div></div></div></div>]]></comment>
                     </field>
                     <field id="cctypes" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="1"  showInStore="1" canRestore="1">
                             <label>Credit Card Types</label>
@@ -257,6 +227,9 @@
                 <group id="getnet_paymentmagento_two_cc" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>2 Cartões de Crédito</label>
                     <comment>Receive American Express, Elo, Mastercard, Visa and Hipercard credit card transactions.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -293,8 +266,11 @@
                     </field>
                 </group>
                 <group id="getnet_paymentmagento_pix" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Pix</label>
+                    <label><![CDATA[PIX <sup>V2</sup>]]></label>
                     <comment>Instant payment with automatic status consolidation, offer a fast and convenient method.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -346,8 +322,11 @@
                     </field>
                 </group>
                 <group id="getnet_paymentmagento_boleto" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Boleto Bancário</label>
+                    <label><![CDATA[Boleto Bancário <sup>V2</sup>]]></label>
                     <comment>Boleto registered, fully integrated into your Santander account.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -421,6 +400,9 @@
                 <group id="getnet_paymentmagento_wallet" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Wallet</label>
                     <comment>Offer instant payment across multiple wallets.</comment>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Enabled</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -542,40 +524,55 @@
                         <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Notification</frontend_model>
                     </field>
                 </group>
-                <group id="attribute_relationship" translate="label comment" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Attribute Relationship Definition</label>
-                    <comment>List the attributes of your Magento the data expected by our API.</comment>
-                    <field id="get_tax_document_from" translate="label select" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>The CPF/CNPJ will be an attribute obtained from the</label>
-                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\TaxDocument</source_model>
-                        <config_path>payment/getnet_paymentmagento/get_tax_document_from</config_path>
-                        <validate>required-entry validate-select</validate>
+
+                <group id="developer" translate="label comment" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Developer</label>
+                    <field id="debug" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Debug</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento/debug</config_path>
                     </field>
-                    <field id="street" translate="label select" type="select" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>The Street attribute is</label>
-                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
-                        <config_path>payment/getnet_paymentmagento/street</config_path>
-                        <validate>required-entry validate-select</validate>
-                    </field> 
-                    <field id="number" translate="label select" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>The address number is</label>
-                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
-                        <config_path>payment/getnet_paymentmagento/number</config_path>
-                        <validate>required-entry validate-select</validate>
+                    <field id="use_auth_in_cache" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Use Auth in Cache</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento/use_auth_in_cache</config_path>
                     </field>
-                    <field id="district" translate="label select" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>The address district is</label>
-                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
-                        <config_path>payment/getnet_paymentmagento/district</config_path>
-                        <validate>required-entry validate-select</validate>
-                    </field>
-                    <field id="complement" translate="label select" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>The address complement is</label>
-                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
-                        <config_path>payment/getnet_paymentmagento/complement</config_path>
-                        <validate>required-entry validate-select</validate>
-                    </field>
+                    <group id="attribute_relationship" translate="label comment" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Attribute Relationship Definition</label>
+                        <comment>List the attributes of your Magento the data expected by our API.</comment>
+                        <field id="get_tax_document_from" translate="label select" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                            <label>The CPF/CNPJ will be an attribute obtained from the</label>
+                            <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\TaxDocument</source_model>
+                            <config_path>payment/getnet_paymentmagento/get_tax_document_from</config_path>
+                            <validate>required-entry validate-select</validate>
+                        </field>
+                        <field id="street" translate="label select" type="select" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                            <label>The Street attribute is</label>
+                            <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
+                            <config_path>payment/getnet_paymentmagento/street</config_path>
+                            <validate>required-entry validate-select</validate>
+                        </field> 
+                        <field id="number" translate="label select" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                            <label>The address number is</label>
+                            <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
+                            <config_path>payment/getnet_paymentmagento/number</config_path>
+                            <validate>required-entry validate-select</validate>
+                        </field>
+                        <field id="district" translate="label select" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                            <label>The address district is</label>
+                            <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
+                            <config_path>payment/getnet_paymentmagento/district</config_path>
+                            <validate>required-entry validate-select</validate>
+                        </field>
+                        <field id="complement" translate="label select" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                            <label>The address complement is</label>
+                            <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\Street</source_model>
+                            <config_path>payment/getnet_paymentmagento/complement</config_path>
+                            <validate>required-entry validate-select</validate>
+                        </field>
+                    </group>
                 </group>
+                
             </group>
         </section>
     </system>
