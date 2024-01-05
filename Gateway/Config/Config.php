@@ -54,16 +54,6 @@ class Config extends PaymentConfig
     /**
      * @const string
      */
-    public const ENDPOINT_SANDBOX = 'https://api-sandbox.getnet.com.br/';
-
-    /**
-     * @const string
-     */
-    public const ENVIRONMENT_SANDBOX = 'sandbox';
-
-    /**
-     * @const string
-     */
     public const CLIENT = 'PaymentMagento';
 
     /**
@@ -80,6 +70,7 @@ class Config extends PaymentConfig
      * @param ScopeConfigInterface $scopeConfig
      * @param Json                 $json
      * @param string               $methodCode
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(
@@ -115,10 +106,6 @@ class Config extends PaymentConfig
     {
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            return self::ENDPOINT_SANDBOX;
-        }
-
         if ($environment === 'homolog') {
             return self::ENDPOINT_HOMOLOG;
         }
@@ -136,10 +123,6 @@ class Config extends PaymentConfig
     public function getEnvironmentMode($storeId = null): ?string
     {
         $environment = $this->getAddtionalValue('environment', $storeId);
-
-        if ($environment === 'sandbox') {
-            return self::ENVIRONMENT_SANDBOX;
-        }
 
         if ($environment === 'homolog') {
             return self::ENVIRONMENT_HOMOLOG;
@@ -161,10 +144,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $sellerId = $this->getAddtionalValue('seller_id_sandbox', $storeId);
-        }
-
         if ($environment === 'homolog') {
             $sellerId = $this->getAddtionalValue('seller_id_homolog', $storeId);
         }
@@ -184,10 +163,6 @@ class Config extends PaymentConfig
         $clientId = $this->getAddtionalValue('client_id_production', $storeId);
 
         $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'sandbox') {
-            $clientId = $this->getAddtionalValue('client_id_sandbox', $storeId);
-        }
 
         if ($environment === 'homolog') {
             $clientId = $this->getAddtionalValue('client_id_homolog', $storeId);
@@ -209,10 +184,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $clientSecret = $this->getAddtionalValue('client_secret_sandbox', $storeId);
-        }
-
         if ($environment === 'homolog') {
             $clientSecret = $this->getAddtionalValue('client_secret_homolog', $storeId);
         }
@@ -232,10 +203,6 @@ class Config extends PaymentConfig
         $oauth = $this->getAddtionalValue('access_token_production', $storeId);
 
         $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'sandbox') {
-            $oauth = $this->getAddtionalValue('access_token_sandbox', $storeId);
-        }
 
         if ($environment === 'homolog') {
             $oauth = $this->getAddtionalValue('access_token_homolog', $storeId);
@@ -257,10 +224,6 @@ class Config extends PaymentConfig
 
         $environment = $this->getEnvironmentMode($storeId);
 
-        if ($environment === 'sandbox') {
-            $code = '1snn5n9w';
-        }
-
         if ($environment === 'homolog') {
             $code = '1snn5n9w';
         }
@@ -269,11 +232,35 @@ class Config extends PaymentConfig
     }
 
     /**
+     * Get Private Keys.
+     *
+     * @param int|null $storeId
+     *
+     * @return array
+     */
+    public function getPrivateKeys($storeId = null): array
+    {
+        return explode(',', $this->getAddtionalValue('private_keys', $storeId));
+    }
+
+    /**
+     * Use Auth In Cache.
+     *
+     * @param int|null $storeId
+     *
+     * @return bool
+     */
+    public function useAuthInCache($storeId = null): ?bool
+    {
+        return (bool) $this->getAddtionalValue('use_auth_in_cache', $storeId);
+    }
+
+    /**
      * Gets the Merchant Gateway Dynamic Mcc.
      *
      * @param int|null $storeId
      *
-     * @return string
+     * @return string|null
      */
     public function getMerchantGatewayDynamicMcc($storeId = null): ?string
     {
@@ -366,5 +353,58 @@ class Config extends PaymentConfig
         }
 
         return '';
+    }
+
+    /**
+     * Remove Accents.
+     *
+     * @param string $inputString
+     *
+     * @return string
+     */
+    public function removeAcents($inputString)
+    {
+        $filteredString = preg_replace('/[^a-zA-Z0-9áàâãéèêíìóòôõúùçñÁÀÂÃÉÈÊÍÌÓÒÔÕÚÙÇ ]/u', '', $inputString);
+
+        return iconv('UTF-8', 'ASCII//TRANSLIT', $filteredString);
+    }
+
+    /**
+     * Remove Accents Recursive.
+     *
+     * @param array|string $array
+     * @param array        $keysToProcess
+     *
+     * @return array|string
+     */
+    public function removeAccentsRecursive($array, $keysToProcess)
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = $this->removeAccentsRecursive($value, $keysToProcess);
+            } elseif (in_array($key, $keysToProcess) && is_string($value)) {
+                $array[$key] = $this->removeAcents($value);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Prepare Body.
+     *
+     * @param array $request
+     *
+     * @return Json
+     */
+    public function prepareBody($request)
+    {
+        $keysToProcess = ['first_name', 'last_name', 'name', 'street', 'district', 'complement', 'city'];
+
+        if (is_array($request)) {
+            $request = $this->removeAccentsRecursive($request, $keysToProcess);
+        }
+
+        return $request;
     }
 }

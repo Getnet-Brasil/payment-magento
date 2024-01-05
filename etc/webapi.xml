@@ -42,4 +42,34 @@
             <parameter name="cartId" force="true">%cart_id%</parameter>
         </data>
     </route>
+    <route url="/V1/guest-carts/:cartId/getnet-interest" method="POST">
+        <service class="Getnet\PaymentMagento\Api\GuestInterestManagementInterface" method="generateGetnetInterest"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/carts/mine/getnet-interest" method="POST">
+        <service class="Getnet\PaymentMagento\Api\InterestManagementInterface" method="generateGetnetInterest"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/guest-carts/:cartId/getnet-two-cc-interest" method="POST">
+        <service class="Getnet\PaymentMagento\Api\TwoCc\GuestTwoCcInterestManagementInterface" method="generateGetnetTwoInterest"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/carts/mine/getnet-two-cc-interest" method="POST">
+        <service class="Getnet\PaymentMagento\Api\TwoCc\TwoCcInterestManagementInterface" method="generateGetnetTwoInterest"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
 </routes>

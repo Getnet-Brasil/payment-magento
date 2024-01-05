@@ -11,8 +11,10 @@
     <message_list>
         <!-- GENERIC -->
         <message code="GENERIC-400" translate="true">Erro genérico.</message>
+        <message code="GENERIC-412" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
         <!-- CONFIG -->
-        <message code="CONFIG-403" translate="true">Essa forma de pagamento não está habilitada para esse estabelecimento.</message>
+        <message code="CONFIG-403" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
+        
         <!-- PAYMENTS -->
         <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
         <message code="PAYMENTS-013" translate="true">Valor da parcela inválido.</message>
@@ -135,6 +137,7 @@
         <message code="0700" translate="true">Transação negada. Cód: 0700.</message>
         <message code="2000" translate="true">Transação negada. Cód: 2000.</message>
         <message code="480" translate="true">Transação negada. Cód: 480.</message>
+        <message code="481" translate="true">Transação negada. Cód: 481.</message>
         <message code="0150" translate="true">Transação enviada com o campo "amount" preenchido com o valor nulo ou inválido. Cód: 0150.</message>
         <message code="0902" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 0902.</message>
         <message code="101" translate="true">Transação enviada com o campo "required" preenchido com o valor nulo ou inválido. Cód: 101.</message>
@@ -156,5 +159,5 @@
         <message code="151" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 151.</message>
         <message code="121" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 121.</message>
         <message code="500" translate="true">Indisponibilidade no sistema Antifraude. Contate a Getnet. Cód: 500.</message>
-        </message_list>
+    </message_list>
 </mapping>

@@ -41,6 +41,8 @@ class SubjectReader
      * @param array $subject
      *
      * @return PaymentDataObjectInterface
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function readPayment(array $subject): PaymentDataObjectInterface
     {
@@ -78,6 +80,8 @@ class SubjectReader
      * @param array $subject
      *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function readAmount(array $subject): string
     {
@@ -90,6 +94,8 @@ class SubjectReader
      * @param array $subject
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function readResponse(array $subject): array
     {

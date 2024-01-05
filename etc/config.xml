@@ -11,21 +11,19 @@
     <default>
         <payment>
             <getnet_paymentmagento>
-                <debug>0</debug>
+                <debug>1</debug>
+                <use_auth_in_cache>1</use_auth_in_cache>
                 <active>1</active>
+                <private_keys>Authorization,client_secret,access_token,card_number,email,document_number,tax_id,number,client_id,customer_id,name,last_name</private_keys>
                 <environment>production</environment>
                 <statement_descriptor>Store Name</statement_descriptor>
-                <client_id_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <client_secret_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <client_id_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <client_secret_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_id_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_secret_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <oauth_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <oauth_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <oauth_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <key_public_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <key_public_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_id_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <oauth_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <model>PaymentMagentoBaseFacade</model>
                 <order_status>payment_review</order_status>
                 <payment_action>authorize</payment_action>
@@ -60,7 +58,7 @@
                 <paymentInfoKeys>cc_installments,cc_type,cc_number,cc_cardholder_name,cc_holder_tax_document,cc_holder_phone,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</paymentInfoKeys>
                 <privateInfoKeys>device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</privateInfoKeys>
                 <is_gateway>1</is_gateway>
-                <can_use_internal>1</can_use_internal>
+                <can_use_internal>0</can_use_internal>
                 <can_use_checkout>1</can_use_checkout>
                 <can_authorize_vault>1</can_authorize_vault>
                 <can_capture_vault>1</can_capture_vault>
@@ -102,7 +100,7 @@
                 <sort_order>10</sort_order>
             </getnet_paymentmagento_cc>
             <getnet_paymentmagento_cc_vault>
-                <active>1</active>
+                <active>0</active>
                 <model>PaymentMagentoCcVaultFacade</model>
                 <paymentInfoKeys>cc_holder_tax_document,cc_holder_phone,cc_payment_first_amount,cc_installments,cc_type,cc_number,cc_cardholder_name,cc_payment_secondary_amount,cc_secondary_installments,cc_secondary_type,cc_secondary_number,cc_secondary_cardholder_name,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</paymentInfoKeys>
                 <privateInfoKeys>device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id</privateInfoKeys>
@@ -112,13 +110,12 @@
                 <group>getnet_group</group>
             </getnet_paymentmagento_cc_vault>
             <getnet_paymentmagento_two_cc>
-                <active>1</active>
+                <active>0</active>
                 <model>PaymentMagentoTwoCcFacade</model>
-                <order_status>processing</order_status>
-                <payment_action>authorize_capture</payment_action>
+                <order_status>payment_review</order_status>
+                <payment_action>authorize</payment_action>
                 <title>Com 2 Cartões de Crédito</title>
                 <currency>BRL</currency>
-                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>cc_holder_tax_document,cc_holder_phone,payment_id,cc_payment_first_amount,cc_installments,cc_type,cc_number,cc_cardholder_name,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id,payment_id_secondary,cc_payment_secondary_amount,cc_secondary_installments,cc_secondary_type,cc_secondary_number,cc_secondary_cardholder_name,terminal_nsu_secondary,authorization_code_secondary,acquirer_transaction_id_secondary,transaction_id_secondary,device</paymentInfoKeys>
                 <privateInfoKeys>payment_id,device,terminal_nsu,authorization_code,acquirer_transaction_id,transaction_id,payment_id_secondary,terminal_nsu_secondary,authorization_code_secondary,acquirer_transaction_id_secondary,transaction_id_secondary</privateInfoKeys>
                 <is_gateway>1</is_gateway>
@@ -126,16 +123,18 @@
                 <can_use_checkout>1</can_use_checkout>
                 <can_authorize_vault>0</can_authorize_vault>
                 <can_capture_vault>0</can_capture_vault>
-                <can_authorize>0</can_authorize>
+                <can_authorize>1</can_authorize>
                 <can_capture>1</can_capture>
                 <can_capture_partial>0</can_capture_partial>
                 <can_refund_partial_per_invoice>0</can_refund_partial_per_invoice>
                 <can_refund>1</can_refund>
                 <can_void>1</can_void>
                 <can_cancel>1</can_cancel>
-                <can_review_payment>0</can_review_payment>
-                <can_deny_payment>0</can_deny_payment>
-                <can_accept_payment>0</can_accept_payment>
+                <can_review_payment>1</can_review_payment>
+                <can_deny_payment>1</can_deny_payment>
+                <can_accept_payment>1</can_accept_payment>
+                <can_fetch_transaction_info>0</can_fetch_transaction_info>
+                <can_fetch_transaction_information>0</can_fetch_transaction_information>
                 <group>getnet_group</group>
                 <cctypes>HC,ELO,AE,VI,MC</cctypes>
                 <min_order_total>500</min_order_total>
@@ -145,11 +144,10 @@
                 <sort_order>10</sort_order>
             </getnet_paymentmagento_two_cc>
             <getnet_paymentmagento_boleto>
-                <active>1</active>
+                <active>0</active>
                 <model>PaymentMagentoBoletoFacade</model>
                 <order_status>pending</order_status>
                 <title>Boleto Bancário</title>
-                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>boleto_line_code,boleto_pdf_href,boleto_expiration_date,boleto_our_number,boleto_document_number,boleto_payer_fullname,boleto_payer_tax_document</paymentInfoKeys>
                 <payment_action>order</payment_action>
                 <can_initialize>1</can_initialize>
@@ -177,11 +175,10 @@ Não parcelamos no boleto.]]></instruction_checkout>
                 <sort_order>12</sort_order>
             </getnet_paymentmagento_boleto>
             <getnet_paymentmagento_pix>
-                <active>1</active>
+                <active>0</active>
                 <model>PaymentMagentoPixFacade</model>
                 <order_status>pending</order_status>
                 <title>Pix</title>
-                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>qr_code_image,qr_code,creation_date_qrcode,expiration_date_qrcode,psp_code</paymentInfoKeys>
                 <privateInfoKeys>creation_date_qrcode,psp_code</privateInfoKeys>
                 <payment_action>order</payment_action>
@@ -211,7 +208,6 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <model>PaymentMagentoWalletFacade</model>
                 <order_status>pending</order_status>
                 <title>Wallet</title>
-                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>qr_code_image,qr_code,wallet_method_type,wallet_installments,wallet_payer_phone</paymentInfoKeys>
                 <privateInfoKeys></privateInfoKeys>
                 <payment_action>order</payment_action>
@@ -244,7 +240,6 @@ A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruct
                 <model>PaymentMagentoGetpayFacade</model>
                 <order_status>pending</order_status>
                 <title>Getpay</title>
-                <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>getpay_link,getpay_expiration_date</paymentInfoKeys>
                 <payment_action>order</payment_action>
                 <can_initialize>1</can_initialize>

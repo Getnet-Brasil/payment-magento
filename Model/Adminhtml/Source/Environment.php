@@ -25,7 +25,6 @@ class Environment implements ArrayInterface
         return [
             'production' => __('Production'),
             'homolog'    => __('Homolog'),
-            'sandbox'    => __('Sandbox - Environment for tests'),
         ];
     }
 }

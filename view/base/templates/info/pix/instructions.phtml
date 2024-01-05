@@ -25,7 +25,7 @@ $expirationDateQrcode = $specificInfo['expiration_date_qrcode'];
             </div>
             <div class="expiration-date">
                 <strong>
-                    <?= /* @noEscape */ $block->formatDate($expirationDateQrcode, \IntlDateFormatter::MEDIUM, true) ?>
+                    <?= /* @noEscape */ $block->escapeHtml($expirationDateQrcode) ?>
                 </strong>
             </div>
         </div>
