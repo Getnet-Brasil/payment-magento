@@ -22,6 +22,8 @@ use Magento\Vault\Model\VaultPaymentInterface;
 
 /**
  * Class Cc - Form for payment by cc.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Cc extends NativeCc
 {

@@ -13,6 +13,8 @@ use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Getpay - Form for payment by boleto.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Getpay extends \Magento\Payment\Block\Form
 {

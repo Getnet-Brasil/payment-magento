@@ -46,7 +46,7 @@
         </div>
         <div class="field getnet-input-group holder phone required">
             <div class="control">
-              <input type="text" name="payment[wallet_payer_phone]" class="input-text" value=""
+                <input type="text" name="payment[wallet_payer_phone]" class="input-text" value=""
                      data-bind="attr: {
                                       autocomplete: 'tel-national',
                                       id: getCode() + '_payer_phone',
@@ -56,10 +56,11 @@
                                       'data-validate': JSON.stringify({'required':true})},
                                 enable: isActive($parents),
                                 value: walletPayerPhone,
-                                valueUpdate: 'keyup' "/>
-              <label data-bind="attr: {for: getCode() + '_payer_phone'}" class="label">
-                  <span><!-- ko i18n: 'Mobile'--><!-- /ko --></span>
-              </label>
+                                valueUpdate: 'keyup' ">
+                </input>
+                <label data-bind="attr: {for: getCode() + '_payer_phone'}" class="label">
+                    <span><!-- ko i18n: 'Mobile'--><!-- /ko --></span>
+                </label>
             </div>
         </div>
         <div class="field getnet-input-group installments"  data-bind="visible: hasWalletDataFormCredit()">

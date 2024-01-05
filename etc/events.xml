@@ -23,4 +23,7 @@
     <event name="payment_method_assign_data_getnet_paymentmagento_wallet">
         <observer name="getnet_paymentmagento_wallet_data_assign" instance="Getnet\PaymentMagento\Observer\DataAssignObserverWallet" />
     </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="getnet_interest" instance="Getnet\PaymentMagento\Observer\CovertInterestToOrderObserver" />
+    </event>
 </config>

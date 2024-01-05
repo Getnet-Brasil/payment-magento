@@ -11,7 +11,7 @@
       <!-- ko if: TaxDocumentCapture() -->
       <div class="field getnet-input-group holder tax-document required">
         <div class="control">
-          <input type="text" name="payment[cc_holder_tax_document]" class="input-text" value=""
+            <input type="text" name="payment[cc_holder_tax_document]" class="input-text" value=""
                  data-bind="attr: {
                                   autocomplete: 'taxvat',
                                   id: getCode() + '_tax_document',
@@ -21,17 +21,18 @@
                                   'data-validate': JSON.stringify({'required':true})},
                             enable: isActive($parents),
                             value: creditCardHolderTaxDocument,
-                            valueUpdate: 'keyup' "/>
-          <label data-bind="attr: {for: getCode() + '_tax_document'}" class="label">
-              <span><!-- ko i18n: 'Credit Card Holder Tax Document'--><!-- /ko --></span>
-          </label>
+                            valueUpdate: 'keyup' ">
+            </input>
+            <label data-bind="attr: {for: getCode() + '_tax_document'}" class="label">
+                <span><!-- ko i18n: 'Credit Card Holder Tax Document'--><!-- /ko --></span>
+            </label>
         </div>
       </div>
       <!-- /ko -->
       <!-- ko if: PhoneCapture() -->
       <div class="field getnet-input-group holder phone required">
         <div class="control">
-          <input type="text" name="payment[cc_holder_phone]" class="input-text" value=""
+            <input type="text" name="payment[cc_holder_phone]" class="input-text" value=""
                  data-bind="attr: {
                                   autocomplete: 'tel-national',
                                   id: getCode() + '_holder_phone',
@@ -41,10 +42,11 @@
                                   'data-validate': JSON.stringify({'required':true})},
                             enable: isActive($parents),
                             value: creditCardHolderPhone,
-                            valueUpdate: 'keyup' "/>
-          <label data-bind="attr: {for: getCode() + '_holder_phone'}" class="label">
-              <span><!-- ko i18n: 'Credit Card Holder Phone'--><!-- /ko --></span>
-          </label>
+                            valueUpdate: 'keyup' ">
+            </input>
+            <label data-bind="attr: {for: getCode() + '_holder_phone'}" class="label">
+                <span><!-- ko i18n: 'Credit Card Holder Phone'--><!-- /ko --></span>
+            </label>
         </div>
       </div>
       <!-- /ko -->
@@ -80,7 +82,6 @@
       <div class="field-to-pay"  data-bind="css: { _hidden:!isPlaceOrderActionAllowed() }">
         <div class="field getnet-input-group type">
             <div class="control">
-                
                 <input type="hidden"
                        name="payment[cc_type]"
                        class="input-text"
@@ -88,6 +89,7 @@
                        data-bind="attr: {id: getCode() + '_type', 'data-container': getCode() + '-cc-type'},
                        value: creditCardType
                        ">
+                </input>
             </div>
         </div>
         <div class="field getnet-input-group number required">
@@ -102,8 +104,9 @@
                                         'data-validate': JSON.stringify({'required-number':true, 'validate-card-type-getnet':getCcAvailableTypesValues(), 'validate-card-number-getnet':'#' + getCode() + '_number', 'validate-cc-type-getnet':'#' + getCode() + '_type'})},
                                   enable: isActive($parents),
                                   value: creditCardNumber,
-                                  valueUpdate: 'keyup' "/>
-                 <label data-bind="attr: {for: getCode() + '_number'}" class="label">
+                                  valueUpdate: 'keyup' ">
+                </input>
+                <label data-bind="attr: {for: getCode() + '_number'}" class="label">
                     <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
                 </label>
                 <span class="field-tooltip toggle">
@@ -141,7 +144,8 @@
                             'data-container': getCode() + '-cc-cvv',
                             'data-validate': JSON.stringify({'required-number':true, 'validate-card-cvv-getnet':'#' + getCode() + '_type'})},
                             enable: isActive($parents),
-                            value: creditCardVerificationNumber" />
+                            value: creditCardVerificationNumber">
+                </input>
                 <div class="field-tooltip toggle">
                     <span class="field-tooltip-action action-cvv"
                           tabindex="0"
@@ -164,7 +168,6 @@
             <div class="control">
                 <div class="fields group group-2">
                     <div class="field getnet-input-group month">
-
                         <div class="control">
                             <select  name="payment[cc_exp_month]"
                                      class="select select-month"
@@ -177,7 +180,7 @@
                                                 value: creditCardExpMonth">
                             </select>
                             <label data-bind="attr: {for: getCode() + '_expiration'}" class="label">
-                                  <span><!-- ko i18n: 'Expiration Month'--><!-- /ko --></span>
+                                <span><!-- ko i18n: 'Expiration Month'--><!-- /ko --></span>
                             </label>
                         </div>
                     </div>
@@ -213,8 +216,9 @@
                                         'data-validate': JSON.stringify({'required':true})},
                                   enable: isActive($parents),
                                   value: creditCardholderName,
-                                  valueUpdate: 'keyup' "/>
-                 <label data-bind="attr: {for: getCode() + '_cardholder_name'}" class="label">
+                                  valueUpdate: 'keyup' ">
+                </input>
+                <label data-bind="attr: {for: getCode() + '_cardholder_name'}" class="label">
                     <span><!-- ko i18n: 'Credit Card Holder Full Name'--><!-- /ko --></span>
                 </label>
             </div>
@@ -238,13 +242,14 @@
         </div>
         <!-- ko if: (isVaultEnabled())-->
           <div class="field choice">
-              <input type="checkbox"
-                  name="vault[is_enabled]"
-                  class="checkbox"
-                  data-bind="attr: {'id': getCode() + '_enable_vault'}, checked: vaultEnabler.isActivePaymentTokenEnabler"/>
-              <label class="label" data-bind="attr: {'for': getCode() + '_enable_vault'}">
-                  <span><!-- ko i18n: 'Save for later use.'--><!-- /ko --></span>
-              </label>
+                <input type="checkbox"
+                    name="vault[is_enabled]"
+                    class="checkbox"
+                    data-bind="attr: {'id': getCode() + '_enable_vault'}, checked: vaultEnabler.isActivePaymentTokenEnabler">
+                </input>
+                <label class="label" data-bind="attr: {'for': getCode() + '_enable_vault'}">
+                    <span><!-- ko i18n: 'Save for later use.'--><!-- /ko --></span>
+                </label>
           </div>
         <!-- /ko -->
       </div>

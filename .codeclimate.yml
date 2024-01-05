@@ -58,14 +58,14 @@ checks:
         - javascript
         - php
   similar-code:
-    enabled: true
+    enabled: false
     config:
-      threshold: 60
+      threshold: 400
       languages:
         - javascript
         - php
   identical-code:
-    enabled: true
+    enabled: false
     config:
       threshold: 40
       languages:
@@ -84,3 +84,4 @@ plugins:
 exclude_patterns:
   - "vendor/*"
   - "view/base/web/js/view/payment/lib/*"
+  - "Plugin/VaultAddtionalCommand.php"

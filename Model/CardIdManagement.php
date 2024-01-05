@@ -12,15 +12,8 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\CardIdManagementInterface;
 use Getnet\PaymentMagento\Api\Data\CardIdInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
-use InvalidArgumentException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Payment\Gateway\ConfigInterface;
-use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
 use Magento\Vault\Model\PaymentTokenManagement;
@@ -33,34 +26,14 @@ use Magento\Vault\Model\PaymentTokenManagement;
 class CardIdManagement implements CardIdManagementInterface
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
      * @var CartRepositoryInterface
      */
     protected $quoteRepository;
 
     /**
-     * @var ConfigInterface
+     * @var ApiManagement
      */
-    private $config;
-
-    /**
-     * @var ConfigBase
-     */
-    private $configBase;
-
-    /**
-     * @var ZendClientFactory
-     */
-    private $httpClientFactory;
-
-    /**
-     * @var Json
-     */
-    private $json;
+    private $api;
 
     /**
      * @var PaymentTokenManagement
@@ -70,29 +43,17 @@ class CardIdManagement implements CardIdManagementInterface
     /**
      * CardIdManagement constructor.
      *
-     * @param Logger                  $logger
      * @param CartRepositoryInterface $quoteRepository
-     * @param ConfigInterface         $config
-     * @param ConfigBase              $configBase
-     * @param ZendClientFactory       $httpClientFactory
-     * @param Json                    $json
+     * @param ApiManagement           $api
      * @param PaymentTokenManagement  $tokenManagement
      */
     public function __construct(
-        Logger $logger,
         CartRepositoryInterface $quoteRepository,
-        ConfigInterface $config,
-        ConfigBase $configBase,
-        ZendClientFactory $httpClientFactory,
-        Json $json,
+        ApiManagement $api,
         PaymentTokenManagement $tokenManagement
     ) {
-        $this->logger = $logger;
         $this->quoteRepository = $quoteRepository;
-        $this->config = $config;
-        $this->configBase = $configBase;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->json = $json;
+        $this->api = $api;
         $this->tokenManagement = $tokenManagement;
     }
 
@@ -139,48 +100,24 @@ class CardIdManagement implements CardIdManagementInterface
      * @param int    $storeId
      * @param string $cardId
      *
-     * @return array
+     * @return array|\Magento\Framework\Phrase
      */
     public function getCardId($storeId, $cardId)
     {
-        $client = $this->httpClientFactory->create();
-        $url = $this->configBase->getApiUrl($storeId);
-        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        $request = ['store_id' => $storeId];
+        $path = 'v1/cards/'.$cardId;
 
-        try {
-            $client->setUri($url.'v1/cards/'.$cardId);
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
-            $client->setMethod(ZendClient::GET);
+        $data = $this->api->sendGetRequest($path, $request);
 
-            $responseBody = $client->request()->getBody();
-            $data = $this->json->unserialize($responseBody);
+        $response = [
+            'success' => 0,
+        ];
+
+        if (isset($data['number_token'])) {
             $response = [
-                'success' => 0,
+                'success' => 1,
+                'card'    => $data,
             ];
-            if (isset($data['number_token'])) {
-                $response = [
-                    'success' => 1,
-                    'card'    => $data,
-                ];
-            }
-            $this->logger->debug(
-                [
-                    'url'      => $url.'v1/cards/'.$cardId,
-                    'request'  => $cardId,
-                    'response' => $responseBody,
-                ]
-            );
-        } catch (InvalidArgumentException $e) {
-            $this->logger->debug(
-                [
-                    'url'      => $url.'v1/cards/'.$cardId,
-                    'request'  => $cardId,
-                    'response' => $responseBody,
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new NoSuchEntityException('Invalid JSON was returned by the gateway');
         }
 
         return $response;

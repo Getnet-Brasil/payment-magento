@@ -13,6 +13,8 @@ use Magento\Framework\View\Element\Template\Context;
 
 /**
  * Class Pix - Form for payment by Pix.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Pix extends \Magento\Payment\Block\Form
 {

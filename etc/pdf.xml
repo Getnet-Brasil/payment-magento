@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/pdf_file.xsd">
+    <totals>
+        <total name="getnet_interest">
+            <title translate="true">Getnet Interest</title>
+            <source_field>getnet_interest</source_field>
+            <font_size>7</font_size>
+            <display_zero>false</display_zero>
+            <sort_order>500</sort_order>
+        </total>
+    </totals>
+</config>

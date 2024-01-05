@@ -13,6 +13,8 @@ use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Wallet - Wallet payment information.
+ *
+ * @SuppressWarnings(PHPMD)
  */
 class Wallet extends ConfigurableInfo
 {

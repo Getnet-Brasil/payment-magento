@@ -84,13 +84,19 @@ class FetchTransactionOrderGetpay
             }
             $loadedOrder = $this->order->load($order->getEntityId());
             $payment = $loadedOrder->getPayment();
-            $payment->update();
-            $this->logger->debug([
-                'cron'   => 'FetchTransactionOrderGetpay',
-                'type'   => ConfigGetpay::METHOD,
-                'order'  => $loadedOrder->getIncrementId(),
-                'status' => $loadedOrder->getStatus(),
-            ]);
+
+            try {
+                $payment->update();
+                $loadedOrder->save();
+                $this->logger->debug([
+                    'cron'   => 'FetchTransactionOrderGetpay',
+                    'type'   => ConfigGetpay::METHOD,
+                    'order'  => $loadedOrder->getIncrementId(),
+                    'status' => $loadedOrder->getStatus(),
+                ]);
+            } catch (\Exception $exc) {
+                continue;
+            }
         }
     }
 }

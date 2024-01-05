@@ -9,7 +9,6 @@
 namespace Getnet\PaymentMagento\Model\Adminhtml\Source;
 
 use Magento\Config\Block\System\Config\Form\Fieldset;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /**
@@ -47,7 +46,6 @@ class PaymentGroup extends Fieldset
         array $data = []
     ) {
         $this->backendConfig = $backendConfig;
-        $secureRenderer = $secureRenderer ?? ObjectManager::getInstance()->get(SecureHtmlRenderer::class);
         parent::__construct($context, $authSession, $jsHelper, $data, $secureRenderer);
         $this->secureRenderer = $secureRenderer;
     }

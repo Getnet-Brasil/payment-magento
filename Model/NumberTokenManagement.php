@@ -12,14 +12,8 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
 use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
-use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Payment\Gateway\ConfigInterface;
-use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
 
@@ -31,9 +25,9 @@ use Magento\Quote\Api\Data\CartInterface as QuoteCartInterface;
 class NumberTokenManagement implements NumberTokenManagementInterface
 {
     /**
-     * @var Logger
+     * @var ApiManagement
      */
-    private $logger;
+    private $api;
 
     /**
      * @var CartRepositoryInterface
@@ -41,49 +35,17 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     protected $quoteRepository;
 
     /**
-     * @var ConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var ConfigBase
-     */
-    private $configBase;
-
-    /**
-     * @var ZendClientFactory
-     */
-    private $httpClientFactory;
-
-    /**
-     * @var Json
-     */
-    private $json;
-
-    /**
      * NumberTokenManagement constructor.
      *
-     * @param Logger                  $logger
+     * @param ApiManagement           $api
      * @param CartRepositoryInterface $quoteRepository
-     * @param ConfigInterface         $config
-     * @param ConfigBase              $configBase
-     * @param ZendClientFactory       $httpClientFactory
-     * @param Json                    $json
      */
     public function __construct(
-        Logger $logger,
-        CartRepositoryInterface $quoteRepository,
-        ConfigInterface $config,
-        ConfigBase $configBase,
-        ZendClientFactory $httpClientFactory,
-        Json $json
+        ApiManagement $api,
+        CartRepositoryInterface $quoteRepository
     ) {
-        $this->logger = $logger;
+        $this->api = $api;
         $this->quoteRepository = $quoteRepository;
-        $this->config = $config;
-        $this->configBase = $configBase;
-        $this->httpClientFactory = $httpClientFactory;
-        $this->json = $json;
     }
 
     /**
@@ -154,54 +116,35 @@ class NumberTokenManagement implements NumberTokenManagementInterface
      */
     public function getNumberToken($storeId, $cardNumber)
     {
-        /** @var ZendClient $client */
-        $client = $this->httpClientFactory->create();
-        $request = ['card_number' => $cardNumber];
-        $url = $this->configBase->getApiUrl($storeId);
-        $apiBearer = $this->configBase->getMerchantGatewayOauth($storeId);
+        $request = [
+            'card_number' => $cardNumber,
+            'store_id'    => $storeId,
+        ];
+        $path = 'v1/tokens/card';
 
-        try {
-            $client->setUri($url.'/v1/tokens/card');
-            $client->setConfig(['maxredirects' => 0, 'timeout' => 45000]);
-            $client->setHeaders('Authorization', 'Bearer '.$apiBearer);
-            $client->setRawData($this->json->serialize($request), 'application/json');
-            $client->setMethod(ZendClient::POST);
+        $response = [
+            'success' => 0,
+        ];
 
-            $responseBody = $client->request()->getBody();
-            $data = $this->json->unserialize($responseBody);
+        $data = $this->api->sendPostRequest(
+            $path,
+            $request,
+        );
+
+        if (!empty($data['number_token'])) {
+            $response = [
+                'success'      => 1,
+                'number_token' => $data['number_token'],
+            ];
+        }
+
+        if (!isset($data['number_token'])) {
             $response = [
                 'success' => 0,
+                'message' => [
+                    'text' => __('Error creating payment. Please, contact the store owner or try again.'),
+                ],
             ];
-            if (!empty($data['number_token'])) {
-                $response = [
-                    'success'      => 1,
-                    'number_token' => $data['number_token'],
-                ];
-            }
-            $this->logger->debug(
-                [
-                    'url'      => $url.'v1/tokens/card',
-                    'response' => $responseBody,
-                ]
-            );
-
-            if (!$client->request()->isSuccessful()) {
-                $response = [
-                    'success' => 0,
-                    'message' => [
-                        'text' => __('Error creating payment. Please, contact the store owner or try again.'),
-                    ],
-                ];
-            }
-        } catch (\InvalidArgumentException $e) {
-            $this->logger->debug(
-                [
-                    'url'      => $url.'v1/tokens/card',
-                    'response' => $responseBody,
-                ]
-            );
-            // phpcs:ignore Magento2.Exceptions.DirectThrow
-            throw new \Exception('Invalid JSON was returned by the gateway');
         }
 
         return $response;
