@@ -76,8 +76,6 @@ class AmountDataRequest implements BuilderInterface
 
         $grandTotal = $order->getGrandTotalAmount();
 
-        $payment = $paymentDO->getPayment();
-
         $result[self::AMOUNT] = $this->config->formatPrice($grandTotal);
 
         return $result;

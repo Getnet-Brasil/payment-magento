@@ -65,8 +65,6 @@ class AmountRefundDataRequest implements BuilderInterface
 
         $payment = $paymentDO->getPayment();
 
-        $order = $payment->getOrder();
-
         $creditmemo = $payment->getCreditMemo();
 
         $totalCreditmemo = $creditmemo->getGrandTotal();
