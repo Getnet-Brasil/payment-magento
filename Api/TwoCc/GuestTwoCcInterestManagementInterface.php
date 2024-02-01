@@ -31,6 +31,6 @@ interface GuestTwoCcInterestManagementInterface
         $cartId,
         \Getnet\PaymentMagento\Api\TwoCc\Data\AmountForCalcInterface $amountForCalc,
         \Getnet\PaymentMagento\Api\TwoCc\Data\IdxInTwoCcInterface $idxInTwoCc,
-        \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface $twoCcInstallment,
+        \Getnet\PaymentMagento\Api\TwoCc\Data\TwoCcInstallmentInterface $twoCcInstallment
     );
 }
