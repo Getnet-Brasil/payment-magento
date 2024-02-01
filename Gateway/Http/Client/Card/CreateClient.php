@@ -68,9 +68,11 @@ class CreateClient implements ClientInterface
         );
 
         $status = isset($responseBody['payment_id']) ? 1 : 0;
+        $denied = ($responseBody['status'] !== 'DENIED') ? 1 : 0;
+
         $response = array_merge(
             [
-                self::RESULT_CODE => $status,
+                self::RESULT_CODE => (!$denied) ? $status : 0,
                 self::EXT_ORD_ID  => isset($responseBody['payment_id']) ? $responseBody['payment_id'] : null,
             ],
             $responseBody
