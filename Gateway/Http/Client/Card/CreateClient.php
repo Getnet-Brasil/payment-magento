@@ -61,6 +61,8 @@ class CreateClient implements ClientInterface
     {
         $request = $transferObject->getBody();
 
+        $denied = 0;
+
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
             'v2/payments',
@@ -68,11 +70,16 @@ class CreateClient implements ClientInterface
         );
 
         $status = isset($responseBody['payment_id']) ? 1 : 0;
-        $denied = ($responseBody['status'] !== 'DENIED') ? 1 : 0;
+        
+        if (isset($responseBody['status'])) {
+            if ($responseBody['status'] === 'DENIED') {
+                $denied = 1;
+            }
+        }
 
         $response = array_merge(
             [
-                self::RESULT_CODE => (!$denied) ? $status : 0,
+                self::RESULT_CODE => ($denied) ? 0 : $status,
                 self::EXT_ORD_ID  => isset($responseBody['payment_id']) ? $responseBody['payment_id'] : null,
             ],
             $responseBody
