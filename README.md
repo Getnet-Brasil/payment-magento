@@ -19,7 +19,7 @@ Status Atual
 
 Crie sua conta na Getnet.
 
-[![Criar conta](https://img.shields.io/badge/-Crie%20sua%20Conta-%23EC0000)](https://site.getnet.com.br/ecommerce/#formulario_ecommerce)
+[![Criar conta](https://img.shields.io/badge/-Crie%20sua%20Conta-%23EC0000)](https://forms.gle/S4NYvHZ73oCDFSDb8)
 
 ## Recursos
 
