@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Getnet_PaymentMagento::view_log" title="Getnet" translate="title" module="Getnet_PaymentMagento" sortOrder="20" parent="Magento_Backend::stores" resource="Getnet_PaymentMagento::view_log"/>
+        <add id="Getnet_PaymentMagento::view_log_action" title="Viewer Log" translate="title" module="Getnet_PaymentMagento" sortOrder="10" parent="Getnet_PaymentMagento::view_log" action="getnet/transaction" resource="Getnet_PaymentMagento::view_log_action"/>
+    </menu>
+</config>

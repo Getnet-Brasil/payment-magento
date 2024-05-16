@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Getnet\PaymentMagento\Model\Cache\Type\GetnetCache;
+use Getnet\PaymentMagento\Model\DataGetnetFactory;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
 use Magento\Framework\App\Cache\Manager as CacheManager;
@@ -70,14 +71,20 @@ class ApiManagement
     protected $cacheManager;
 
     /**
-     * @param Logger            $logger
-     * @param ClientFactory     $httpClientFactory
-     * @param Config            $config
-     * @param ConfigBase        $configBase
-     * @param Json              $json
-     * @param CacheInterface    $cache
-     * @param TypeListInterface $cacheTypeList
-     * @param CacheManager      $cacheManager
+     * @var DataGetnetFactory
+     */
+    protected $transactionLog;
+
+    /**
+     * @param Logger                    $logger
+     * @param ClientFactory             $httpClientFactory
+     * @param Config                    $config
+     * @param ConfigBase                $configBase
+     * @param Json                      $json
+     * @param CacheInterface            $cache
+     * @param TypeListInterface         $cacheTypeList
+     * @param CacheManager              $cacheManager
+     * @param DataGetnetFactory     $transactionLog
      */
     public function __construct(
         Logger $logger,
@@ -87,7 +94,8 @@ class ApiManagement
         Json $json,
         CacheInterface $cache,
         TypeListInterface $cacheTypeList,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        DataGetnetFactory $transactionLog
     ) {
         $this->logger = $logger;
         $this->httpClientFactory = $httpClientFactory;
@@ -97,6 +105,7 @@ class ApiManagement
         $this->cache = $cache;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheManager = $cacheManager;
+        $this->transactionLog = $transactionLog;
     }
 
     /**
@@ -169,7 +178,7 @@ class ApiManagement
             $result = $client->send()->getBody();
             $responseBody = $this->json->unserialize($result);
             $this->collectLogger(
-                $uri,
+                $uri.'auth/oauth/v2/token',
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -181,7 +190,7 @@ class ApiManagement
             $this->saveAuthInCache($responseBody);
         } catch (LocalizedException $exc) {
             $this->collectLogger(
-                $uri,
+                $uri.'auth/oauth/v2/token',
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -209,6 +218,7 @@ class ApiManagement
         $storeId = $request['store_id'];
         unset($request['store_id']);
         $auth = $this->getAuth($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
 
         if (!$auth) {
             // phpcs:ignore Magento2.Exceptions.DirectThrow
@@ -220,6 +230,7 @@ class ApiManagement
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
+            'x-seller-id'                 => $sellerId,
             'x-transaction-channel-entry' => 'MG',
         ];
 
@@ -283,9 +294,11 @@ class ApiManagement
 
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
+            'x-seller-id'                 => $sellerId,
             'x-transaction-channel-entry' => 'MG',
         ];
         $uri .= $path;
@@ -342,9 +355,12 @@ class ApiManagement
 
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
+
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
+            'x-seller-id'                 => $sellerId,
             'x-transaction-channel-entry' => 'MG',
         ];
         $uri .= $path;
@@ -424,6 +440,15 @@ class ApiManagement
                 $protectedRequest
             );
         }
+
+        $dataGetnet = $this->transactionLog->create();
+
+        $dataGetnet->setUrl($uri);
+        $dataGetnet->setHeader($this->json->serialize($headers));
+        $dataGetnet->setPayload($this->json->serialize($payload));
+        $dataGetnet->setResponse($this->json->serialize($response));
+        $dataGetnet->setErrorMsg($message);
+        $dataGetnet->save();
 
         $this->logger->debug(
             [

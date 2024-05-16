@@ -36,4 +36,16 @@
         <column xsi:type="decimal" name="getnet_interest_amount_refund" scale="4" precision="12" unsigned="false" nullable="true" comment="Getnet Interest Amount Refunded"/>
         <column xsi:type="decimal" name="base_getnet_interest_amount_refund" scale="4" precision="12" unsigned="false" nullable="true" comment="Base Getnet Interest Amount Refunded"/>
     </table>
+    <table name="getnet_transaction_log" resource="default" engine="innodb" comment="Getnet Transaction Log Table">
+        <column xsi:type="int" name="entity_id" nullable="false" unsigned="true" identity="true" comment="Entity ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="varchar" name="url" nullable="false" length="255" comment="URL"/>
+        <column xsi:type="varchar" name="header" nullable="false" length="255" comment="Header"/>
+        <column xsi:type="longtext" name="payload" nullable="false" comment="Payload"/>
+        <column xsi:type="longtext" name="response" nullable="false" comment="Response"/>
+        <column xsi:type="longtext" name="error_msg" nullable="false" comment="Error Message"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
 </schema>

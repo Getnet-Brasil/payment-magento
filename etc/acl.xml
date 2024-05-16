@@ -12,6 +12,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::stores">
+                    <resource id="Getnet_PaymentMagento::view_log_action" title="Getnet Viewer Log" translate="title" sortOrder="10" />
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
                             <resource id="Magento_Payment::payment_services" title="Payment Services" translate="title">

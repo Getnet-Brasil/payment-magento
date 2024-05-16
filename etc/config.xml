@@ -14,7 +14,7 @@
                 <debug>1</debug>
                 <use_auth_in_cache>1</use_auth_in_cache>
                 <active>1</active>
-                <private_keys>Authorization,client_secret,access_token,card_number,email,document_number,tax_id,number,client_id,customer_id,name,last_name</private_keys>
+                <private_keys>Authorization,client_secret,access_token,card_number,email,document_number,tax_id,number,client_id,customer_id,name,last_name,security_code,expiration_month,expiration_year</private_keys>
                 <environment>production</environment>
                 <statement_descriptor>Store Name</statement_descriptor>
                 <client_id_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />

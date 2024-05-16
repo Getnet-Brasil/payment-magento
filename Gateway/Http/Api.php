@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Gateway\Http;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Model\Cache\Type\GetnetCache;
+use Getnet\PaymentMagento\Model\DataGetnetFactory;
 use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
 use Magento\Framework\App\Cache\Manager as CacheManager;
@@ -65,6 +66,11 @@ class Api
     protected $cacheManager;
 
     /**
+     * @var DataGetnetFactory
+     */
+    protected $dataGetnet;
+
+    /**
      * @param Logger            $logger
      * @param ClientFactory     $httpClientFactory
      * @param Config            $config
@@ -72,6 +78,7 @@ class Api
      * @param CacheInterface    $cache
      * @param TypeListInterface $cacheTypeList
      * @param CacheManager      $cacheManager
+     * @param DataGetnetFactory $dataGetnet
      */
     public function __construct(
         Logger $logger,
@@ -80,7 +87,8 @@ class Api
         Json $json,
         CacheInterface $cache,
         TypeListInterface $cacheTypeList,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        DataGetnetFactory $dataGetnet
     ) {
         $this->config = $config;
         $this->httpClientFactory = $httpClientFactory;
@@ -89,6 +97,7 @@ class Api
         $this->cache = $cache;
         $this->cacheTypeList = $cacheTypeList;
         $this->cacheManager = $cacheManager;
+        $this->dataGetnet = $dataGetnet;
     }
 
     /**
@@ -161,7 +170,7 @@ class Api
             $result = $client->send()->getBody();
             $responseBody = $this->json->unserialize($result);
             $this->collectLogger(
-                $uri,
+                $uri.'auth/oauth/v2/token',
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -173,7 +182,7 @@ class Api
             $this->saveAuthInCache($responseBody);
         } catch (LocalizedException $exc) {
             $this->collectLogger(
-                $uri,
+                $uri.'auth/oauth/v2/token',
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -366,6 +375,15 @@ class Api
                 $protectedRequest
             );
         }
+
+        $dataGetnet = $this->dataGetnet->create();
+
+        $dataGetnet->setUrl($uri);
+        $dataGetnet->setHeader($this->json->serialize($headers));
+        $dataGetnet->setPayload($this->json->serialize($payload));
+        $dataGetnet->setResponse($this->json->serialize($response));
+        $dataGetnet->setErrorMsg($message);
+        $dataGetnet->save();
 
         $this->logger->debug(
             [

@@ -118,6 +118,8 @@
             var self = this,
                 vat = $('#getnet_paymentmagento_two_cc_tax_document'),
                 tel = $('#getnet_paymentmagento_two_cc_holder_phone'),
+                currentInterest = quote.totals()['total_segments'].getnet_interest_amount,
+                baseGrandTotal = quote.totals().base_grand_total,
                 typeMaskVat;
 
             this._super();
@@ -146,6 +148,11 @@
                 creditCardData.creditCardInstallment = value;
             });
 
+            if (!self.creditCardInstallment()) {
+                self.addInterest(0);
+                self.addInterest(1);
+            }
+
             self.creditCardNumberToken.subscribe(function (value) {
                 creditCardData.creditCardNumberToken = value;
             });
@@ -169,14 +176,16 @@
             });
 
             self.firstPaymentAmount.subscribe(function (value) {
+                self.addInterest(0);
+                self.addInterest(1);
                 $('#getnet_paymentmagento_two_cc_first_payment_amount').mask('#0.00', {reverse: true});
                 self.secondaryPaymentAmount(self.minScale);
-                creditCardData.firstPaymentAmount = quote.totals().base_grand_total - 5;
+                creditCardData.firstPaymentAmount = baseGrandTotal - 5  - currentInterest;
 
                 if (value >= self.minScale && value <= self.maxScale) {
                     creditCardData.firstPaymentAmount = value;
-                    self.secondaryPaymentAmount(quote.totals().base_grand_total - value);
-                    creditCardData.secondaryPaymentAmount = quote.totals().base_grand_total - value;
+                    self.secondaryPaymentAmount(baseGrandTotal - value);
+                    creditCardData.secondaryPaymentAmount = baseGrandTotal - value - currentInterest;
                 }
             });
 
