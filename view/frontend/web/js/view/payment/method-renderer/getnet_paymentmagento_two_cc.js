@@ -13,6 +13,7 @@
     'Getnet_PaymentMagento/js/view/payment/gateway/custom-validation',
     'Getnet_PaymentMagento/js/view/payment/lib/jquery/jquery.mask',
     'Getnet_PaymentMagento/js/view/payment/gateway/calculate-installment',
+    'Getnet_PaymentMagento/js/action/checkout/set-two-interest',
     'Magento_Checkout/js/model/quote',
     'ko',
     'Magento_Checkout/js/model/url-builder',
@@ -29,6 +30,7 @@
         _customValidation,
         _mask,
         getnetInstallment,
+        getnetSetInterest,
         quote,
         _ko,
         urlBuilder,
@@ -116,11 +118,18 @@
             var self = this,
                 vat = $('#getnet_paymentmagento_two_cc_tax_document'),
                 tel = $('#getnet_paymentmagento_two_cc_holder_phone'),
+                currentInterest = quote.totals()['total_segments'].getnet_interest_amount,
+                baseGrandTotal = quote.totals().base_grand_total,
                 typeMaskVat;
 
             this._super();
 
             tel.mask('(00)00000-0000', { clearIfNotMatch: true });
+
+            self.active.subscribe(() => {
+                self.creditCardInstallment(null);
+                getnetSetInterest.getnetInterest(0);
+            });
 
             self.creditCardHolderTaxDocument.subscribe(function (value) {
                 typeMaskVat = value.replace(/\D/g, '').length <= 11 ? '000.000.000-009' : '00.000.000/0000-00';
@@ -134,8 +143,15 @@
             });
 
             self.creditCardInstallment.subscribe(function (value) {
+                self.addInterest(0);
+                self.creditCardSecondaryInstallment(null);
                 creditCardData.creditCardInstallment = value;
             });
+
+            if (!self.creditCardInstallment()) {
+                self.addInterest(0);
+                self.addInterest(1);
+            }
 
             self.creditCardNumberToken.subscribe(function (value) {
                 creditCardData.creditCardNumberToken = value;
@@ -160,14 +176,16 @@
             });
 
             self.firstPaymentAmount.subscribe(function (value) {
+                self.addInterest(0);
+                self.addInterest(1);
                 $('#getnet_paymentmagento_two_cc_first_payment_amount').mask('#0.00', {reverse: true});
                 self.secondaryPaymentAmount(self.minScale);
-                creditCardData.firstPaymentAmount = quote.totals().base_grand_total - 5;
+                creditCardData.firstPaymentAmount = baseGrandTotal - 5  - currentInterest;
 
                 if (value >= self.minScale && value <= self.maxScale) {
                     creditCardData.firstPaymentAmount = value;
-                    self.secondaryPaymentAmount(quote.totals().base_grand_total - value);
-                    creditCardData.secondaryPaymentAmount = quote.totals().base_grand_total - value;
+                    self.secondaryPaymentAmount(baseGrandTotal - value);
+                    creditCardData.secondaryPaymentAmount = baseGrandTotal - value - currentInterest;
                 }
             });
 
@@ -183,22 +201,7 @@
          * @returns {void}
          */
         subscribeDataTwoCard() {
-            var self = this,
-                inputCcNumber = $('#getnet_paymentmagento_two_cc_secondary_number');
-
-            self.selectedCardSecondaryType.subscribe(function (value) {
-                inputCcNumber.unmask();
-                if (value === 'VI' || value === 'MC' || value === 'ELO' || value === 'HC' || value === 'HI') {
-                    inputCcNumber.mask('0000 0000 0000 0000');
-                }
-                if (value === 'DN') {
-                    inputCcNumber.mask('0000 000000 0000');
-                }
-                if (value === 'AE') {
-                    inputCcNumber.mask('0000 000000 00000');
-                }
-                creditCardData.selectedCardSecondaryType = value;
-            });
+            var self = this;
 
             self.creditCardSecondaryNumber.subscribe(function (value) {
                 var result;
@@ -238,6 +241,7 @@
             });
 
             self.creditCardSecondaryInstallment.subscribe(function (value) {
+                self.addInterest(1);
                 creditCardData.creditCardSecondaryInstallment = value;
             });
 
@@ -253,6 +257,26 @@
                 creditCardData.creditCardSecondaryType = value;
                 creditCardData.selectedCardSecondaryType = value;
             });
+        },
+
+        /**
+         * Add Interest in totals
+         * @param {Integer} idx
+         * @returns {void}
+         */
+        addInterest(idx) {
+            var self = this,
+                amount = parseFloat(self.firstPaymentAmount()).toFixed(2),
+                selectInstallment = self.creditCardInstallment();
+
+            if (idx) {
+                amount = parseFloat(self.secondaryPaymentAmount()).toFixed(2),
+                selectInstallment = parseFloat(self.creditCardSecondaryInstallment());
+            }
+
+            if (selectInstallment >= 0) {
+                getnetSetInterest.getnetInterest(amount, idx, selectInstallment);
+            }
         },
 
         /**
@@ -284,7 +308,7 @@
                 return;
             }
             fullScreenLoader.startLoader();
-            this.getTokenize();
+            this.getnetTokenizeCard();
             this.placeOrder();
         },
 
@@ -292,7 +316,7 @@
          * Get Tokenize
          * @returns {void}
          */
-        getTokenize() {
+        getnetTokenizeCard() {
             var self = this,
                 cardNumber = this.creditCardNumber().replace(/\D/g, ''),
                 serviceUrl,
@@ -333,7 +357,7 @@
                 function (response) {
                     token = response[0].number_token;
                     self.creditCardNumberToken(token);
-                    self.getTokenizeSecondary();
+                    self.getnetTokenizeCardSecondary();
                     fullScreenLoader.stopLoader(true);
                 }
             );
@@ -344,7 +368,7 @@
          * Get Tokenize Seconday
          * @returns {void}
          */
-        getTokenizeSecondary() {
+        getnetTokenizeCardSecondary() {
             var self = this,
                 cardSecondaryNumber = this.creditCardSecondaryNumber().replace(/\D/g, ''),
                 serviceUrl,
