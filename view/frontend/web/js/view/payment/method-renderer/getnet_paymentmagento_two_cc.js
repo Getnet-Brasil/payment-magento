@@ -59,8 +59,8 @@
             creditCardExpYear: '',
             creditCardType: '',
             selectedCardType: '',
-            firstPaymentAmount: (quote.totals().base_grand_total / 2).toFixed(2),
-            secondaryPaymentAmount: quote.totals().base_grand_total - (quote.totals().base_grand_total / 2).toFixed(2),
+            firstPaymentAmount: '',
+            secondaryPaymentAmount: '',
             minScale: 5,
             maxScale: quote.totals().base_grand_total - 5,
             creditCardSecondaryNumberToken: '',
@@ -112,19 +112,45 @@
         },
 
         /**
+         * Get Current Interest
+         * @returns {Float}
+         */
+        getCurrentInterest() {
+            var currentInterest = 0;
+
+            for (let i = 0; i < quote.totals()['total_segments'].length; i++) {
+                var item = quote.totals()['total_segments'][i];
+                if (item.code === 'getnet_interest_amount') {
+                  currentInterest = item.value;
+                  break;
+                }
+            }
+
+            return currentInterest.toFixed(2);
+        },
+
+        /**
          * Init component
          */
         initialize() {
             var self = this,
                 vat = $('#getnet_paymentmagento_two_cc_tax_document'),
                 tel = $('#getnet_paymentmagento_two_cc_holder_phone'),
-                currentInterest = quote.totals()['total_segments'].getnet_interest_amount,
-                baseGrandTotal = quote.totals().base_grand_total,
+                currentInterest = self.getCurrentInterest(),
+                baseGrandTotal = quote.totals().base_grand_total  - currentInterest,
+                amount = (baseGrandTotal / 2).toFixed(2),
                 typeMaskVat;
 
-            this._super();
+            self._super();
+
+            self.secondaryPaymentAmount(amount);
+            self.firstPaymentAmount(amount);
 
             tel.mask('(00)00000-0000', { clearIfNotMatch: true });
+
+            if (currentInterest) {
+                getnetSetInterest.getnetInterest(0);
+            }
 
             self.active.subscribe(() => {
                 self.creditCardInstallment(null);
@@ -147,11 +173,6 @@
                 self.creditCardSecondaryInstallment(null);
                 creditCardData.creditCardInstallment = value;
             });
-
-            if (!self.creditCardInstallment()) {
-                self.addInterest(0);
-                self.addInterest(1);
-            }
 
             self.creditCardNumberToken.subscribe(function (value) {
                 creditCardData.creditCardNumberToken = value;
@@ -176,15 +197,15 @@
             });
 
             self.firstPaymentAmount.subscribe(function (value) {
-                self.addInterest(0);
-                self.addInterest(1);
+                self.creditCardInstallment(null);
+                self.creditCardSecondaryInstallment(null);
                 $('#getnet_paymentmagento_two_cc_first_payment_amount').mask('#0.00', {reverse: true});
                 self.secondaryPaymentAmount(self.minScale);
                 creditCardData.firstPaymentAmount = baseGrandTotal - 5  - currentInterest;
 
                 if (value >= self.minScale && value <= self.maxScale) {
                     creditCardData.firstPaymentAmount = value;
-                    self.secondaryPaymentAmount(baseGrandTotal - value);
+                    self.secondaryPaymentAmount(baseGrandTotal - currentInterest - value);
                     creditCardData.secondaryPaymentAmount = baseGrandTotal - value - currentInterest;
                 }
             });
