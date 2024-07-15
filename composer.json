@@ -2,7 +2,7 @@
     "name": "getnetadquirencia/payment-magento",
     "description": "Getnet - Payment for Magento 2",
     "require": {
-        "php": "~8.1.0||~8.2.0",
+        "php": ">=7.3",
         "magento/framework": ">=103.0",
         "bacon/bacon-qr-code": "*",
         "ext-json": "*"
