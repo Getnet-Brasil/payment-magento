@@ -179,8 +179,12 @@ class PaymentDataRequest implements BuilderInterface
             $method = 'CREDIT_AUTHORIZATION';
         }
 
+        $paymentId = $this->encrytor->hash($order->getOrderIncrementId(), 0);
+
+        $paymentId = $this->convertToGuid($paymentId);
+
         $result[CardInitSchemaDataRequest::DATA][self::PAYMENT] = [
-            self::PAYMENT_ID            => $this->encrytor->hash($order->getOrderIncrementId(), 0),
+            self::PAYMENT_ID            => $paymentId,
             self::PAYMENT_METHOD        => $method,
             self::TRANSACTION_TYPE      => $transactionType,
             self::NUMBER_INSTALLMENTS   => $installment,
@@ -190,6 +194,25 @@ class PaymentDataRequest implements BuilderInterface
         ];
 
         return $result;
+    }
+
+    /**
+     * Convert to Guid.
+     *
+     * @param string $hex
+     *
+     * @return array
+     */
+    public function convertToGuid($hex) {
+        if (strlen($hex) === 32 && ctype_xdigit($hex)) {
+            return substr($hex, 0, 8) . '-' .
+                   substr($hex, 8, 4) . '-' .
+                   substr($hex, 12, 4) . '-' .
+                   substr($hex, 16, 4) . '-' .
+                   substr($hex, 20, 12);
+        } else {
+            throw new InvalidArgumentException("O valor fornecido não é um hexadecimal válido de 32 caracteres.");
+        }
     }
 
     /**
