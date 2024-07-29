@@ -226,7 +226,7 @@ class Api
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
-            'seller_id'                   => $sellerId,
+            'x-seller-id'                 => $sellerId,
         ];
 
         if ($additional) {
