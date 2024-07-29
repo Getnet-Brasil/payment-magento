@@ -217,10 +217,13 @@ class ApiManagement
 
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
+
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
+            'x-seller-id'                 => $sellerId,
         ];
 
         if ($additional) {
@@ -284,11 +287,15 @@ class ApiManagement
 
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
+
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
+            'x-seller-id'                 => $sellerId,
         ];
+
         $uri .= $path;
 
         /** @var LaminasClient $client */
@@ -344,11 +351,15 @@ class ApiManagement
 
         $data = [];
         $uri = $this->configBase->getApiUrl($storeId);
+        $sellerId = $this->configBase->getMerchantGatewaySellerId($storeId);
+
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
+            'x-seller-id'                 => $sellerId,
         ];
+
         $uri .= $path;
 
         /** @var LaminasClient $client */

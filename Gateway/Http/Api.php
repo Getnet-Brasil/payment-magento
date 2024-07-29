@@ -285,10 +285,13 @@ class Api
 
         $data = [];
         $uri = $this->config->getApiUrl($storeId);
+        $sellerId = $this->config->getMerchantGatewaySellerId($storeId);
+
         $headers = [
             'Authorization'               => 'Bearer '.$auth,
             'Content-Type'                => 'application/json',
             'x-transaction-channel-entry' => 'MG',
+            'x-seller-id'                 => $sellerId,
         ];
         $uri .= $path;
 
