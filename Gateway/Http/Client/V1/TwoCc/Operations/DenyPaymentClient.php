@@ -97,7 +97,7 @@ class DenyPaymentClient implements ClientInterface
         unset($request[self::CANCEL_AMOUNT]);
         unset($request[self::DAY_ZERO]);
 
-        $data = $this->api->sendGetRequest(
+        $data = $this->api->sendPostRequest(
             $transferObject,
             $path,
             $request,

@@ -179,6 +179,7 @@ class ApiManagement
             $responseBody = $this->json->unserialize($result);
             $this->collectLogger(
                 $uri.'auth/oauth/v2/token',
+                $client->getMethod(),
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -191,6 +192,7 @@ class ApiManagement
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri.'auth/oauth/v2/token',
+                $client->getMethod(),
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -254,6 +256,7 @@ class ApiManagement
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $responseBody,
@@ -261,6 +264,7 @@ class ApiManagement
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->request()->getBody(),
@@ -315,6 +319,7 @@ class ApiManagement
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -322,6 +327,7 @@ class ApiManagement
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -377,6 +383,7 @@ class ApiManagement
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -384,6 +391,7 @@ class ApiManagement
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -400,6 +408,7 @@ class ApiManagement
      * Collect Logger.
      *
      * @param string      $uri
+     * @param string      $method
      * @param string      $headers
      * @param array       $payload
      * @param array       $response
@@ -409,6 +418,7 @@ class ApiManagement
      */
     public function collectLogger(
         $uri,
+        $method,
         $headers,
         $payload,
         $response,
@@ -453,6 +463,7 @@ class ApiManagement
         $this->logger->debug(
             [
                 'url'       => $uri,
+                'method'    => $method,
                 'header'    => $this->json->serialize($headers),
                 'payload'   => $this->json->serialize($payload),
                 'response'  => $this->json->serialize($response),

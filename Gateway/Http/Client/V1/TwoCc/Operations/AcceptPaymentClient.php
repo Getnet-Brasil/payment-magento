@@ -77,7 +77,7 @@ class AcceptPaymentClient implements ClientInterface
         $request = $transferObject->getBody();
         $path = 'v1/payments/combined/confirm';
 
-        $data = $this->api->sendGetRequest(
+        $data = $this->api->sendPostRequest(
             $transferObject,
             $path,
             $request,

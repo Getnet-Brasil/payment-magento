@@ -171,6 +171,7 @@ class Api
             $responseBody = $this->json->unserialize($result);
             $this->collectLogger(
                 $uri.'auth/oauth/v2/token',
+                $client->getMethod(),
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -183,6 +184,7 @@ class Api
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri.'auth/oauth/v2/token',
+                $client->getMethod(),
                 [
                     'client_id'     => $clientId,
                     'client_secret' => $clientSecret,
@@ -250,6 +252,7 @@ class Api
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $responseBody,
@@ -257,6 +260,7 @@ class Api
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->request()->getBody(),
@@ -313,6 +317,7 @@ class Api
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -320,6 +325,7 @@ class Api
         } catch (LocalizedException $exc) {
             $this->collectLogger(
                 $uri,
+                $client->getMethod(),
                 $headers,
                 $request,
                 $client->send()->getBody(),
@@ -336,6 +342,7 @@ class Api
      * Collect Logger.
      *
      * @param string      $uri
+     * @param string      $method
      * @param string      $headers
      * @param array       $payload
      * @param array       $response
@@ -345,6 +352,7 @@ class Api
      */
     public function collectLogger(
         $uri,
+        $method,
         $headers,
         $payload,
         $response,
@@ -388,6 +396,7 @@ class Api
         $this->logger->debug(
             [
                 'url'       => $uri,
+                'method'    => $method,
                 'header'    => $this->json->serialize($headers),
                 'payload'   => $this->json->serialize($payload),
                 'response'  => $this->json->serialize($response),
