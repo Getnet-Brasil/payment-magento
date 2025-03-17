@@ -11,7 +11,7 @@
     <policies>
         <policy id="frame-src">
             <values>
-            	<value id="online-metrix" type="host">https://h.online-metrix.net</value>
+            	<value id="global-getnet" type="host">https://api.pre.globalgetnet.com</value>
             </values>
         </policy>
     </policies>
