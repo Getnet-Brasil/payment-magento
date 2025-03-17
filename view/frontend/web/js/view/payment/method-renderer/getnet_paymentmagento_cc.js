@@ -415,11 +415,11 @@
          * @returns {String}
          */
         fingerPrintUrl() {
-            var url = 'https://h.online-metrix.net/fp/tags?org_id=%1&session_id=%2',
-                code = this.fingerPrintCode(),
-                sessionId = this.fingerPrintSessionId();
+            var url = 'https://api.pre.globalgetnet.com/dpm/digital-platform/antifraud/afdf.js?session=%1&country=%2',
+                sessionId = this.fingerPrintSessionId(),
+                country = 'BR';
 
-            return url.replace('%1', code).replace('%2', sessionId);
+            return url.replace('%1', sessionId).replace('%2', country);
         }
     });
 });
