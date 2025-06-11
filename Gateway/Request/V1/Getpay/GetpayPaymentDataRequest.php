@@ -41,6 +41,16 @@ class GetpayPaymentDataRequest implements BuilderInterface
     public const PAYMENT_CREDIT_INSTALLMENTS = 'max_installments';
 
     /**
+     * Payment Credit Authenticated - Block Name.
+     */
+    public const PAYMENT_CREDIT_AUTHENTICATED = 'authenticated';
+
+    /**
+     * Payment Credit Not Authenticated - Block Name.
+     */
+    public const PAYMENT_CREDIT_NOT_AUTHENTICATED = 'not_authenticated';
+
+    /**
      * Payment Debit - Block Name.
      */
     public const PAYMENT_DEBIT = 'debit';
@@ -76,6 +86,21 @@ class GetpayPaymentDataRequest implements BuilderInterface
     public const PAYMENT_QR_CODE_ENABLE = 'enable';
 
     /**
+     * Payment Debit Authenticated - Block Name.
+     */
+    public const PAYMENT_DEBIT_AUTHENTICATED = 'authenticated';
+
+    /**
+     * Payment Debit Not Authenticated - Block Name.
+     */
+    public const PAYMENT_DEBIT_NOT_AUTHENTICATED = 'not_authenticated';
+
+    /**
+     * Payment Debit Caixa Virtual Card - Block Name.
+     */
+    public const PAYMENT_DEBIT_CAIXA_VIRTUAL_CARD = 'caixa_virtual_card';
+
+    /**
      * @var SubjectReader
      */
     protected $subjectReader;
@@ -109,6 +134,7 @@ class GetpayPaymentDataRequest implements BuilderInterface
      * Build.
      *
      * @param array $buildSubject
+     * @return array
      */
     public function build(array $buildSubject)
     {
@@ -121,9 +147,8 @@ class GetpayPaymentDataRequest implements BuilderInterface
         $paymentDO = $buildSubject['payment'];
         $order = $paymentDO->getOrder();
         $storeId = $order->getStoreId();
-        $result = $this->getDataPaymetGetpay($storeId);
 
-        return $result;
+        return $this->getDataPaymetGetpay($storeId);
     }
 
     /**
@@ -145,12 +170,17 @@ class GetpayPaymentDataRequest implements BuilderInterface
             $instruction[self::PAYMENT][self::PAYMENT_CREDIT] = [
                 self::PAYMENT_CREDIT_ENABLE       => true,
                 self::PAYMENT_CREDIT_INSTALLMENTS => $maxInstallments,
+                self::PAYMENT_CREDIT_AUTHENTICATED => true,
+                self::PAYMENT_CREDIT_NOT_AUTHENTICATED => false
             ];
         }
 
         if (in_array(self::PAYMENT_DEBIT, $methods)) {
             $instruction[self::PAYMENT][self::PAYMENT_DEBIT] = [
                 self::PAYMENT_DEBIT_ENABLE => true,
+                self::PAYMENT_DEBIT_AUTHENTICATED => true,
+                self::PAYMENT_DEBIT_NOT_AUTHENTICATED => false,
+                self::PAYMENT_DEBIT_CAIXA_VIRTUAL_CARD => false
             ];
         }
 
