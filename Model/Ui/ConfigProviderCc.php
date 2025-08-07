@@ -117,6 +117,7 @@ class ConfigProviderCc implements ConfigProviderInterface
                     'min_installment'      => $this->configCc->getMinInstallment($storeId),
                     'max_installment'      => $this->configCc->getMaxInstallment($storeId),
                     'ccVaultCode'          => self::VAULT_CODE,
+                    'fingerPrintEnv'       => $this->configBase->getEnvironmentMode($storeId),
                     'fingerPrintSessionId' => $this->session->getSessionId(),
                     'fingerPrintCode'      => $this->configBase->getMerchantGatewayOnlineMetrixCode($storeId),
                 ],

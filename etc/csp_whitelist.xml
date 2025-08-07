@@ -11,7 +11,8 @@
     <policies>
         <policy id="frame-src">
             <values>
-            	<value id="global-getnet" type="host">https://api.pre.globalgetnet.com</value>
+            	<value id="global-getnet-dev" type="host">https://api.pre.globalgetnet.com</value>
+                <value id="global-getnet-prod" type="host">https://api.globalgetnet.com</value>
             </values>
         </policy>
     </policies>

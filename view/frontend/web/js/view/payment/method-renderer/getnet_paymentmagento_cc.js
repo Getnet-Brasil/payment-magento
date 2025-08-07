@@ -415,10 +415,18 @@
          * @returns {String}
          */
         fingerPrintUrl() {
-            var url = 'https://api.pre.globalgetnet.com/dpm/digital-platform/antifraud/afdf.js?session=%1&country=%2',
+            env = window.checkoutConfig.payment[this.getCode()].fingerPrintEnv;
+            
+            var env = window.checkoutConfig.payment[this.getCode()].fingerPrintEnv,
+                url = 'https://api.globalgetnet.com/dpm/digital-platform/antifraud/afdf.js?session=%1&country=%2',
                 sessionId = this.fingerPrintSessionId(),
                 country = 'BR';
 
+            if (env === 'sandbox') {
+                var url = 'https://api.sandbox.globalgetnet.com/dpm/digital-platform/antifraud/afdf.js?session=%1&country=%2',
+                    sessionId = this.fingerPrintSessionId(),
+                    country = 'BR';
+            }
             return url.replace('%1', sessionId).replace('%2', country);
         }
     });
