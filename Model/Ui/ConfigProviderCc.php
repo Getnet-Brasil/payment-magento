@@ -15,6 +15,7 @@ use Magento\Framework\Session\SessionManager;
 use Magento\Framework\View\Asset\Source;
 use Magento\Payment\Model\CcConfig;
 use Magento\Quote\Api\Data\CartInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class ConfigProviderCc - Defines properties of the payment form.
@@ -118,7 +119,7 @@ class ConfigProviderCc implements ConfigProviderInterface
                     'max_installment'      => $this->configCc->getMaxInstallment($storeId),
                     'ccVaultCode'          => self::VAULT_CODE,
                     'fingerPrintEnv'       => $this->configBase->getEnvironmentMode($storeId),
-                    'fingerPrintSessionId' => $this->session->getSessionId(),
+                    'fingerPrintSessionId' => $this->configBase->getMerchantGatewaySellerId($storeId) . '-'. $this->generateFingerPrintId(),
                     'fingerPrintCode'      => $this->configBase->getMerchantGatewayOnlineMetrixCode($storeId),
                 ],
             ],
@@ -178,5 +179,23 @@ class ConfigProviderCc implements ConfigProviderInterface
         }
 
         return $logo;
+    }
+
+    /**
+     * Generate UUID v5 from session ID.
+     *
+     * @return string
+     */
+    private function generateFingerPrintId(): string
+    {
+        try {
+            $sessionId = $this->session->getSessionId();
+            $namespace = Uuid::NAMESPACE_DNS;
+            $uuid = Uuid::uuid5($namespace, $sessionId);
+            return $uuid->toString();
+        } catch (\Exception $e) {
+            // Fallback to UUID v4 if generation fails
+            return Uuid::uuid4()->toString();
+        }
     }
 }
