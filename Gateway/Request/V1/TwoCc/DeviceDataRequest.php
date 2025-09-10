@@ -8,6 +8,7 @@
 
 namespace Getnet\PaymentMagento\Gateway\Request\V1\TwoCc;
 
+use Getnet\PaymentMagento\Gateway\Config\Config as ConfigBase;
 use Getnet\PaymentMagento\Gateway\SubjectReader;
 use InvalidArgumentException;
 use Magento\Framework\HTTP\Header as HeaderClient;
@@ -15,6 +16,7 @@ use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Session\SessionManager;
 use Magento\Payment\Gateway\Data\PaymentDataObjectInterface;
 use Magento\Payment\Gateway\Request\BuilderInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class Device Data Request - User Device Data Structure.
@@ -62,21 +64,29 @@ class DeviceDataRequest implements BuilderInterface
     protected $session;
 
     /**
+     * @var ConfigBase
+     */
+    protected $configBase;
+
+    /**
      * @param RemoteAddress  $remoteAddress
      * @param HeaderClient   $headerClient
      * @param SubjectReader  $subjectReader
      * @param SessionManager $session
+     * @param ConfigBase     $configBase
      */
     public function __construct(
         RemoteAddress $remoteAddress,
         HeaderClient $headerClient,
         SubjectReader $subjectReader,
-        SessionManager $session
+        SessionManager $session,
+        ConfigBase $configBase
     ) {
         $this->remoteAddress = $remoteAddress;
         $this->headerClient = $headerClient;
         $this->subjectReader = $subjectReader;
         $this->session = $session;
+        $this->configBase = $configBase;
     }
 
     /**
@@ -93,18 +103,22 @@ class DeviceDataRequest implements BuilderInterface
         }
 
         $paymentDO = $this->subjectReader->readPayment($buildSubject);
+        $payment = $paymentDO->getPayment();
+        $order = $payment->getOrder();
+        $storeId = $order->getStoreId();
 
         $result = [];
         $ipCustomer = $this->remoteAddress->getRemoteAddress();
         if (empty($ipCustomer)) {
-            $payment = $paymentDO->getPayment();
-            $order = $payment->getOrder();
             $ipCustomer = $order->getXForwardedFor();
         }
+
+        $deviceId = $this->configBase->getMerchantGatewaySellerId($storeId) . '-' . $this->generateFingerPrintId();
+
         $result[self::DEVICE_DATA] = [
             self::REMOTE_IP         => $ipCustomer,
             // self::REMOTE_USER_AGENT => $this->headerClient->getHttpUserAgent(),
-            self::DEVICE_ID         => $this->session->getSessionId(),
+            self::DEVICE_ID         => $deviceId,
         ];
 
         $paymentInfo = $paymentDO->getPayment();
@@ -115,5 +129,23 @@ class DeviceDataRequest implements BuilderInterface
         );
 
         return $result;
+    }
+
+    /**
+     * Generate UUID v5 from session ID.
+     *
+     * @return string
+     */
+    private function generateFingerPrintId(): string
+    {
+        try {
+            $sessionId = $this->session->getSessionId();
+            $namespace = Uuid::NAMESPACE_DNS;
+            $uuid = Uuid::uuid5($namespace, $sessionId);
+            return $uuid->toString();
+        } catch (\Exception $e) {
+            // Fallback to UUID v4 if generation fails
+            return Uuid::uuid4()->toString();
+        }
     }
 }
