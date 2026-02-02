@@ -106,11 +106,23 @@ class CustomerDataRequest implements BuilderInterface
 
         $billingAddress = $orderAdapter->getBillingAddress();
 
-        $name = $billingAddress->getFirstname().' '.$billingAddress->getLastname();
+        $name = $payment->getAdditionalInformation('boleto_payer_fullname')
+            ?: $billingAddress->getFirstname().' '.$billingAddress->getLastname();
+
+        $firstName = $billingAddress->getFirstname();
+        $lastName = $billingAddress->getLastname();
+        
+        if ($payment->getAdditionalInformation('boleto_payer_fullname')) {
+            $fullName = trim($payment->getAdditionalInformation('boleto_payer_fullname'));
+            $nameParts = explode(' ', $fullName, 2);
+            $firstName = $nameParts[0];
+            $lastName = isset($nameParts[1]) && !empty($nameParts[1]) ? $nameParts[1] : $billingAddress->getLastname();
+        }
+
         $result[BoletoInitSchemaDataRequest::DATA][self::CUSTOMER] = [
             self::CUSTOMER_ID   => $billingAddress->getEmail(),
-            self::FIRST_NAME    => $billingAddress->getFirstname(),
-            self::LAST_NAME     => $billingAddress->getLastname(),
+            self::FIRST_NAME    => $firstName,
+            self::LAST_NAME     => $lastName,
             self::NAME          => $name,
             self::EMAIL         => $billingAddress->getEmail(),
             self::PHONE_NUMBER  => preg_replace('/[^0-9]/', '', (string) $billingAddress->getTelephone()),
