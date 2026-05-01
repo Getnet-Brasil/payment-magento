@@ -2,7 +2,7 @@
     "name": "getnetadquirencia/payment-magento",
     "description": "Getnet - Payment for Magento 2",
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.0",
         "magento/framework": ">=103.0",
         "bacon/bacon-qr-code": "*",
         "ext-json": "*"
@@ -41,7 +41,8 @@
     "minimum-stability": "dev",
     "config": {
         "allow-plugins": {
-            "magento/composer-dependency-version-audit-plugin": false
+            "magento/composer-dependency-version-audit-plugin": false,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
