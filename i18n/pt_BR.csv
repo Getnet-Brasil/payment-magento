@@ -167,7 +167,7 @@ Environment,Ambiente
 "API Type","Tipo de API"
 "API V2","API V2"
 "API Global","API Global"
-"Defines which Getnet API is used for transactions. Payment methods not yet available in the API Global keep using the API V2.","Define qual API da Getnet será usada nas transações. Métodos de pagamento ainda não disponíveis na API Global continuam usando a API V2."
+"Defines which Getnet API is used for transactions","Define qual API da Getnet será usada nas transações."
 "Seller Id - Production (API Global)","Seller Id - Produção (API Global)"
 "Client Id - Production (API Global)","Client Id - Produção (API Global)"
 "Client Secret - Production (API Global)","Client Secret - Produção (API Global)"

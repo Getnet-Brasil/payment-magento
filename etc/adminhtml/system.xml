@@ -20,7 +20,7 @@
                     <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ApiType</source_model>
                     <config_path>payment/getnet_paymentmagento/api_type</config_path>
                     <validate>required-entry validate-select</validate>
-                    <comment>Defines which Getnet API is used for transactions. Payment methods not yet available in the API Global keep using the API V2.</comment>
+                    <comment>Defines which Getnet API is used for transactions</comment>
                 </field>
                 <group id="credentials" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Credentials</label>
