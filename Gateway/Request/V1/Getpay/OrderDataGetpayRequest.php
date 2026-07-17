@@ -129,7 +129,9 @@ class OrderDataGetpayRequest implements BuilderInterface
 
         $storeId = $order->getStoreId();
 
-        $total = $order->getGrandTotalAmount();
+        // Read from the sales order: third-party OrderAdapter preferences
+        // (e.g. PayPal Braintree) break the payment DO adapter return types
+        $total = $paymentDO->getPayment()->getOrder()->getBaseGrandTotal();
 
         $result = [
             self::LABEL      => 'Magento',

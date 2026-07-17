@@ -12,13 +12,17 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
 
 /**
  * Controler Notification Boleto - Notification of receivers for Boleto.
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Boleto extends Action implements HttpGetActionInterface
+class Boleto extends Action implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwareActionInterface
 {
     /**
      * @var ForwardFactory
@@ -48,5 +52,33 @@ class Boleto extends Action implements HttpGetActionInterface
         $resultForward = $this->resultForwardFactory->create();
 
         return $resultForward->forward('all');
+    }
+
+    /**
+     * Create Csrf Validation Exception - webhook origin is validated by seller id.
+     *
+     * @param RequestInterface $request
+     *
+     * @return InvalidRequestException|null
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    /**
+     * Validate For Csrf - external notification endpoint (V2 form post / Global JSON post).
+     *
+     * @param RequestInterface $request
+     *
+     * @return bool|null
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 }

@@ -8,14 +8,12 @@
 
 namespace Getnet\PaymentMagento\Block\Sales\Info;
 
-use Magento\Payment\Block\ConfigurableInfo;
-
 /**
  * Class Boleto - Boleto payment information.
  *
  * @SuppressWarnings(PHPMD)
  */
-class Boleto extends ConfigurableInfo
+class Boleto extends AbstractInfo
 {
     /**
      * Pix Info template.

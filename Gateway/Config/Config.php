@@ -54,6 +54,36 @@ class Config extends PaymentConfig
     /**
      * @const string
      */
+    public const ENDPOINT_GLOBAL_PRODUCTION = 'https://api.globalgetnet.com/';
+
+    /**
+     * @const string
+     */
+    public const ENDPOINT_GLOBAL_SANDBOX = 'https://api.pre.globalgetnet.com/';
+
+    /**
+     * @const string
+     */
+    public const API_TYPE_V2 = 'api_v2';
+
+    /**
+     * @const string
+     */
+    public const API_TYPE_GLOBAL = 'api_global';
+
+    /**
+     * @const string
+     */
+    public const AUTH_PATH_V2 = 'auth/oauth/v2/token';
+
+    /**
+     * @const string
+     */
+    public const AUTH_PATH_GLOBAL = 'authentication/oauth2/access_token';
+
+    /**
+     * @const string
+     */
     public const CLIENT = 'PaymentMagento';
 
     /**
@@ -96,7 +126,25 @@ class Config extends PaymentConfig
     }
 
     /**
-     * Gets the API endpoint URL.
+     * Gets the API type (V2 or Global).
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getApiType($storeId = null): ?string
+    {
+        $apiType = $this->getAddtionalValue('api_type', $storeId);
+
+        if ($apiType === self::API_TYPE_GLOBAL) {
+            return self::API_TYPE_GLOBAL;
+        }
+
+        return self::API_TYPE_V2;
+    }
+
+    /**
+     * Gets the API endpoint URL, resolved by api type and environment.
      *
      * @param int|null $storeId
      *
@@ -104,13 +152,49 @@ class Config extends PaymentConfig
      */
     public function getApiUrl($storeId = null): ?string
     {
-        $environment = $this->getEnvironmentMode($storeId);
+        if ($this->getApiType($storeId) === self::API_TYPE_GLOBAL) {
+            if ($this->getEnvironmentMode($storeId) === self::ENVIRONMENT_HOMOLOG) {
+                return self::ENDPOINT_GLOBAL_SANDBOX;
+            }
 
-        if ($environment === 'homolog') {
+            return self::ENDPOINT_GLOBAL_PRODUCTION;
+        }
+
+        return $this->getV2ApiUrl($storeId);
+    }
+
+    /**
+     * Gets the API V2 endpoint URL, regardless of the configured api type.
+     *
+     * Used by V2-only flows (Marketplace, Boleto links) that must not switch to the Global API.
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getV2ApiUrl($storeId = null): string
+    {
+        if ($this->getEnvironmentMode($storeId) === self::ENVIRONMENT_HOMOLOG) {
             return self::ENDPOINT_HOMOLOG;
         }
 
         return self::ENDPOINT_PRODUCTION;
+    }
+
+    /**
+     * Gets the oAuth token path for the configured API type.
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getAuthPath($storeId = null): string
+    {
+        if ($this->getApiType($storeId) === self::API_TYPE_GLOBAL) {
+            return self::AUTH_PATH_GLOBAL;
+        }
+
+        return self::AUTH_PATH_V2;
     }
 
     /**
@@ -132,6 +216,29 @@ class Config extends PaymentConfig
     }
 
     /**
+     * Gets the credential config field name, resolved by api type and environment.
+     *
+     * @param string   $field
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getCredentialField(string $field, $storeId = null): string
+    {
+        $environment = $this->getEnvironmentMode($storeId);
+
+        if ($this->getApiType($storeId) === self::API_TYPE_GLOBAL) {
+            $suffix = ($environment === self::ENVIRONMENT_HOMOLOG) ? 'global_sandbox' : 'global_production';
+
+            return $field.'_'.$suffix;
+        }
+
+        $suffix = ($environment === self::ENVIRONMENT_HOMOLOG) ? 'homolog' : 'production';
+
+        return $field.'_'.$suffix;
+    }
+
+    /**
      * Gets the Merchant Gateway Seller Id.
      *
      * @param int|null $storeId
@@ -140,15 +247,7 @@ class Config extends PaymentConfig
      */
     public function getMerchantGatewaySellerId($storeId = null): ?string
     {
-        $sellerId = $this->getAddtionalValue('seller_id_production', $storeId);
-
-        $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'homolog') {
-            $sellerId = $this->getAddtionalValue('seller_id_homolog', $storeId);
-        }
-
-        return $sellerId;
+        return $this->getAddtionalValue($this->getCredentialField('seller_id', $storeId), $storeId);
     }
 
     /**
@@ -160,15 +259,7 @@ class Config extends PaymentConfig
      */
     public function getMerchantGatewayClientId($storeId = null): ?string
     {
-        $clientId = $this->getAddtionalValue('client_id_production', $storeId);
-
-        $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'homolog') {
-            $clientId = $this->getAddtionalValue('client_id_homolog', $storeId);
-        }
-
-        return $clientId;
+        return $this->getAddtionalValue($this->getCredentialField('client_id', $storeId), $storeId);
     }
 
     /**
@@ -180,15 +271,7 @@ class Config extends PaymentConfig
      */
     public function getMerchantGatewayClientSecret($storeId = null): ?string
     {
-        $clientSecret = $this->getAddtionalValue('client_secret_production', $storeId);
-
-        $environment = $this->getEnvironmentMode($storeId);
-
-        if ($environment === 'homolog') {
-            $clientSecret = $this->getAddtionalValue('client_secret_homolog', $storeId);
-        }
-
-        return $clientSecret;
+        return $this->getAddtionalValue($this->getCredentialField('client_secret', $storeId), $storeId);
     }
 
     /**
@@ -393,12 +476,18 @@ class Config extends PaymentConfig
     /**
      * Prepare Body.
      *
-     * @param array $request
+     * @param array    $request
+     * @param int|null $storeId
      *
      * @return Json
      */
-    public function prepareBody($request)
+    public function prepareBody($request, $storeId = null)
     {
+        // Global API accepts accented characters in customer data, no sanitization needed
+        if ($this->getApiType($storeId) === self::API_TYPE_GLOBAL) {
+            return $request;
+        }
+
         $keysToProcess = ['first_name', 'last_name', 'name', 'street', 'district', 'complement', 'city'];
 
         if (is_array($request)) {

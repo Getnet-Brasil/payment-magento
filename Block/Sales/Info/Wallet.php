@@ -9,14 +9,13 @@
 namespace Getnet\PaymentMagento\Block\Sales\Info;
 
 use Magento\Framework\Phrase;
-use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Wallet - Wallet payment information.
  *
  * @SuppressWarnings(PHPMD)
  */
-class Wallet extends ConfigurableInfo
+class Wallet extends AbstractInfo
 {
     /**
      * Wallet Info template.

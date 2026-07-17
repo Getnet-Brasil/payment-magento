@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -72,12 +73,20 @@ class RefundClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -91,7 +100,7 @@ class RefundClient implements ClientInterface
     {
         $request = $transferObject->getBody();
         $response = ['RESULT_CODE' => 0];
-        $path = 'v2/payments/cancel';
+        $path = $this->endpointResolver->resolve(EndpointResolver::CARD_CANCEL, $request['store_id'] ?? null);
         $paymentId = $request[self::GETNET_PAYMENT_ID];
 
         if ($request[self::DAY_ZERO]) {

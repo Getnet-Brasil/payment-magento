@@ -7,26 +7,25 @@
  */
 
 /**
- * @var \Magento\Payment\Block\Info $block
+ * @var \Getnet\PaymentMagento\Block\Sales\Info\Wallet $block
+ * @var \Magento\Framework\Escaper $escaper
  * @see \Magento\Payment\Block\Info
  */
-$specificInfo = $block->getSpecificInformation();
-$title = $block->escapeHtml($block->getMethod()->getTitle());
-$qrCode = isset($specificInfo['qr_code']) ? $specificInfo['qr_code']: null;
-$qrCodeImage = isset($specificInfo['qr_code_image']) ? $specificInfo['qr_code_image'] : null;
+// Read raw additional information: getSpecificInformation() keys are translated labels
+$title = $escaper->escapeHtml($block->getMethod()->getTitle());
+$qrCodeImage = $block->getPaymentAdditionalInfo('qr_code_image');
+$qrCodeImageUrl = $qrCodeImage ? $block->getImageQrCode($qrCodeImage) : null;
 ?>
 <h4><?= /* @noEscape */ $title ?></h4>
-<?php if ($specificInfo): ?>
+<?php if ($qrCodeImageUrl): ?>
     <div class="getnet-instruction wallet">
-        <?php if ($qrCodeImage): ?>
-            <div class="instruction-information qr-code-image">
-                <div class="step-to-pay">
-                    <?= $block->escapeHtml(__('To pay, read the QRCode')); ?>
-                </div>
-                <div class="qrcode-image">
-                    <img src="<?=  $block->escapeHtml($qrCodeImage) ?>" alt="<?= /* @noEscape */ $title ?>" />
-                </div>
+        <div class="instruction-information qr-code-image">
+            <div class="step-to-pay">
+                <?= $escaper->escapeHtml(__('To pay, read the QRCode')); ?>
             </div>
-        <?php endif;?>
+            <div class="qrcode-image">
+                <img src="<?=  $escaper->escapeHtml($qrCodeImageUrl) ?>" alt="<?= /* @noEscape */ $title ?>" />
+            </div>
+        </div>
     </div>
 <?php endif;?>

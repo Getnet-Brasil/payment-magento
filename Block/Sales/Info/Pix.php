@@ -9,14 +9,13 @@
 namespace Getnet\PaymentMagento\Block\Sales\Info;
 
 use Magento\Framework\Phrase;
-use Magento\Payment\Block\ConfigurableInfo;
 
 /**
  * Class Pix - Pix payment information.
  *
  * @SuppressWarnings(PHPMD)
  */
-class Pix extends ConfigurableInfo
+class Pix extends AbstractInfo
 {
     /**
      * Pix Info template.

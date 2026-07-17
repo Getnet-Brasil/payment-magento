@@ -1,0 +1,66 @@
+<?php
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+
+/**
+ * @var \Getnet\PaymentMagento\Block\Adminhtml\System\Config\RegisterWebhook $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml() ?>
+<p class="note">
+    <span>
+        <?= $escaper->escapeHtml(__('Subscribes the store notification URL to the Global API transaction events.')) ?>
+        <?php
+            $noteOverride = __('Save the configuration before registering if you changed the callback URL override.');
+        ?>
+        <?= $escaper->escapeHtml($noteOverride) ?>
+    </span>
+</p>
+<div id="getnet-webhook-result"></div>
+<script>
+require(['jquery'], function ($) {
+    'use strict';
+
+    $('#getnet_register_webhook').on('click', function () {
+        var button = $(this),
+            result = $('#getnet-webhook-result');
+
+        button.prop('disabled', true);
+        result.text('<?= $escaper->escapeJs(__('Waiting...')) ?>');
+
+        $.post('<?= $escaper->escapeJs($block->getAjaxUrl()) ?>', {form_key: window.FORM_KEY})
+            .done(function (data) {
+                var lines = [];
+
+                if (data.results) {
+                    $.each(data.results, function (event, item) {
+                        lines.push(event + ': ' + item.message);
+                    });
+                } else if (data.message) {
+                    lines.push(data.message);
+                }
+
+                result.html(
+                    $('<pre/>')
+                        .css('color', data.success ? 'green' : 'red')
+                        .text(lines.join('\n'))
+                );
+            })
+            .fail(function () {
+                result.html(
+                    $('<pre/>')
+                        .css('color', 'red')
+                        .text('<?= $escaper->escapeJs(__('Request failed. Check the logs.')) ?>')
+                );
+            })
+            .always(function () {
+                button.prop('disabled', false);
+            });
+    });
+});
+</script>

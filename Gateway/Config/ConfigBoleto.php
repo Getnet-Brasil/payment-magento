@@ -239,16 +239,33 @@ class ConfigBoleto extends PaymentConfig
     }
 
     /**
+     * Base path of the hub-payments service that hosts the Global boleto links.
+     */
+    private const GLOBAL_BOLETO_LINK_PREFIX = 'dpm/hub-payments';
+
+    /**
      * Get Formatted Link Boleto.
      *
-     * @param string $linkRelative
+     * @param string   $linkRelative
+     * @param int|null $storeId
      *
      * @return string
      */
-    public function getFormattedLinkBoleto(string $linkRelative): string
+    public function getFormattedLinkBoleto(string $linkRelative, $storeId = null): string
     {
-        $environmentMode = $this->config->getApiUrl();
+        // Global API may return absolute links; return them untouched.
+        if (strpos($linkRelative, 'http') === 0) {
+            return $linkRelative;
+        }
 
-        return $environmentMode.$linkRelative;
+        $baseUrl = rtrim((string) $this->config->getApiUrl($storeId), '/');
+
+        // On the Global API the boleto PDF href is relative to the hub-payments
+        // service (e.g. "/v1/payments/boleto/{id}/pdf?ack="), not the API root.
+        if ($this->config->getApiType($storeId) === Config::API_TYPE_GLOBAL) {
+            $baseUrl .= '/'.self::GLOBAL_BOLETO_LINK_PREFIX;
+        }
+
+        return $baseUrl.'/'.ltrim($linkRelative, '/');
     }
 }

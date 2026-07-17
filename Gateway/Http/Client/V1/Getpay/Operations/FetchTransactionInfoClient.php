@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\V1\Getpay\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
@@ -69,12 +70,20 @@ class FetchTransactionInfoClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -97,7 +106,11 @@ class FetchTransactionInfoClient implements ClientInterface
 
         $data = $this->api->sendGetRequest(
             $transferObject,
-            'v1/payment-links/'.$getnetOrderId,
+            $this->endpointResolver->resolve(
+                EndpointResolver::GETPAY_GET,
+                $request['store_id'] ?? null,
+                [$getnetOrderId]
+            ),
             $request,
         );
 

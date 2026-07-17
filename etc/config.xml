@@ -16,6 +16,7 @@
                 <active>1</active>
                 <private_keys>Authorization,client_secret,access_token,card_number,email,document_number,tax_id,number,client_id,customer_id,name,last_name,security_code,expiration_month,expiration_year</private_keys>
                 <environment>production</environment>
+                <api_type>api_v2</api_type>
                 <statement_descriptor>Store Name</statement_descriptor>
                 <client_id_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_secret_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
@@ -24,6 +25,10 @@
                 <client_id_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <client_secret_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <oauth_homolog backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_id_global_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_global_production backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_id_global_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret_global_sandbox backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <model>PaymentMagentoBaseFacade</model>
                 <order_status>payment_review</order_status>
                 <payment_action>authorize</payment_action>
@@ -31,7 +36,7 @@
                 <currency>BRL</currency>
                 <is_gateway>1</is_gateway>
                 <can_use_internal>0</can_use_internal>
-                <can_use_checkout>1</can_use_checkout>
+                <can_use_checkout>0</can_use_checkout>
                 <min_order_total>5</min_order_total>
                 <max_order_total>1000000</max_order_total>
                 <allowspecific>1</allowspecific>
@@ -193,7 +198,7 @@ Não parcelamos no boleto.]]></instruction_checkout>
                 <can_void>0</can_void>
                 <can_cancel>1</can_cancel>
                 <group>getnet_group</group>
-                <expiration>30</expiration>
+                <expiration>1800</expiration>
                 <instruction_checkout><![CDATA[O prazo de pagamento é de até 3 minutos.
 O QrCode para pagamento será exibido ao finalizar o pedido.
 A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruction_checkout>

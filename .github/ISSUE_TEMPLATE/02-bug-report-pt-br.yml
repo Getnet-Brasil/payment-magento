@@ -42,9 +42,9 @@ body:
       label: Versão da Magento/Adobe
       description: Qual a versão da sua loja?
       options:
-        - 2.3.x (Magento/Adobe >= 2.3.0 e < 2.4.0)
-        - 2.4.0 até 2.4.5 (Magento/Adobe >= 2.4.0 e < 2.4.5)
-        - 2.4.6+ (Magento/Adobe >= 2.4.6)
+        - 2.4.0 até 2.4.5 (Magento/Adobe >= 2.4.0 e < 2.4.6)
+        - 2.4.6 até 2.4.8 (Magento/Adobe >= 2.4.6 e < 2.4.9)
+        - 2.4.9+ (Magento/Adobe >= 2.4.9)
     validations:
       required: true
   - type: dropdown
@@ -52,11 +52,11 @@ body:
     attributes:
       label: Qual a versão do PHP?
       options:
-        - PHP 7.2
-        - PHP 7.3
-        - PHP 7.4
         - PHP 8.1
         - PHP 8.2
+        - PHP 8.3
+        - PHP 8.4
+        - PHP 8.5
     validations:
       required: true
   - type: textarea

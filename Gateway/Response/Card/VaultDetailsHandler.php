@@ -72,7 +72,7 @@ class VaultDetailsHandler implements HandlerInterface
         ObjectManagerInterface $objectManager,
         OrderPaymentExtensionInterfaceFactory $payExtensionFactory,
         ConfigCc $configCc,
-        PaymentTokenFactoryInterface $paymentTokenFactory = null
+        ?PaymentTokenFactoryInterface $paymentTokenFactory = null
     ) {
         if ($paymentTokenFactory === null) {
             $paymentTokenFactory = $objectManager->get(PaymentTokenFactoryInterface::class);

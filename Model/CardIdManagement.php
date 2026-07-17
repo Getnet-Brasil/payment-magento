@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\CardIdManagementInterface;
 use Getnet\PaymentMagento\Api\Data\CardIdInterface;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -36,6 +37,11 @@ class CardIdManagement implements CardIdManagementInterface
     private $api;
 
     /**
+     * @var EndpointResolver
+     */
+    private $endpointResolver;
+
+    /**
      * @var PaymentTokenManagement
      */
     private $tokenManagement;
@@ -46,15 +52,18 @@ class CardIdManagement implements CardIdManagementInterface
      * @param CartRepositoryInterface $quoteRepository
      * @param ApiManagement           $api
      * @param PaymentTokenManagement  $tokenManagement
+     * @param EndpointResolver        $endpointResolver
      */
     public function __construct(
         CartRepositoryInterface $quoteRepository,
         ApiManagement $api,
-        PaymentTokenManagement $tokenManagement
+        PaymentTokenManagement $tokenManagement,
+        EndpointResolver $endpointResolver
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->api = $api;
         $this->tokenManagement = $tokenManagement;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -105,7 +114,7 @@ class CardIdManagement implements CardIdManagementInterface
     public function getCardId($storeId, $cardId)
     {
         $request = ['store_id' => $storeId];
-        $path = 'v1/cards/'.$cardId;
+        $path = $this->endpointResolver->resolve(EndpointResolver::VAULT_CARD_GET, $storeId, [$cardId]);
 
         $data = $this->api->sendGetRequest($path, $request);
 

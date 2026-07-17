@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Gateway\Http\Client\V1\TwoCc\Operations;
 
+use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -67,12 +69,28 @@ class DenyPaymentClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
+     * @param Config           $config
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver,
+        Config $config
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
+        $this->config = $config;
     }
 
     /**
@@ -87,10 +105,15 @@ class DenyPaymentClient implements ClientInterface
         $request = $transferObject->getBody();
         $context = [];
         $paymentId = $request['payment_id'];
-        $path = 'v1/payments/combined/cancel/request';
+        $storeId = $request['store_id'] ?? null;
+        $path = $this->endpointResolver->resolve(EndpointResolver::TWO_CC_CANCEL_REQUEST, $storeId);
 
         if ($request[self::DAY_ZERO]) {
-            $path = 'v1/payments/combined/cancel';
+            $path = $this->endpointResolver->resolve(EndpointResolver::TWO_CC_CANCEL, $storeId);
+        }
+
+        if ($this->config->getApiType($storeId) === Config::API_TYPE_GLOBAL) {
+            return $this->placeGlobalRequest($transferObject, $request, $storeId);
         }
 
         unset($request['payment_id']);
@@ -118,15 +141,15 @@ class DenyPaymentClient implements ClientInterface
             $response = array_merge(
                 [
                     self::RESULT_CODE                 => 1,
-                    self::RESPONSE_CANCEL_REQUEST_ID  => $context[self::RESPONSE_CANCEL_REQUEST_ID],
+                    self::RESPONSE_CANCEL_REQUEST_ID  => $context[self::RESPONSE_CANCEL_REQUEST_ID] ?? null,
                 ],
                 $data
             );
-            if ($context[self::RESPONSE_STATUS] === self::RESPONSE_STATUS_DENIED) {
+            if (($context[self::RESPONSE_STATUS] ?? null) === self::RESPONSE_STATUS_DENIED) {
                 $response = array_merge(
                     [
                         self::RESULT_CODE                 => 0,
-                        self::RESPONSE_CANCEL_REQUEST_ID  => $context[self::RESPONSE_CANCEL_REQUEST_ID],
+                        self::RESPONSE_CANCEL_REQUEST_ID  => $context[self::RESPONSE_CANCEL_REQUEST_ID] ?? null,
                     ],
                     $data
                 );
@@ -146,5 +169,102 @@ class DenyPaymentClient implements ClientInterface
         }
 
         return $response;
+    }
+
+    /**
+     * Cancel on the Global API - one request per card payment.
+     *
+     * The combined_id is not accepted by the cancel endpoint and multiple
+     * payments in a single call are not processed reliably: each card
+     * payment_id (payments[] from DataForTwoCcRequest) is canceled individually.
+     *
+     * @param TransferInterface $transferObject
+     * @param array             $request
+     * @param int|null          $storeId
+     *
+     * @return array
+     */
+    public function placeGlobalRequest($transferObject, array $request, $storeId): array
+    {
+        $path = $this->endpointResolver->resolve(EndpointResolver::TWO_CC_CANCEL, $storeId);
+        $items = $request['payments'] ?? [];
+
+        if (!$items && isset($request['payment_id'])) {
+            $items = [
+                [
+                    'payment_id'  => $request['payment_id'],
+                    'payment_tag' => (string) ($request['idempotency_key'] ?? ''),
+                ],
+            ];
+        }
+
+        $mergedItems = [];
+        $allCanceled = !empty($items);
+
+        foreach ($items as $item) {
+            $tag = (string) ($item['payment_tag'] ?? $item['payment_id'] ?? '');
+            $single = [
+                'store_id'   => $storeId,
+                'request_id' => $this->convertToGuid('cancel-'.$tag),
+                'payments'   => [
+                    [
+                        'payment_id'      => $item['payment_id'] ?? null,
+                        'idempotency_key' => $tag.'-void',
+                        'payment_method'  => 'CREDIT_AUTHORIZATION',
+                    ],
+                ],
+            ];
+
+            try {
+                $data = $this->api->sendPostRequest($transferObject, $path, $single);
+            } catch (\Exception $exc) {
+                $allCanceled = false;
+                continue;
+            }
+
+            $responseItems = $data['payments'] ?? $data['details'] ?? [];
+
+            if (!$responseItems) {
+                $allCanceled = false;
+                continue;
+            }
+
+            foreach ($responseItems as $responseItem) {
+                $mergedItems[] = $responseItem;
+
+                if (($responseItem['status'] ?? null) !== 'CANCELED') {
+                    $allCanceled = false;
+                }
+            }
+        }
+
+        return [
+            self::RESULT_CODE                => $allCanceled ? 1 : 0,
+            'payment_id'                     => $request['payment_id'] ?? null,
+            self::RESPONSE_PAYMENTS          => $mergedItems,
+            self::RESPONSE_CANCEL_REQUEST_ID => ($request['payment_id'] ?? '').'-cancel',
+        ];
+    }
+
+    /**
+     * Convert a value to a deterministic GUID (the Global API requires a GUID request_id).
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function convertToGuid(string $value): string
+    {
+        // phpcs:ignore Magento2.Security.InsecureFunction
+        $hash = md5('getnet-combined-'.$value);
+
+        return sprintf(
+            '%s-%s-%s-%s-%s',
+            substr($hash, 0, 8),
+            substr($hash, 8, 4),
+            substr($hash, 12, 4),
+            substr($hash, 16, 4),
+            substr($hash, 20, 12)
+        );
     }
 }

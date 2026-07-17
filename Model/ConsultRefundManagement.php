@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Getnet\PaymentMagento\Model;
 
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
+
 /**
  * Class Consult Refund Management - refund data.
  */
@@ -21,14 +23,22 @@ class ConsultRefundManagement
     private $api;
 
     /**
+     * @var EndpointResolver
+     */
+    private $endpointResolver;
+
+    /**
      * NumberTokenManagement constructor.
      *
-     * @param ApiManagement $api
+     * @param ApiManagement    $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        ApiManagement $api
+        ApiManagement $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -41,7 +51,7 @@ class ConsultRefundManagement
      */
     public function getRefundData($storeId, $transactionId)
     {
-        $path = 'v1/payments/cancel/request';
+        $path = $this->endpointResolver->resolve(EndpointResolver::REFUND_CONSULT, $storeId);
         $request = [
             'store_id'          => $storeId,
             'cancel_custom_key' => $transactionId,

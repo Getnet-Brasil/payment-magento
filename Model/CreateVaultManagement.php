@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\CreateVaultManagementInterface;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -29,6 +30,11 @@ class CreateVaultManagement implements CreateVaultManagementInterface
     private $api;
 
     /**
+     * @var EndpointResolver
+     */
+    private $endpointResolver;
+
+    /**
      * @var CartRepositoryInterface
      */
     protected $quoteRepository;
@@ -38,13 +44,16 @@ class CreateVaultManagement implements CreateVaultManagementInterface
      *
      * @param ApiManagement           $api
      * @param CartRepositoryInterface $quoteRepository
+     * @param EndpointResolver        $endpointResolver
      */
     public function __construct(
         ApiManagement $api,
-        CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
         $this->quoteRepository = $quoteRepository;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -97,7 +106,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             'card_number' => $vaultData['card_number'],
             'store_id'    => $storeId,
         ];
-        $path = 'v1/tokens/card';
+        $path = $this->endpointResolver->resolve(EndpointResolver::TOKEN_CARD_CREATE, $storeId);
         $response = null;
 
         $data = $this->api->sendPostRequest(
@@ -140,7 +149,7 @@ class CreateVaultManagement implements CreateVaultManagementInterface
             'store_id'          => $storeId,
         ];
 
-        $path = 'v1/cards';
+        $path = $this->endpointResolver->resolve(EndpointResolver::VAULT_CARD_CREATE, $storeId);
 
         $data = $this->api->sendPostRequest(
             $path,

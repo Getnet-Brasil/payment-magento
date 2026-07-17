@@ -31,8 +31,8 @@ body:
       label: Versão da Magento/Adobe
       description: Qual a versão da sua loja?
       options:
-        - 2.3.x (Magento/Adobe >= 2.3.0 e < 2.4.0)
-        - 2.4.0 até 2.4.5 (Magento/Adobe >= 2.4.0 e < 2.4.5)
-        - 2.4.6+ (Magento/Adobe >= 2.4.6)
+        - 2.4.0 até 2.4.5 (Magento/Adobe >= 2.4.0 e < 2.4.6)
+        - 2.4.6 até 2.4.8 (Magento/Adobe >= 2.4.6 e < 2.4.9)
+        - 2.4.9+ (Magento/Adobe >= 2.4.9)
     validations:
       required: true

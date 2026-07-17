@@ -22,6 +22,8 @@
             <argument name="commands" xsi:type="array">
                 <!-- <item name="refreshToken" xsi:type="object">Getnet\PaymentMagento\Console\Command\Basic\RefreshToken</item> -->
                 <!-- <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item> -->
+                <item name="getnet_webhook_register" xsi:type="object">Getnet\PaymentMagento\Console\Command\Webhook\Register</item>
+                <item name="getnet_webhook_unregister" xsi:type="object">Getnet\PaymentMagento\Console\Command\Webhook\Unregister</item>
             </argument>
         </arguments>
     </type>
@@ -942,17 +944,8 @@
     </virtualType>
    
 
-    <!-- TwoCc - Deny Payment Command -->
-    <virtualType name="PaymentMagentoTwoCcDenyPaymentCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
-        <arguments>
-            <argument name="requestBuilder" xsi:type="object">PaymentMagentoDenyPaymentRequest</argument>
-            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
-            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations\DenyPaymentClient</argument>
-            <argument name="handler" xsi:type="object">PaymentMagentoTwoCcDenyPaymentResponseHandlerComposite</argument>
-            <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
-            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
-        </arguments>
-    </virtualType>
+    <!-- TwoCc - Deny Payment Command: declared at "Two Cc - Deny Payment Command"
+         (do not redeclare: a duplicate here overrides the TwoCc client with the Card one) -->
 
     <!-- Base - Error Mapping -->
     <virtualType name="PaymentMagentoErrorMappingConfigReader" type="Magento\Payment\Gateway\ErrorMapper\VirtualConfigReader">
@@ -1226,18 +1219,6 @@
     </type>
 
     <type name="Getnet\PaymentMagento\Gateway\Http\Api">
-        <arguments>
-            <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\ApiManagement">
-        <arguments>
-            <argument name="config" xsi:type="object">PaymentMagentoBaseConfig</argument>
-        </arguments>
-    </type>
-
-    <type name="Getnet\PaymentMagento\Model\ApiManagement">
         <arguments>
             <argument name="logger" xsi:type="object">PaymentMagentoLogger</argument>
         </arguments>

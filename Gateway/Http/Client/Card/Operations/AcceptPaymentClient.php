@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\Card\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -57,12 +58,20 @@ class AcceptPaymentClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -79,7 +88,10 @@ class AcceptPaymentClient implements ClientInterface
 
         $data = $this->api->sendPostRequest(
             $transferObject,
-            'v2/payments/capture',
+            $this->endpointResolver->resolve(
+                EndpointResolver::CARD_CAPTURE,
+                $request['store_id'] ?? null
+            ),
             $request,
         );
 

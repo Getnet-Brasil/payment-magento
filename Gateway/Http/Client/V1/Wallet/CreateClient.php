@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\V1\Wallet;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -42,12 +43,20 @@ class CreateClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -63,7 +72,10 @@ class CreateClient implements ClientInterface
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
-            'v1/payments/qrcode',
+            $this->endpointResolver->resolve(
+                EndpointResolver::WALLET_CREATE,
+                $request['store_id'] ?? null
+            ),
             $request,
         );
 

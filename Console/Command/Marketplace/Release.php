@@ -129,7 +129,7 @@ class Release extends Command
      *
      * @SuppressWarnings(PHPMD)
      */
-    public function convertDate(string $date = null): string
+    public function convertDate(?string $date = null): string
     {
         if ($date) {
             $date = str_replace('/', '-', $date);

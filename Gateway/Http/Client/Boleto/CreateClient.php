@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Gateway\Http\Client\Boleto;
 
 use Getnet\PaymentMagento\Gateway\Config\Config;
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -48,15 +49,23 @@ class CreateClient implements ClientInterface
     protected $config;
 
     /**
-     * @param Api    $api
-     * @param Config $config
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param Config           $config
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
         Api $api,
-        Config $config
+        Config $config,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
         $this->config = $config;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -70,11 +79,13 @@ class CreateClient implements ClientInterface
     {
         $request = $transferObject->getBody();
 
-        $request = $this->config->prepareBody($request);
+        $storeId = $request['store_id'] ?? null;
+
+        $request = $this->config->prepareBody($request, $storeId);
 
         $responseBody = $this->api->sendPostRequest(
             $transferObject,
-            'v2/payments/boleto',
+            $this->endpointResolver->resolve(EndpointResolver::BOLETO_CREATE, $storeId),
             $request,
         );
 

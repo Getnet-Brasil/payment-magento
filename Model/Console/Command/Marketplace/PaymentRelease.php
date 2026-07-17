@@ -11,10 +11,10 @@ namespace Getnet\PaymentMagento\Model\Console\Command\Marketplace;
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config as GetnetConfig;
 use Getnet\PaymentMagento\Model\Console\Command\AbstractModel;
-use Laminas\Http\ClientFactory;
 use Laminas\Http\Request;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\HTTP\LaminasClientFactory;
 use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Model\Method\Logger;
@@ -61,7 +61,7 @@ class PaymentRelease extends AbstractModel
     protected $json;
 
     /**
-     * @var ClientFactory
+     * @var LaminasClientFactory
      */
     protected $httpClientFactory;
 
@@ -81,7 +81,7 @@ class PaymentRelease extends AbstractModel
      * @param GetnetConfig          $getnetConfig
      * @param TransactionSearch     $transactionSearch
      * @param Json                  $json
-     * @param ClientFactory         $httpClientFactory
+     * @param LaminasClientFactory  $httpClientFactory
      * @param OrderInterfaceFactory $orderFactory
      * @param OrderService          $orderService
      */
@@ -91,7 +91,7 @@ class PaymentRelease extends AbstractModel
         GetnetConfig $getnetConfig,
         TransactionSearch $transactionSearch,
         Json $json,
-        ClientFactory $httpClientFactory,
+        LaminasClientFactory $httpClientFactory,
         OrderInterfaceFactory $orderFactory,
         OrderService $orderService
     ) {
@@ -119,7 +119,7 @@ class PaymentRelease extends AbstractModel
     public function create(
         int $orderId,
         string $date,
-        string $subSellerId = null
+        ?string $subSellerId = null
     ) {
         $this->writeln('Init Payment Release');
         $this->createPaymentRelease($orderId, $date, $subSellerId);
@@ -141,7 +141,7 @@ class PaymentRelease extends AbstractModel
     public function createPaymentRelease(
         int $orderId,
         string $date,
-        string $subSellerId = null
+        ?string $subSellerId = null
     ) {
         try {
             $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
@@ -240,14 +240,18 @@ class PaymentRelease extends AbstractModel
         string $transactionId,
         array $data
     ): \Magento\Framework\DataObject {
-        $uri = $this->getnetConfig->getApiUrl();
+        // Marketplace is a V2-only product: never route through the Global API
+        $uri = $this->getnetConfig->getV2ApiUrl();
         $bearer = $this->getnetConfig->getMerchantGatewayOauth(0);
         $client = $this->httpClientFactory->create();
         $uri = $uri.'v1/marketplace/payments/'.$transactionId.'/release';
         $client->setUri($uri);
-        $client->setHeaders('Authorization', 'Bearer '.$bearer);
+        $client->setHeaders([
+            'Authorization' => 'Bearer '.$bearer,
+            'Content-Type'  => 'application/json',
+        ]);
         $client->setOptions(['maxredirects' => 0, 'timeout' => 40]);
-        $client->setRawBody($this->json->serialize($data), 'application/json');
+        $client->setRawBody($this->json->serialize($data));
         $client->setMethod(Request::METHOD_POST);
         $getnetData = new \Magento\Framework\DataObject();
 

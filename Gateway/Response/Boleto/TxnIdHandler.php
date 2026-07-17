@@ -166,7 +166,8 @@ class TxnIdHandler implements HandlerInterface
             }
         }
 
-        $linkToPDF = $this->configBoleto->getFormattedLinkBoleto($relativeLinkToPDF);
+        $storeId = $payment->getOrder()->getStoreId();
+        $linkToPDF = $this->configBoleto->getFormattedLinkBoleto($relativeLinkToPDF, $storeId);
         $payment->setAdditionalInformation(
             self::PAYMENT_INFO_BOLETO_PDF_HREF,
             $linkToPDF

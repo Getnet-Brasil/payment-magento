@@ -8,14 +8,12 @@
 
 namespace Getnet\PaymentMagento\Block\Sales\Info;
 
-use Magento\Payment\Block\ConfigurableInfo;
-
 /**
  * Class Getpay - Getpay payment information.
  *
  * @SuppressWarnings(PHPMD)
  */
-class Getpay extends ConfigurableInfo
+class Getpay extends AbstractInfo
 {
     /**
      * Getpay Info template.

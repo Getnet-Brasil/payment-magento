@@ -72,9 +72,9 @@ class AmountDataRequest implements BuilderInterface
 
         $result = [];
 
-        $order = $paymentDO->getOrder();
-
-        $grandTotal = $order->getGrandTotalAmount();
+        // Read from the sales order: third-party OrderAdapter preferences
+        // (e.g. PayPal Braintree) break the payment DO adapter return types
+        $grandTotal = $paymentDO->getPayment()->getOrder()->getBaseGrandTotal();
 
         $payment = $paymentDO->getPayment();
 

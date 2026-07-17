@@ -110,11 +110,13 @@ class AddressAdapter implements AddressAdapterInterface
     /**
      * Get postcode.
      *
+     * Returns digits only (Getnet APIs do not accept the dash separator).
+     *
      * @return string
      */
     public function getPostcode()
     {
-        return $this->address->getPostcode();
+        return preg_replace('/[^0-9]/', '', (string) $this->address->getPostcode());
     }
 
     /**

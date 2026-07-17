@@ -211,9 +211,32 @@ class TxnIdHandler implements HandlerInterface
         $payments = $response[self::PAYMENTS];
 
         foreach ($payments as $paymentIdx) {
-            $this->setDataForPaymentIdx($idx, $handlingSubject, $paymentIdx);
+            $position = $this->resolvePaymentPosition($paymentIdx, $idx);
+            $this->setDataForPaymentIdx($position, $handlingSubject, $paymentIdx);
             $idx++;
         }
+    }
+
+    /**
+     * Resolve the card position (0 = first, 1 = second) of a response payment item.
+     *
+     * The Global API does not guarantee the payments order in the response —
+     * the position comes from the payment_tag/idempotency_key suffix ({order}-1/{order}-2).
+     *
+     * @param array $paymentIdx
+     * @param int   $default
+     *
+     * @return int
+     */
+    public function resolvePaymentPosition(array $paymentIdx, int $default): int
+    {
+        $tag = $paymentIdx['payment_tag'] ?? $paymentIdx['idempotency_key'] ?? '';
+
+        if (preg_match('/-(\d+)$/', (string) $tag, $matches)) {
+            return ((int) $matches[1]) - 1;
+        }
+
+        return $default;
     }
 
     /**
@@ -232,58 +255,59 @@ class TxnIdHandler implements HandlerInterface
     ) {
         $paymentDO = $handlingSubject['payment'];
         $payment = $paymentDO->getPayment();
-        $payCredit = $paymentIdx[self::CREDIT];
+        // V1 nests the transaction data in a credit object; the Global API returns it flat
+        $payCredit = $paymentIdx[self::CREDIT] ?? $paymentIdx;
         if ($idx === 0) {
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_PAYMENT_ID,
-                $paymentIdx[self::RESPONSE_PAYMENT_ID]
+                $paymentIdx[self::RESPONSE_PAYMENT_ID] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_TERMINAL_NSU,
-                $payCredit[self::RESPONSE_TERMINAL_NSU]
+                $payCredit[self::RESPONSE_TERMINAL_NSU] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_AUTHORIZATION_CODE,
-                $payCredit[self::RESPONSE_AUTHORIZATION_CODE]
+                $payCredit[self::RESPONSE_AUTHORIZATION_CODE] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_ACQUIRER_TRANSACTION_ID,
-                $payCredit[self::RESPONSE_ACQUIRER_TRANSACTION_ID]
+                $payCredit[self::RESPONSE_ACQUIRER_TRANSACTION_ID] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_TRANSACTION_ID,
-                $payCredit[self::RESPONSE_TRANSACTION_ID]
+                $payCredit[self::RESPONSE_TRANSACTION_ID] ?? null
             );
         }
 
         if ($idx === 1) {
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_PAYMENT_ID_SECONDARY,
-                $paymentIdx[self::RESPONSE_PAYMENT_ID]
+                $paymentIdx[self::RESPONSE_PAYMENT_ID] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_TERMINAL_NSU_SECONDARY,
-                $payCredit[self::RESPONSE_TERMINAL_NSU]
+                $payCredit[self::RESPONSE_TERMINAL_NSU] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_AUTHORIZATION_CODE_SECONDARY,
-                $payCredit[self::RESPONSE_AUTHORIZATION_CODE]
+                $payCredit[self::RESPONSE_AUTHORIZATION_CODE] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_ACQUIRER_TRANSACTION_ID_SECONDARY,
-                $payCredit[self::RESPONSE_ACQUIRER_TRANSACTION_ID]
+                $payCredit[self::RESPONSE_ACQUIRER_TRANSACTION_ID] ?? null
             );
 
             $payment->setAdditionalInformation(
                 self::PAYMENT_INFO_TRANSACTION_ID_SECONDARY,
-                $payCredit[self::RESPONSE_TRANSACTION_ID]
+                $payCredit[self::RESPONSE_TRANSACTION_ID] ?? null
             );
         }
     }

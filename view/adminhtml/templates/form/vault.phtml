@@ -10,16 +10,17 @@ use Magento\Vault\Model\Ui\TokenUiComponentProviderInterface;
 
 // @codingStandardsIgnoreFile
 /** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
 $details = $block->getData(TokenUiComponentProviderInterface::COMPONENT_PUBLIC_HASH);
-$id = $block->escapeHtml($block->getData('id'));
+$id = $escaper->escapeHtml($block->getData('id'));
 ?>
 <div data-mage-init='{
         "Getnet_PaymentMagento/js/vault": {
             "container": "payment_<?= /* @noEscape */ $id ?>",
-            "publicHash": "<?= $block->escapeHtml(
+            "publicHash": "<?= $escaper->escapeHtml(
                     $block->getData(TokenUiComponentProviderInterface::COMPONENT_PUBLIC_HASH)
                     ) ?>",
-            "code": "<?= $block->escapeHtml($block->getData('code')) ?>"
+            "code": "<?= $escaper->escapeHtml($block->getData('code')) ?>"
         }
     }'
      id="payment_<?= /* @noEscape */ $id ?>"
@@ -27,13 +28,13 @@ $id = $block->escapeHtml($block->getData('id'));
     <div class="admin__field-control control">
         <input type="radio" id="token_switcher_<?= /* @noEscape */
         $id ?>" name="payment[token_switcher]"/>
-        <img src="<?= $block->escapeUrl($details['icon']['url']) ?>"
-             width="<?= $block->escapeHtml($details['icon']['width']) ?>"
-             height="<?= $block->escapeHtml($details['icon']['height']) ?>"
+        <img src="<?= $escaper->escapeUrl($details['icon']['url']) ?>"
+             width="<?= $escaper->escapeHtml($details['icon']['width']) ?>"
+             height="<?= $escaper->escapeHtml($details['icon']['height']) ?>"
              class="payment-icon">
-        <span><?= $block->escapeHtml(__('ending')) ?></span>
-        <span><?= $block->escapeHtml($details['maskedCC']) ?></span>
-        (<span><?= $block->escapeHtml(__('expires')) ?></span>:
-        <span><?= $block->escapeHtml($details['expirationDate']) ?></span>)
+        <span><?= $escaper->escapeHtml(__('ending')) ?></span>
+        <span><?= $escaper->escapeHtml($details['maskedCC']) ?></span>
+        (<span><?= $escaper->escapeHtml(__('expires')) ?></span>:
+        <span><?= $escaper->escapeHtml($details['expirationDate']) ?></span>)
     </div>
 </div>

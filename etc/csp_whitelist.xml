@@ -11,8 +11,16 @@
     <policies>
         <policy id="frame-src">
             <values>
+            	<!-- Global API transactional sandbox (api_type = api_global + environment homolog) -->
             	<value id="global-getnet-dev" type="host">https://api.pre.globalgetnet.com</value>
                 <value id="global-getnet-prod" type="host">https://api.globalgetnet.com</value>
+            </values>
+        </policy>
+        <!-- Antifraud fingerprint script (afdf.js) loaded by the Cc payment renderer -->
+        <policy id="script-src">
+            <values>
+                <value id="global-getnet-antifraud-prod" type="host">https://api.globalgetnet.com</value>
+                <value id="global-getnet-antifraud-sandbox" type="host">https://api.sandbox.globalgetnet.com</value>
             </values>
         </policy>
     </policies>

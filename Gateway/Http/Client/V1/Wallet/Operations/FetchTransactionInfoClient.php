@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Getnet\PaymentMagento\Gateway\Http\Client\V1\Wallet\Operations;
 
 use Getnet\PaymentMagento\Gateway\Http\Api;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Payment\Gateway\Http\ClientInterface;
 use Magento\Payment\Gateway\Http\TransferInterface;
 
@@ -62,12 +63,20 @@ class FetchTransactionInfoClient implements ClientInterface
     protected $api;
 
     /**
-     * @param Api $api
+     * @var EndpointResolver
+     */
+    protected $endpointResolver;
+
+    /**
+     * @param Api              $api
+     * @param EndpointResolver $endpointResolver
      */
     public function __construct(
-        Api $api
+        Api $api,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -82,7 +91,11 @@ class FetchTransactionInfoClient implements ClientInterface
         $request = $transferObject->getBody();
         $response = ['RESULT_CODE' => 0];
         $getnetPaymentId = $request[self::GETNET_PAYMENT_ID];
-        $path = 'v1/payments/qrcode/'.$getnetPaymentId;
+        $path = $this->endpointResolver->resolve(
+            EndpointResolver::WALLET_GET,
+            $request['store_id'] ?? null,
+            [$getnetPaymentId]
+        );
 
         $data = $this->api->sendGetRequest(
             $transferObject,

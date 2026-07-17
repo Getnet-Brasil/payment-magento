@@ -11,6 +11,7 @@
 
 /**
  * @var Getnet\PaymentMagento\Block\Order\Success $block
+ * @var \Magento\Framework\Escaper $escaper
  * @see Getnet\PaymentMagento\Block\Order\Success
  */
 ?>
@@ -52,7 +53,7 @@
         <p>
             <?= /* @noEscape */ __('To pay, read the QRCode') ?> 
             <div class="qrcode-image">
-                <img src="<?=  $block->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $block->escapeHtml(__('QrCode')); ?>" />
+                <img src="<?=  $escaper->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $escaper->escapeHtml(__('QrCode')); ?>" />
             </div>
         </p>
         <p>
@@ -84,7 +85,7 @@
         <p>
             <?= /* @noEscape */ __('To pay, read the QRCode') ?> 
             <div class="qrcode-image">
-                <img src="<?=  $block->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $block->escapeHtml(__('QrCode')); ?>" />
+                <img src="<?=  $escaper->escapeHtml($qrCodeImageUrl) ?>" alt="<?= $escaper->escapeHtml(__('QrCode')); ?>" />
             </div>
         </p>
     </div>

@@ -10,12 +10,17 @@ namespace Getnet\PaymentMagento\Controller\Notification;
 
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
+use InvalidArgumentException;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\DataObjectFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Sales\Api\Data\OrderInterfaceFactory;
@@ -31,7 +36,7 @@ use Magento\Store\Model\StoreManagerInterface;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class All extends Action
+class All extends Action implements CsrfAwareActionInterface
 {
     /**
      * @const string
@@ -129,6 +134,11 @@ class All extends Action
     protected $transaction;
 
     /**
+     * @var Json
+     */
+    protected $json;
+
+    /**
      * @param Context                        $context
      * @param Logger                         $logger
      * @param OrderInterfaceFactory          $orderFactory
@@ -142,6 +152,7 @@ class All extends Action
      * @param Config                         $config
      * @param OrderService                   $orderService
      * @param InvoiceService                 $invoiceService
+     * @param Json                           $json
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -158,7 +169,8 @@ class All extends Action
         JsonFactory $resultJsonFactory,
         Config $config,
         OrderService $orderService,
-        InvoiceService $invoiceService
+        InvoiceService $invoiceService,
+        Json $json
     ) {
         $this->logger = $logger;
         $this->orderFactory = $orderFactory;
@@ -172,7 +184,36 @@ class All extends Action
         $this->config = $config;
         $this->orderService = $orderService;
         $this->invoiceService = $invoiceService;
+        $this->json = $json;
         parent::__construct($context);
+    }
+
+    /**
+     * Create Csrf Validation Exception - webhook origin is validated by seller id.
+     *
+     * @param RequestInterface $request
+     *
+     * @return InvalidRequestException|null
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    /**
+     * Validate For Csrf - external notification endpoint (V2 form post / Global JSON post).
+     *
+     * @param RequestInterface $request
+     *
+     * @return bool|null
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 
     /**
@@ -188,16 +229,16 @@ class All extends Action
         $resultPage = $this->resultJsonFactory->create();
         $order = null;
 
-        if (!$this->getRequest()->getParams()) {
+        $notificationData = $this->getNotificationContent();
+
+        if (!$notificationData) {
             $resultPage->setHttpResponseCode(404);
 
             return $resultPage;
         }
 
-        $getnetData = $this->getRequest()->getParams();
-
         /** @var DataObjectFactory $getnetData */
-        $getnetData = $this->dataObjectFactory->create(['data' => $getnetData]);
+        $getnetData = $this->dataObjectFactory->create(['data' => $notificationData]);
 
         $this->logger->debug(['type'=>'notification', 'data' => $getnetData->getData()]);
 
@@ -218,7 +259,7 @@ class All extends Action
                 $order = $this->findMageOrderById($getnetDataId);
             }
 
-            if (!$order->getEntityId()) {
+            if ($order === null || !$order->getEntityId()) {
                 return $this->createResult(
                     406,
                     [
@@ -256,6 +297,63 @@ class All extends Action
         }
 
         return $this->createResult(401, []);
+    }
+
+    /**
+     * Get Notification Content - request params (API V2) or JSON body (API Global).
+     *
+     * @return array
+     */
+    public function getNotificationContent(): array
+    {
+        $content = $this->getRequest()->getParams();
+        $content = is_array($content) ? $content : [];
+
+        $bodyContent = [];
+
+        try {
+            $bodyContent = $this->json->unserialize((string) $this->getRequest()->getContent());
+        } catch (InvalidArgumentException $exc) {
+            $bodyContent = [];
+        }
+
+        if (is_array($bodyContent) && $bodyContent) {
+            // JSON body values win over query/route params (Global API notifications)
+            $content = array_merge($content, $bodyContent);
+        }
+
+        if (!$content) {
+            return [];
+        }
+
+        return $this->normalizeNotification($content);
+    }
+
+    /**
+     * Normalize Global API notification fields to the V2 names used by this controller.
+     *
+     * Global webhooks send payment_id (not id) and have no payment_type — the boleto
+     * flow is derived from the boleto object or payment_method.
+     *
+     * @param array $content
+     *
+     * @return array
+     */
+    public function normalizeNotification(array $content): array
+    {
+        if (empty($content['id']) && !empty($content['payment_id'])) {
+            $content['id'] = $content['payment_id'];
+        }
+
+        if (empty($content['payment_type'])) {
+            $paymentMethod = strtoupper((string) ($content['payment_method'] ?? ''));
+
+            if (isset($content['boleto']) || $paymentMethod === 'BOLETO') {
+                $content['payment_type'] = 'boleto';
+            }
+        }
+
+        return $content;
     }
 
     /**

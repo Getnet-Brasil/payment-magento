@@ -17,6 +17,7 @@
                         <resource id="Magento_Config::config">
                             <resource id="Magento_Payment::payment_services" title="Payment Services" translate="title">
                                 <resource id="Getnet_PaymentMagento::preference" title="Permission for set preference account Getnet" translate="title" />
+                                <resource id="Getnet_PaymentMagento::webhook" title="Permission to register Getnet webhooks" translate="title" />
                             </resource>
                         </resource>
                     </resource>

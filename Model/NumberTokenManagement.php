@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Model;
 
 use Getnet\PaymentMagento\Api\Data\NumberTokenInterface;
 use Getnet\PaymentMagento\Api\NumberTokenManagementInterface;
+use Getnet\PaymentMagento\Gateway\Http\EndpointResolver;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
@@ -30,6 +31,11 @@ class NumberTokenManagement implements NumberTokenManagementInterface
     private $api;
 
     /**
+     * @var EndpointResolver
+     */
+    private $endpointResolver;
+
+    /**
      * @var CartRepositoryInterface
      */
     protected $quoteRepository;
@@ -39,13 +45,16 @@ class NumberTokenManagement implements NumberTokenManagementInterface
      *
      * @param ApiManagement           $api
      * @param CartRepositoryInterface $quoteRepository
+     * @param EndpointResolver        $endpointResolver
      */
     public function __construct(
         ApiManagement $api,
-        CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository,
+        EndpointResolver $endpointResolver
     ) {
         $this->api = $api;
         $this->quoteRepository = $quoteRepository;
+        $this->endpointResolver = $endpointResolver;
     }
 
     /**
@@ -120,7 +129,7 @@ class NumberTokenManagement implements NumberTokenManagementInterface
             'card_number' => $cardNumber,
             'store_id'    => $storeId,
         ];
-        $path = 'v1/tokens/card';
+        $path = $this->endpointResolver->resolve(EndpointResolver::TOKEN_CARD_CREATE, $storeId);
 
         $response = [
             'success' => 0,
