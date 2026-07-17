@@ -104,8 +104,6 @@ class TwoCcInterestManagement implements TwoCcInterestManagementInterface
             throw new NoSuchEntityException(__('Cart %1 doesn\'t contain products', $cartId));
         }
 
-        $quoteTotal = $this->quoteTotalRepository->get($cartId);
-
         $amountInRequest = $amountForCalc->getGetnetAmountForCalc();
         $idxInTwoCc = $idxInTwoCc->getGetnetIdxInTwoCc();
         $installment = $twoCcInstallment->getGetnetTwoCcInstallment();

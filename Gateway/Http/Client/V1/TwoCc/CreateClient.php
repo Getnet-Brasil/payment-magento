@@ -92,22 +92,7 @@ class CreateClient implements ClientInterface
             $request,
         );
 
-        $denied = 0;
-        $approvedItems = [];
-        // Mixed results come in payments[]; full denials/errors come in details[]
-        $responseItems = $responseBody['payments'] ?? $responseBody['details'] ?? [];
-
-        foreach ($responseItems as $paymentItem) {
-            $itemStatus = $paymentItem['status'] ?? null;
-
-            if (in_array($itemStatus, ['DENIED', 'ERROR'], true)) {
-                $denied = 1;
-            }
-
-            if (in_array($itemStatus, ['APPROVED', 'AUTHORIZED', 'PENDING'], true)) {
-                $approvedItems[] = $paymentItem;
-            }
-        }
+        [$denied, $approvedItems] = $this->collectPaymentResults($responseBody);
 
         if ($isGlobal && $denied && $approvedItems) {
             // Partial approval: the order will not be placed in Magento, so the
@@ -125,6 +110,36 @@ class CreateClient implements ClientInterface
         );
 
         return $response;
+    }
+
+    /**
+     * Split the gateway response items into a denial flag and the approved payments.
+     *
+     * Mixed results come in payments[]; full denials/errors come in details[].
+     *
+     * @param array $responseBody
+     *
+     * @return array{0: int, 1: array}
+     */
+    private function collectPaymentResults(array $responseBody): array
+    {
+        $denied = 0;
+        $approvedItems = [];
+        $responseItems = $responseBody['payments'] ?? $responseBody['details'] ?? [];
+
+        foreach ($responseItems as $paymentItem) {
+            $itemStatus = $paymentItem['status'] ?? null;
+
+            if (in_array($itemStatus, ['DENIED', 'ERROR'], true)) {
+                $denied = 1;
+            }
+
+            if (in_array($itemStatus, ['APPROVED', 'AUTHORIZED', 'PENDING'], true)) {
+                $approvedItems[] = $paymentItem;
+            }
+        }
+
+        return [$denied, $approvedItems];
     }
 
     /**

@@ -28,7 +28,11 @@ use Magento\Payment\Model\Method\Logger;
 /**
  * Class Api - Connecting.
  *
+ * Central HTTP client for both Getnet APIs (V2 and Global); the dependency count is
+ * inherent to orchestrating oAuth, caching, serialization and logging in one place.
+ *
  * @SuppressWarnings(PHPCPD)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Api
 {

@@ -247,17 +247,7 @@ class All extends Action implements CsrfAwareActionInterface
         $sellerId = $this->config->getMerchantGatewaySellerId();
 
         if ($sellerId === $getnetDataSellerId) {
-            $getnetDataOrderId = $getnetData->getOrderId();
-
-            $getnetDataId = $getnetData->getId();
-
-            if (isset($getnetDataOrderId)) {
-                $order = $this->findMageOrder($getnetDataOrderId);
-            }
-
-            if (isset($getnetDataId) && !isset($getnetDataOrderId)) {
-                $order = $this->findMageOrderById($getnetDataId);
-            }
+            $order = $this->resolveOrderFromNotification($getnetData);
 
             if ($order === null || !$order->getEntityId()) {
                 return $this->createResult(
@@ -297,6 +287,32 @@ class All extends Action implements CsrfAwareActionInterface
         }
 
         return $this->createResult(401, []);
+    }
+
+    /**
+     * Resolve the Magento order referenced by a notification.
+     *
+     * The order id (V2) takes precedence; the Getnet payment id (Global) is the fallback.
+     *
+     * @param \Magento\Framework\DataObject $getnetData
+     *
+     * @return Order|null
+     */
+    private function resolveOrderFromNotification($getnetData)
+    {
+        $getnetDataOrderId = $getnetData->getOrderId();
+
+        if (isset($getnetDataOrderId)) {
+            return $this->findMageOrder($getnetDataOrderId);
+        }
+
+        $getnetDataId = $getnetData->getId();
+
+        if (isset($getnetDataId)) {
+            return $this->findMageOrderById($getnetDataId);
+        }
+
+        return null;
     }
 
     /**

@@ -76,8 +76,6 @@ class AmountDataRequest implements BuilderInterface
         // (e.g. PayPal Braintree) break the payment DO adapter return types
         $grandTotal = $paymentDO->getPayment()->getOrder()->getBaseGrandTotal();
 
-        $payment = $paymentDO->getPayment();
-
         $result[self::AMOUNT] = $this->config->formatPrice($grandTotal);
 
         return $result;
