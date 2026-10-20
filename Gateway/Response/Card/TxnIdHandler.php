@@ -224,6 +224,6 @@ class TxnIdHandler implements HandlerInterface
     {
         $mapper = $this->configCc->getCcTypesMapper();
 
-        return $mapper[$type];
+        return $mapper[$type] ?? null;
     }
 }

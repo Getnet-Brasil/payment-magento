@@ -538,6 +538,82 @@
                         <config_path>payment/getnet_paymentmagento_wallet/sort_order</config_path>
                     </field>
                 </group>
+                <group id="getnet_paymentmagento_googlepay" translate="label comment" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Google Pay</label>
+                    <comment>Pay with the cards saved in the customer Google account. Available only in the API Global. Installments follow the Credit Card settings.</comment>
+                    <depends>
+                        <field id="*/getnet_base/api_type">api_global</field>
+                    </depends>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Title</label>
+                        <config_path>payment/getnet_paymentmagento_googlepay/title</config_path>
+                    </field>
+                    <field id="gateway_merchant_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Gateway Merchant Id</label>
+                        <comment>Merchant id assigned by Getnet during the technical setup (tokenizationSpecification.gatewayMerchantId).</comment>
+                        <validate>required-entry</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/gateway_merchant_id</config_path>
+                    </field>
+                    <field id="google_environment" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Google Pay Environment</label>
+                        <comment>Use Production only after the domain is approved in the Google Pay &amp; Wallet Console.</comment>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayEnvironment</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/google_environment</config_path>
+                    </field>
+                    <field id="google_merchant_id" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Google Merchant Id</label>
+                        <comment>Required by Google in the Production environment.</comment>
+                        <config_path>payment/getnet_paymentmagento_googlepay/google_merchant_id</config_path>
+                    </field>
+                    <field id="merchant_name" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Merchant Name</label>
+                        <comment>Shown in the Google Pay sheet. Empty uses the store name.</comment>
+                        <config_path>payment/getnet_paymentmagento_googlepay/merchant_name</config_path>
+                    </field>
+                    <field id="button_color" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Color</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayButtonColor</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/button_color</config_path>
+                    </field>
+                    <field id="button_type" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Type</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayButtonType</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/button_type</config_path>
+                    </field>
+                    <field id="min_order_total" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minimum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/min_order_total</config_path>
+                    </field>
+                    <field id="max_order_total" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Maximum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/max_order_total</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Applicable Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/allowspecific</config_path>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Specific Countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/specificcountry</config_path>
+                    </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sort Order</label>
+                        <frontend_class>validate-number</frontend_class>
+                        <config_path>payment/getnet_paymentmagento_googlepay/sort_order</config_path>
+                    </field>
+                </group>
                 <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Getpay</label>
                     <comment>Offer sales via external link, keeping your inventory and order status in sync. Available only in the API V2.</comment>
