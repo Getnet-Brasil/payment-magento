@@ -19,6 +19,7 @@
                 <item name="getnet_paymentmagento_pix_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderPix</item>
                 <item name="getnet_paymentmagento_wallet_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderWallet</item>
                 <item name="getnet_paymentmagento_googlepay_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderGooglePay</item>
+                <item name="getnet_paymentmagento_applepay_config_provider" xsi:type="object">Getnet\PaymentMagento\Model\Ui\ConfigProviderApplePay</item>
             </argument>
         </arguments>
     </type>
@@ -51,6 +52,13 @@
         </arguments>
     </type>
     <type name="Getnet\PaymentMagento\Block\Sales\Info\GooglePay">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\ApplePay">
         <arguments>
             <argument name="data" xsi:type="array">
                 <item xsi:type="string" name="is_secure_mode">1</item>

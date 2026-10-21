@@ -614,6 +614,89 @@
                         <config_path>payment/getnet_paymentmagento_googlepay/sort_order</config_path>
                     </field>
                 </group>
+                <group id="getnet_paymentmagento_applepay" translate="label comment" type="text" sortOrder="66" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Apple Pay</label>
+                    <comment>Pay with the cards saved in the customer Google account. Available only in the API Global. Installments follow the Credit Card settings.</comment>
+                    <depends>
+                        <field id="*/getnet_base/api_type">api_global</field>
+                    </depends>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Title</label>
+                        <config_path>payment/getnet_paymentmagento_applepay/title</config_path>
+                    </field>
+                    <field id="merchant_identifier" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Apple Merchant Id</label>
+                        <comment>Merchant ID created in the Apple Developer account (merchant.com.your-store).</comment>
+                        <validate>required-entry</validate>
+                        <config_path>payment/getnet_paymentmagento_applepay/merchant_identifier</config_path>
+                    </field>
+                    <field id="display_name" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Display Name</label>
+                        <comment>Shown in the Apple Pay sheet (max 64 characters). Empty uses the store name.</comment>
+                        <config_path>payment/getnet_paymentmagento_applepay/display_name</config_path>
+                    </field>
+                    <field id="certificate" translate="label comment" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Identity Certificate (PEM)</label>
+                        <comment>Certificate used only in the merchant validation with Apple. Stored encrypted.</comment>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/certificate</config_path>
+                    </field>
+                    <field id="certificate_key" translate="label comment" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Merchant Identity Private Key (PEM)</label>
+                        <comment>Private key of the certificate above. Stored encrypted.</comment>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/certificate_key</config_path>
+                    </field>
+                    <field id="certificate_key_password" translate="label comment" type="obscure" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Private Key Password</label>
+                        <comment>Only when the private key is protected by a password.</comment>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/certificate_key_password</config_path>
+                    </field>
+                    <field id="button_style" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Style</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ApplePayButtonStyle</source_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/button_style</config_path>
+                    </field>
+                    <field id="button_type" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Type</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ApplePayButtonType</source_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/button_type</config_path>
+                    </field>
+                    <field id="min_order_total" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minimum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_applepay/min_order_total</config_path>
+                    </field>
+                    <field id="max_order_total" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Maximum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_applepay/max_order_total</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Applicable Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/allowspecific</config_path>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Specific Countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <config_path>payment/getnet_paymentmagento_applepay/specificcountry</config_path>
+                    </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sort Order</label>
+                        <frontend_class>validate-number</frontend_class>
+                        <config_path>payment/getnet_paymentmagento_applepay/sort_order</config_path>
+                    </field>
+                </group>
                 <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Getpay</label>
                     <comment>Offer sales via external link, keeping your inventory and order status in sync. Available only in the API V2.</comment>

@@ -135,6 +135,11 @@
         <message code="GOOGLEPAY-002" translate="true">Parcelamento indisponível para este cartão. Cartões de débito do Google Pay só permitem pagamento à vista: selecione 1x ou escolha outro cartão.</message>
         <message code="GOOGLEPAY-003" translate="true">Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis.</message>
         <message code="GOOGLEPAY-004" translate="true">Este cartão exige uma autenticação adicional que não está disponível para o Google Pay. Use outro cartão ou escolha outro meio de pagamento.</message>
+        <!-- Apple Pay -->
+        <message code="APPLEPAY-001" translate="true">Não foi possível validar o pagamento com Apple Pay. Tente novamente ou escolha outro meio de pagamento.</message>
+        <message code="APPLEPAY-002" translate="true">Parcelamento indisponível para este cartão. Cartões de débito do Apple Pay só permitem pagamento à vista: selecione 1x ou escolha outro cartão.</message>
+        <message code="APPLEPAY-003" translate="true">Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis.</message>
+        <message code="APPLEPAY-004" translate="true">Este cartão exige uma autenticação adicional que não está disponível para o Apple Pay. Use outro cartão ou escolha outro meio de pagamento.</message>
         <!-- Antifraud -->
         <message code="200" translate="true">Transação negada. Cód: 200.</message>
         <message code="402" translate="true">Transação negada. Cód: 402.</message>

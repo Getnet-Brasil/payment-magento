@@ -38,7 +38,7 @@ class ResponseValidator extends GeneralResponseValidator
     /**
      * Gateway codes that mean the card does not accept the requested function/installment.
      */
-    private const INSTALLMENT_REFUSED_CODES = [
+    protected const INSTALLMENT_REFUSED_CODES = [
         'PAYMENTS-083',
         'PAYMENTS-013',
     ];
@@ -55,7 +55,7 @@ class ResponseValidator extends GeneralResponseValidator
         $result = parent::validate($validationSubject);
 
         if ($result->isValid() && $this->requires3ds($validationSubject)) {
-            return $this->createResult(false, [], [self::ERROR_3DS_NOT_SUPPORTED]);
+            return $this->createResult(false, [], [static::ERROR_3DS_NOT_SUPPORTED]);
         }
 
         if ($result->isValid() || !$this->hasInstallments($validationSubject)) {
@@ -64,8 +64,8 @@ class ResponseValidator extends GeneralResponseValidator
 
         $errorCodes = $result->getErrorCodes();
 
-        if (array_intersect(self::INSTALLMENT_REFUSED_CODES, array_map('strval', $errorCodes))) {
-            return $this->createResult(false, [], [self::ERROR_INSTALLMENT_NOT_ALLOWED]);
+        if (array_intersect(static::INSTALLMENT_REFUSED_CODES, array_map('strval', $errorCodes))) {
+            return $this->createResult(false, [], [static::ERROR_INSTALLMENT_NOT_ALLOWED]);
         }
 
         return $result;
