@@ -55,7 +55,7 @@ class Boleto extends Action implements HttpGetActionInterface, HttpPostActionInt
     }
 
     /**
-     * Create Csrf Validation Exception - webhook origin is validated by seller id.
+     * Create Csrf Validation Exception - notifications are bound to the order payment id instead.
      *
      * @param RequestInterface $request
      *
