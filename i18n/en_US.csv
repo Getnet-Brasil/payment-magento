@@ -479,3 +479,5 @@ reason_code,Return Code
 reason_message,Return Message
 authorized_at,Authorized At
 transaction_link_identifier,Transaction Link Identifier
+"The installment conditions have changed. Please select the installments again.","The installment conditions have changed. Please select the installments again."
+"Internal error.","Internal error."

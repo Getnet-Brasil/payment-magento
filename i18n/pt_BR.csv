@@ -485,3 +485,5 @@ reason_code,Código do Retorno
 reason_message,Mensagem do Retorno
 authorized_at,Autorizado em
 transaction_link_identifier,Identificador do Link da Transação
+"The installment conditions have changed. Please select the installments again.","As condições de parcelamento mudaram. Selecione as parcelas novamente."
+"Internal error.","Erro interno."

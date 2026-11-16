@@ -444,11 +444,16 @@ class All extends Action implements CsrfAwareActionInterface
             $transaction->setTxnId($getnetDataId);
             $transaction->save();
         } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
             return $this->createResult(
                 500,
                 [
                     'error'   => 500,
-                    'message' => $exc->getMessage(),
+                    'message' => __('Internal error.'),
                 ]
             );
         }
@@ -482,11 +487,16 @@ class All extends Action implements CsrfAwareActionInterface
 
             $order = $this->orderFactory->create()->load($transaction->getOrderId());
         } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
             return $this->createResult(
                 500,
                 [
                     'error'   => 500,
-                    'message' => $exc->getMessage(),
+                    'message' => __('Internal error.'),
                 ]
             );
         }
@@ -507,11 +517,16 @@ class All extends Action implements CsrfAwareActionInterface
             /** @var OrderInterfaceFactory $order */
             $order = $this->orderFactory->create()->load($getnetDataOrderId, 'increment_id');
         } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
             return $this->createResult(
                 500,
                 [
                     'error'   => 500,
-                    'message' => $exc->getMessage(),
+                    'message' => __('Internal error.'),
                 ]
             );
         }
@@ -539,11 +554,16 @@ class All extends Action implements CsrfAwareActionInterface
             $order->save();
             $this->communicateStatus($order, 'pay');
         } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
             return $this->createResult(
                 500,
                 [
                     'error'   => 500,
-                    'message' => $exc->getMessage(),
+                    'message' => __('Internal error.'),
                 ]
             );
         }
@@ -578,11 +598,16 @@ class All extends Action implements CsrfAwareActionInterface
             $order->save();
             $this->communicateStatus($order, 'cancel');
         } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
             return $this->createResult(
                 500,
                 [
                     'error'   => 500,
-                    'message' => $exc->getMessage(),
+                    'message' => __('Internal error.'),
                 ]
             );
         }

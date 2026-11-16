@@ -33,6 +33,40 @@
             totals: quote.getTotals(),
 
             /**
+             * Grand total (without the Getnet interest) the stored interest was priced on.
+             */
+            pricedTotal: null,
+
+            /**
+             * Grand total without the Getnet interest.
+             * @returns {String}
+             */
+            getTotalWithoutInterest() {
+                var current = quote.totals() || {},
+                    interest = 0;
+
+                (current.total_segments || []).forEach((segment) => {
+                    if (segment.code === 'getnet_interest_amount') {
+                        interest = parseFloat(segment.value || 0);
+                    }
+                });
+
+                return (parseFloat(current.base_grand_total || 0) - interest).toFixed(2);
+            },
+
+            /**
+             * Whether the cart total changed (coupon, shipping) since the selected installment was priced.
+             * Place order is refused by the server while the stored interest does not match.
+             * @param {Int} installmentSelected
+             * @returns {Boolean}
+             */
+            needsReprice(installmentSelected) {
+                return parseInt(installmentSelected, 10) > 0 &&
+                    this.pricedTotal !== null &&
+                    this.pricedTotal !== this.getTotalWithoutInterest();
+            },
+
+            /**
              * Add Getnet Interest in totals
              * @param {Int} installmentSelected
              * @returns {Void}
@@ -55,6 +89,8 @@
                         return $.Deferred().resolve().promise();
                     }
                 }
+
+                this.pricedTotal = this.getTotalWithoutInterest();
 
                 serviceUrl = urlBuilder.createUrl('/carts/mine/getnet-interest/', {});
 

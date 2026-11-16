@@ -27,6 +27,11 @@ class AmountAndTwoInterestDataRequest implements BuilderInterface
     public const AMOUNT = 'amount';
 
     /**
+     * First card amount without interest, as typed at checkout.
+     */
+    public const FIRST_BASE_AMOUNT = 'cc_payment_first_base_amount';
+
+    /**
      * @var SubjectReader
      */
     protected $subjectReader;
@@ -89,29 +94,21 @@ class AmountAndTwoInterestDataRequest implements BuilderInterface
 
         $payment = $paymentDO->getPayment();
 
-        $installment = $payment->getAdditionalInformation('cc_installments') ?: 1;
+        $installment = (int) ($payment->getAdditionalInformation('cc_installments') ?: 1);
 
-        $totalFirst = $payment->getAdditionalInformation('cc_payment_first_amount');
-
-        $amountFirst = $totalFirst;
-
-        if ($installment > 1) {
-            $storeId = $order->getStoreId();
-            $interestFirst = $this->configCc->getInterestToAmount($installment, $totalFirst, $storeId);
-            $amountFirst = $totalFirst + $interestFirst;
+        // Keep the amount typed by the shopper: cc_payment_first_amount is rewritten below with the interest,
+        // and this builder runs again on later operations (accept).
+        $totalFirst = $payment->getAdditionalInformation(self::FIRST_BASE_AMOUNT);
+        if ($totalFirst === null) {
+            $totalFirst = (float) $payment->getAdditionalInformation('cc_payment_first_amount');
+            $payment->setAdditionalInformation(self::FIRST_BASE_AMOUNT, $totalFirst);
         }
 
-        $totalSecondary = $grandTotal - $totalFirst;
-
-        $installmentSecondary = $payment->getAdditionalInformation('cc_secondary_installments') ?: 1;
-
-        $amountSecondary = $totalSecondary;
-
-        if ($installmentSecondary > 1) {
-            $storeId = $order->getStoreId();
-            $interestSecondary = $this->configCc->getInterestToAmount($installmentSecondary, $totalSecondary, $storeId);
-            $amountSecondary = $totalSecondary + $interestSecondary;
-        }
+        // The grand total already carries the interest of both cards (validated by the installment guard),
+        // so the second card takes the rest; adding its interest again would charge more than the order.
+        $interestFirst = $this->configCc->getInterestToAmount($installment, (float) $totalFirst, $order->getStoreId());
+        $amountFirst = round((float) $totalFirst + $interestFirst, 2);
+        $amountSecondary = round((float) $grandTotal - $amountFirst, 2);
 
         $result[self::AMOUNT] = $this->config->formatPrice(round($amountFirst + $amountSecondary, 2));
 

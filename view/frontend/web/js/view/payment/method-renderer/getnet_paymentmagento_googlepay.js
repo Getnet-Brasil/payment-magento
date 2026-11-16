@@ -115,6 +115,14 @@ define([
                 self.updateInterest(value ? value : 0);
             });
 
+            // Coupon or shipping changes after pricing: re-price, otherwise place order is refused.
+            totals.totals.subscribe(function () {
+                if (self.isActive() && getnetSetInterest.needsReprice(self.googlePayInstallment())) {
+                    self.googlePayToken = '';
+                    self.updateInterest(self.googlePayInstallment());
+                }
+            });
+
             this.isChecked.subscribe(function (code) {
                 if (code === self.getCode()) {
                     self.updateInterest(self.googlePayInstallment() ? self.googlePayInstallment() : 0);
