@@ -450,3 +450,38 @@ transaction_id_secondary,Código da Transação Secundário
 "Leave empty to use the store return route (getnet/pixbiometric/return). Must be https.","Deixe vazio para usar a rota de retorno da loja (getnet/pixbiometric/return). Precisa ser https."
 "Return URL (Open Finance)","URL de Retorno (Open Finance)"
 "Permission to register the Pix by biometrics return URL","Permissão para registrar a URL de retorno do Pix por biometria"
+"Google Pay","Google Pay"
+"Pay with the cards saved in the customer Google account. Available only in the API Global. Installments follow the Credit Card settings.","Pague com os cartões salvos na conta Google do cliente. Disponível somente na API Global. O parcelamento segue as configurações do Cartão de Crédito."
+"Gateway Merchant Id","Gateway Merchant Id"
+"Merchant id assigned by Getnet during the technical setup (tokenizationSpecification.gatewayMerchantId).","Merchant id atribuído pela Getnet no setup técnico (tokenizationSpecification.gatewayMerchantId)."
+"Google Pay Environment","Ambiente do Google Pay"
+"Use Production only after the domain is approved in the Google Pay & Wallet Console.","Use Produção somente após a aprovação do domínio no Google Pay & Wallet Console."
+"Google Merchant Id","Google Merchant Id"
+"Required by Google in the Production environment.","Exigido pelo Google no ambiente de Produção."
+"Merchant Name","Nome do Estabelecimento"
+"Shown in the Google Pay sheet. Empty uses the store name.","Exibido na folha do Google Pay. Vazio usa o nome da loja."
+"Button Color","Cor do Botão"
+"Button Type","Tipo do Botão"
+"Test","Teste"
+"Black","Preto"
+"White","Branco"
+"Pay","Pagar"
+"Buy","Comprar"
+"Checkout","Finalizar"
+"Order","Pedir"
+"Plain","Simples"
+"Could not validate the Google Pay payment. Please try again or choose another payment method.","Não foi possível validar o pagamento com Google Pay. Tente novamente ou escolha outro meio de pagamento."
+"Invalid installment for this order. Please select one of the available installments.","Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis."
+"Não foi possível validar o pagamento com Google Pay. Tente novamente ou escolha outro meio de pagamento.","Não foi possível validar o pagamento com Google Pay. Tente novamente ou escolha outro meio de pagamento."
+"Parcelamento indisponível para este cartão. Cartões de débito do Google Pay só permitem pagamento à vista: selecione 1x ou escolha outro cartão.","Parcelamento indisponível para este cartão. Cartões de débito do Google Pay só permitem pagamento à vista: selecione 1x ou escolha outro cartão."
+"Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis.","Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis."
+"Could not complete the payment with Google Pay. Please try again or choose another payment method.","Não foi possível concluir o pagamento com Google Pay. Tente novamente ou escolha outro meio de pagamento."
+"Google Pay is not available on this device or browser. Please choose another payment method.","O Google Pay não está disponível neste dispositivo ou navegador. Escolha outro meio de pagamento."
+"Select the installments to continue with Google Pay.","Selecione o parcelamento para continuar com o Google Pay."
+"Este cartão exige uma autenticação adicional que não está disponível para o Google Pay. Use outro cartão ou escolha outro meio de pagamento.","Este cartão exige uma autenticação adicional que não está disponível para o Google Pay. Use outro cartão ou escolha outro meio de pagamento."
+acquirer,Adquirente
+issuer,Emissor do Cartão
+reason_code,Código do Retorno
+reason_message,Mensagem do Retorno
+authorized_at,Autorizado em
+transaction_link_identifier,Identificador do Link da Transação

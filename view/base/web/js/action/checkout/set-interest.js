@@ -52,7 +52,7 @@
                 if (this.totals() && totals.getSegment('getnet_interest_amount')) {
                     hasInterest = totals.getSegment('getnet_interest_amount').value;
                     if (!installmentSelected && !hasInterest) {
-                        return this;
+                        return $.Deferred().resolve().promise();
                     }
                 }
 
@@ -67,18 +67,21 @@
                     );
                 }
 
-                $.ajax({
+                // Resolves only after the totals were refreshed, so callers can rely on the final grand total.
+                return $.ajax({
                     url: urlFormatter.build(serviceUrl),
                     global: true,
                     data: JSON.stringify(payload),
                     contentType: 'application/json',
                     type: 'POST',
                     async: true
-                }).done(
+                }).then(
                     () => {
                         var deferred = $.Deferred();
 
                         getTotalsAction([], deferred);
+
+                        return deferred.promise();
                     }
                 ).fail(
                     (response) => {

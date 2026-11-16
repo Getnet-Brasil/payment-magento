@@ -19,7 +19,8 @@ define(
             methodCc = 'getnet_paymentmagento_cc',
             methodTwoCc = 'getnet_paymentmagento_two_cc',
             methodPix = 'getnet_paymentmagento_pix',
-            methodWallet = 'getnet_paymentmagento_wallet';
+            methodWallet = 'getnet_paymentmagento_wallet',
+            methodGooglePay = 'getnet_paymentmagento_googlepay';
 
         if (config[methodBoleto].isActive) {
             rendererList.push(
@@ -62,6 +63,15 @@ define(
                 {
                     type: methodWallet,
                     component: 'Getnet_PaymentMagento/js/view/payment/method-renderer/getnet_paymentmagento_wallet'
+                }
+            );
+        }
+
+        if (config[methodGooglePay] && config[methodGooglePay].isActive) {
+            rendererList.push(
+                {
+                    type: methodGooglePay,
+                    component: 'Getnet_PaymentMagento/js/view/payment/method-renderer/getnet_paymentmagento_googlepay'
                 }
             );
         }

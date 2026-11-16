@@ -127,6 +127,16 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="PaymentMagentoGooglePayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Getnet\PaymentMagento\Model\Ui\ConfigProviderGooglePay::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Getnet\PaymentMagento\Block\Sales\Info\GooglePay</argument>
+            <argument name="valueHandlerPool" xsi:type="object">PaymentMagentoGooglePayValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoGooglePayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="PaymentMagentoGetpayFacade" type="Magento\Payment\Model\Method\Adapter">
         <arguments>
             <argument name="code" xsi:type="const">Getnet\PaymentMagento\Model\Ui\ConfigProviderGetpay::CODE</argument>
@@ -147,6 +157,7 @@
                 <item name="getnet_paymentmagento_boleto" xsi:type="string">PaymentMagentoBoletoCommandManager</item>
                 <item name="getnet_paymentmagento_pix" xsi:type="string">PaymentMagentoPixCommandManager</item>
                 <item name="getnet_paymentmagento_wallet" xsi:type="string">PaymentMagentoWalletCommandManager</item>
+                <item name="getnet_paymentmagento_googlepay" xsi:type="string">PaymentMagentoGooglePayCommandManager</item>
                 <item name="getnet_paymentmagento_getpay" xsi:type="string">PaymentMagentoGetpayCommandManager</item>
             </argument>
         </arguments>
@@ -232,11 +243,138 @@
         </arguments>
     </type>
 
+    <type name="Getnet\PaymentMagento\Block\Sales\Info\GooglePay">
+        <arguments>
+            <argument name="config" xsi:type="object">Getnet\PaymentMagento\Gateway\Config\ConfigGooglePay</argument>
+        </arguments>
+    </type>
+
     <type name="Getnet\PaymentMagento\Block\Sales\Info\Getpay">
         <arguments>
             <argument name="config" xsi:type="object">PaymentMagentoGetpayConfig</argument>
         </arguments>
     </type>
+
+    <!-- GooglePay - Commands infrastructure -->
+    <virtualType name="PaymentMagentoGooglePayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="capture" xsi:type="string">PaymentMagentoGooglePayCaptureCommand</item>
+                <item name="refund" xsi:type="string">PaymentMagentoGooglePayRefundCommand</item>
+                <item name="cancel" xsi:type="string">PaymentMagentoGooglePayDenyPaymentCommand</item>
+                <item name="void" xsi:type="string">PaymentMagentoGooglePayDenyPaymentCommand</item>
+                <item name="accept_payment" xsi:type="string">PaymentMagentoAcceptPaymentCommand</item>
+                <item name="deny_payment" xsi:type="string">PaymentMagentoGooglePayDenyPaymentCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- GooglePay - Refund / Cancel (immediate sale: payment_method CREDIT, there is no authorization) -->
+    <virtualType name="PaymentMagentoGooglePayRefundCommand" type="PaymentMagentoRefundCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoGooglePayRefundRequest</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayRefundRequest" type="PaymentMagentoRefundRequest">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment_method" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GooglePay\Operations\PaymentMethodDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayDenyPaymentCommand" type="PaymentMagentoDenyPaymentCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoGooglePayDenyPaymentRequest</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayDenyPaymentRequest" type="PaymentMagentoDenyPaymentRequest">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment_method" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GooglePay\Operations\PaymentMethodDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayCommandManager" type="Magento\Payment\Gateway\Command\CommandManager">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoGooglePayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">PaymentMagentoGooglePayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">Getnet\PaymentMagento\Gateway\Config\ConfigGooglePay</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- GooglePay - Capture Command (immediate sale: the Google Pay token is single use) -->
+    <virtualType name="PaymentMagentoGooglePayCaptureCommand" type="Getnet\PaymentMagento\Gateway\Command\PaymentCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoGooglePayCommandPool</argument>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoGooglePayRequest</argument>
+            <argument name="handler" xsi:type="object">PaymentMagentoGooglePayResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Card\CreateClient</argument>
+            <argument name="validator" xsi:type="object">PaymentMagentoGooglePayTransactionValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PaymentMagentoGooglePayTransactionValidator" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="chainBreakingValidators" xsi:type="array">
+                <item name="general" xsi:type="boolean">true</item>
+            </argument>
+            <argument name="validators" xsi:type="array">
+                <item name="general" xsi:type="string">Getnet\PaymentMagento\Gateway\Validator\GooglePay\ResponseValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- GooglePay - Request -->
+    <virtualType name="PaymentMagentoGooglePayRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
+                <item name="card_init_schema" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\CardInitSchemaDataRequest</item>
+
+                <item name="data_amountTotal" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\AmountDataRequest</item>
+                <item name="data_currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CurrencyDataRequest</item>
+                <item name="data_customer_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\CustomerIdDataRequest</item>
+                <item name="data_payment_data" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\GooglePay\PaymentDataRequest</item>
+
+                <item name="data_additional_data" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\AdditionalInitSchemaDataRequest</item>
+                <item name="data_additional_data_device" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Device\DeviceDataRequest</item>
+                <item name="data_additional_data_customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer\CustomerDataRequest</item>
+                <item name="data_additional_data_customer_document" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer\TaxDocumentDataRequest</item>
+                <item name="data_additional_data_customer_address" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Customer\AddressDataRequest</item>
+                <item name="data_additional_data_order" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Card\Data\Additional\Order\Items\ItemsDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- GooglePay - Response handlers (no Vault: the Google Pay token cannot be stored) -->
+    <virtualType name="PaymentMagentoGooglePayResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="extOrdId" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\Card\ExtOrdIdHandler</item>
+                <item name="txnIdCc" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\Card\TxnIdHandler</item>
+                <item name="transaction" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\Card\TransactionCaptureHandler</item>
+                <item name="details" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\GooglePay\DetailsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
 
     <!-- Boleto - Commands infrastructure -->
     <virtualType name="PaymentMagentoBoletoCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
