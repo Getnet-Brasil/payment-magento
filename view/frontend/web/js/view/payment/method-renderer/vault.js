@@ -102,6 +102,12 @@ define([
                 self.addInterest();
             });
 
+            quote.totals.subscribe(function () {
+                if (self.active() && getnetSetInterest.needsReprice(self.creditCardInstallment())) {
+                    self.addInterest();
+                }
+            });
+
             self.creditCardVerificationNumber.subscribe(function (value) {
                 creditCardData.creditCardVerificationNumber = value;
             });

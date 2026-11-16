@@ -17,8 +17,31 @@ $qrCode = $block->getPaymentAdditionalInfo('qr_code');
 $qrCodeImage = $block->getPaymentAdditionalInfo('qr_code_image');
 $qrCodeImageUrl = $qrCodeImage ? $block->getImageQrCode($qrCodeImage) : null;
 $expirationDateQrcode = $block->getPaymentAdditionalInfo('expiration_date_qrcode');
+$isBiometric = $block->getPaymentAdditionalInfo('pix_mode') === 'biometric';
+$biometricExpiration = $block->getPaymentAdditionalInfo('biometric_expiration_date');
 ?>
 <h4><?= /* @noEscape */ $title ?></h4>
+<?php if ($isBiometric): ?>
+    <div class="getnet-instruction pix pix-biometric">
+        <div class="instruction-information">
+            <?= $escaper->escapeHtml(__('Pix by biometrics (Open Finance)')) ?>
+        </div>
+        <?php if ($biometricExpiration): ?>
+        <div class="instruction-information expiration">
+            <div>
+                <?= $escaper->escapeHtml(__('Authorization available until')) ?>
+            </div>
+            <div class="expiration-date">
+                <strong>
+                    <?= $escaper->escapeHtml(
+                        $block->formatDate($biometricExpiration, \IntlDateFormatter::MEDIUM, true)
+                    ) ?>
+                </strong>
+            </div>
+        </div>
+        <?php endif;?>
+    </div>
+<?php endif;?>
 <?php if ($qrCode || $qrCodeImageUrl): ?>
     <div class="getnet-instruction pix">
         <?php if ($expirationDateQrcode): ?>

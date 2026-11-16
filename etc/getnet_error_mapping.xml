@@ -15,6 +15,10 @@
         <!-- CONFIG -->
         <message code="CONFIG-403" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
         
+        <!-- PIX BIOMETRIC (business status returned with HTTP 201) -->
+        <message code="PIX-BIOMETRIC-DENIED" translate="true">Pix by biometrics is not available for this store at the moment. Please choose the Pix QR code or another payment method.</message>
+        <message code="PIX-BIOMETRIC-ERROR" translate="true">We could not start the Pix by biometrics payment. Please check your CPF or choose the Pix QR code.</message>
+
         <!-- PAYMENTS -->
         <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
         <message code="PAYMENTS-013" translate="true">Valor da parcela inválido.</message>
@@ -130,6 +134,11 @@
         <message code="PAYMENTS-605" translate="true">Suspensão de pagamento recorrente para um serviço.</message>
         <message code="PAYMENTS-077" translate="true">Verifique os dados do Cartão.</message>
         <message code="PAYMENTS-033" translate="true">Entrar em contato com a Getnet.</message>
+        <!-- Google Pay -->
+        <message code="GOOGLEPAY-001" translate="true">Não foi possível validar o pagamento com Google Pay. Tente novamente ou escolha outro meio de pagamento.</message>
+        <message code="GOOGLEPAY-002" translate="true">Parcelamento indisponível para este cartão. Cartões de débito do Google Pay só permitem pagamento à vista: selecione 1x ou escolha outro cartão.</message>
+        <message code="GOOGLEPAY-003" translate="true">Parcelamento inválido para este pedido. Selecione uma das parcelas disponíveis.</message>
+        <message code="GOOGLEPAY-004" translate="true">Este cartão exige uma autenticação adicional que não está disponível para o Google Pay. Use outro cartão ou escolha outro meio de pagamento.</message>
         <!-- Antifraud -->
         <message code="200" translate="true">Transação negada. Cód: 200.</message>
         <message code="402" translate="true">Transação negada. Cód: 402.</message>

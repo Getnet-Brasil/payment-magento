@@ -372,6 +372,61 @@
                         <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PixExpiration</source_model>
                         <config_path>payment/getnet_paymentmagento_pix/expiration</config_path>
                     </field>
+                    <field id="biometric_active" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enable Pix by Biometrics</label>
+                        <comment>Lets the payer authorize the Pix with biometrics through Open Finance, without copying codes. The payer chooses between biometrics and QR code at checkout. Available only in the API Global and must be enabled for your seller by Getnet.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_active</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_default" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Preselected Pix Option</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PixMode</source_model>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_default</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_expiration" translate="label comment" type="text" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Biometrics Expiration (seconds)</label>
+                        <comment>Time the payer has to complete the biometric journey. Between 60 and 1800 seconds.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-60-1800</validate>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_expiration</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_instruction" translate="label comment" type="textarea" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Biometrics Instruction during checkout</label>
+                        <comment>Information displayed at checkout when the biometric option is selected.</comment>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_instruction</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_return_url" translate="label comment" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Biometrics Return URL Override</label>
+                        <comment>Leave empty to use the store return route (getnet/pixbiometric/return). Must be https.</comment>
+                        <validate>validate-url</validate>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_return_url</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_register_domain" translate="label" type="button" sortOrder="36" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Return URL (Open Finance)</label>
+                        <frontend_model>Getnet\PaymentMagento\Block\Adminhtml\System\Config\RegisterOpenFinanceDomain</frontend_model>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
                     <field id="instruction_checkout" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Instruction during checkout</label>
                         <comment>Information displayed at checkout.</comment>
@@ -536,6 +591,82 @@
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
                         <config_path>payment/getnet_paymentmagento_wallet/sort_order</config_path>
+                    </field>
+                </group>
+                <group id="getnet_paymentmagento_googlepay" translate="label comment" type="text" sortOrder="65" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Google Pay</label>
+                    <comment>Pay with the cards saved in the customer Google account. Available only in the API Global. Installments follow the Credit Card settings.</comment>
+                    <depends>
+                        <field id="*/getnet_base/api_type">api_global</field>
+                    </depends>
+                    <field id="information" type="text" translate="label comment" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <frontend_model>Getnet\PaymentMagento\Model\Adminhtml\Source\ProductNotDefault</frontend_model>
+                    </field>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enabled</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/active</config_path>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Title</label>
+                        <config_path>payment/getnet_paymentmagento_googlepay/title</config_path>
+                    </field>
+                    <field id="gateway_merchant_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Gateway Merchant Id</label>
+                        <comment>Merchant id assigned by Getnet during the technical setup (tokenizationSpecification.gatewayMerchantId).</comment>
+                        <validate>required-entry</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/gateway_merchant_id</config_path>
+                    </field>
+                    <field id="google_environment" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Google Pay Environment</label>
+                        <comment>Use Production only after the domain is approved in the Google Pay &amp; Wallet Console.</comment>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayEnvironment</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/google_environment</config_path>
+                    </field>
+                    <field id="google_merchant_id" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Google Merchant Id</label>
+                        <comment>Required by Google in the Production environment.</comment>
+                        <config_path>payment/getnet_paymentmagento_googlepay/google_merchant_id</config_path>
+                    </field>
+                    <field id="merchant_name" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Merchant Name</label>
+                        <comment>Shown in the Google Pay sheet. Empty uses the store name.</comment>
+                        <config_path>payment/getnet_paymentmagento_googlepay/merchant_name</config_path>
+                    </field>
+                    <field id="button_color" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Color</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayButtonColor</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/button_color</config_path>
+                    </field>
+                    <field id="button_type" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Button Type</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\GooglePayButtonType</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/button_type</config_path>
+                    </field>
+                    <field id="min_order_total" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minimum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/min_order_total</config_path>
+                    </field>
+                    <field id="max_order_total" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Maximum Order Total</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                        <config_path>payment/getnet_paymentmagento_googlepay/max_order_total</config_path>
+                    </field>
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Applicable Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/allowspecific</config_path>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="250" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Payment From Specific Countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                        <config_path>payment/getnet_paymentmagento_googlepay/specificcountry</config_path>
+                    </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Sort Order</label>
+                        <frontend_class>validate-number</frontend_class>
+                        <config_path>payment/getnet_paymentmagento_googlepay/sort_order</config_path>
                     </field>
                 </group>
                 <group id="getnet_paymentmagento_getpay" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">

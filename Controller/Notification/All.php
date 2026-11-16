@@ -10,6 +10,10 @@ namespace Getnet\PaymentMagento\Controller\Notification;
 
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
+use Getnet\PaymentMagento\Gateway\Config\ConfigBoleto;
+use Getnet\PaymentMagento\Gateway\Config\ConfigPix;
+use Getnet\PaymentMagento\Gateway\Http\Client\PaymentInfoClient;
+use Getnet\PaymentMagento\Model\PixBiometric\StatusUpdater;
 use InvalidArgumentException;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Action;
@@ -72,6 +76,25 @@ class All extends Action implements CsrfAwareActionInterface
      * @const string
      */
     public const ERROR = 'ERROR';
+
+    /**
+     * Statuses that settle the order.
+     */
+    public const STATUSES_PAY = ['APPROVED', 'PAID', 'AUTHORIZED', 'CAPTURED'];
+
+    /**
+     * Statuses that cancel the order.
+     */
+    public const STATUSES_CANCEL = ['CANCELED', 'CANCELLED', 'DENIED', 'ERROR'];
+
+    /**
+     * Payment methods settled by notification (card has a synchronous answer; Wallet and
+     * GetPay are confirmed by their own crons).
+     */
+    public const NOTIFIABLE_METHODS = [
+        ConfigPix::METHOD,
+        ConfigBoleto::METHOD,
+    ];
 
     /**
      * @var Logger
@@ -139,6 +162,16 @@ class All extends Action implements CsrfAwareActionInterface
     protected $json;
 
     /**
+     * @var StatusUpdater
+     */
+    protected $statusUpdater;
+
+    /**
+     * @var PaymentInfoClient
+     */
+    protected $paymentInfoClient;
+
+    /**
      * @param Context                        $context
      * @param Logger                         $logger
      * @param OrderInterfaceFactory          $orderFactory
@@ -153,6 +186,8 @@ class All extends Action implements CsrfAwareActionInterface
      * @param OrderService                   $orderService
      * @param InvoiceService                 $invoiceService
      * @param Json                           $json
+     * @param StatusUpdater                  $statusUpdater
+     * @param PaymentInfoClient              $paymentInfoClient
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -170,7 +205,9 @@ class All extends Action implements CsrfAwareActionInterface
         Config $config,
         OrderService $orderService,
         InvoiceService $invoiceService,
-        Json $json
+        Json $json,
+        StatusUpdater $statusUpdater,
+        PaymentInfoClient $paymentInfoClient
     ) {
         $this->logger = $logger;
         $this->orderFactory = $orderFactory;
@@ -185,11 +222,13 @@ class All extends Action implements CsrfAwareActionInterface
         $this->orderService = $orderService;
         $this->invoiceService = $invoiceService;
         $this->json = $json;
+        $this->statusUpdater = $statusUpdater;
+        $this->paymentInfoClient = $paymentInfoClient;
         parent::__construct($context);
     }
 
     /**
-     * Create Csrf Validation Exception - webhook origin is validated by seller id.
+     * Create Csrf Validation Exception - notifications are bound to the order payment id instead.
      *
      * @param RequestInterface $request
      *
@@ -225,68 +264,149 @@ class All extends Action implements CsrfAwareActionInterface
      */
     public function execute()
     {
-        /** @var JsonFactory $resultPage */
-        $resultPage = $this->resultJsonFactory->create();
-        $order = null;
-
         $notificationData = $this->getNotificationContent();
 
         if (!$notificationData) {
-            $resultPage->setHttpResponseCode(404);
-
-            return $resultPage;
+            return $this->createRejectedResult();
         }
 
-        /** @var DataObjectFactory $getnetData */
+        /** @var \Magento\Framework\DataObject $getnetData */
         $getnetData = $this->dataObjectFactory->create(['data' => $notificationData]);
 
         $this->logger->debug(['type'=>'notification', 'data' => $getnetData->getData()]);
 
-        $getnetDataSellerId = $getnetData->getSellerId();
+        $sellerId = (string) $this->config->getMerchantGatewaySellerId();
 
-        $sellerId = $this->config->getMerchantGatewaySellerId();
-
-        if ($sellerId === $getnetDataSellerId) {
-            $order = $this->resolveOrderFromNotification($getnetData);
-
-            if ($order === null || !$order->getEntityId()) {
-                return $this->createResult(
-                    406,
-                    [
-                        'error'   => 406,
-                        'message' => __('Order not found.'),
-                    ]
-                );
-            }
-
-            if ($order->getState() === Order::STATE_NEW) {
-                $paymentType = $getnetData->getPaymentType();
-
-                if ($paymentType === 'boleto') {
-                    $getnetDataStatus = $getnetData->getStatus();
-                    $getnetDataId = $getnetData->getId();
-
-                    return $this->resolveStatusUpdate($getnetDataStatus, $order, $getnetDataId);
-                }
-            }
-
-            if ($order->getState() !== Order::STATE_NEW) {
-                return $this->createResult(
-                    412,
-                    [
-                        'error'   => 412,
-                        'status'  => $order->getState(),
-                        'message' => __('Not available.'),
-                    ]
-                );
-            }
-
-            $getnetDataStatus = $getnetData->getStatus();
-
-            return $this->resolveStatusUpdate($getnetDataStatus, $order);
+        if ($sellerId === '' || $sellerId !== (string) $getnetData->getSellerId()) {
+            return $this->createRejectedResult();
         }
 
-        return $this->createResult(401, []);
+        $order = $this->resolveOrderFromNotification($getnetData);
+
+        if (!$this->isNotifiableOrder($order, (string) $getnetData->getId())) {
+            // Unknown order, other payment method (card, Wallet, GetPay, third-party modules),
+            // order already processed or payment id not bound to the order: same answer for all
+            return $this->createRejectedResult();
+        }
+
+        if ($this->statusUpdater->isBiometricOrder($order)) {
+            // Never trust the webhook status alone for Pix by biometrics: confirm it on the gateway
+            $status = $this->statusUpdater->update($order);
+
+            return $status === null ? $this->createUnavailableResult() : $this->createAcceptedResult();
+        }
+
+        if ($this->config->getApiType($order->getStoreId()) === Config::API_TYPE_GLOBAL) {
+            return $this->resolveGlobalStatusUpdate($order);
+        }
+
+        return $this->resolveV2StatusUpdate($order, $getnetData);
+    }
+
+    /**
+     * Check if the notification may change the order.
+     *
+     * Only Pix and Boleto orders still waiting for payment are handled here, and the
+     * notified payment id must be the one Getnet returned when the order was placed.
+     *
+     * @param Order|null $order
+     * @param string     $notifiedPaymentId
+     *
+     * @return bool
+     */
+    public function isNotifiableOrder($order, string $notifiedPaymentId): bool
+    {
+        if (!$order instanceof Order || !$order->getEntityId() || $notifiedPaymentId === '') {
+            return false;
+        }
+
+        if ($order->getState() !== Order::STATE_NEW) {
+            return false;
+        }
+
+        $payment = $order->getPayment();
+
+        if (!$payment || !in_array($payment->getMethod(), self::NOTIFIABLE_METHODS, true)) {
+            return false;
+        }
+
+        foreach ([(string) $payment->getLastTransId(), (string) $order->getExtOrderId()] as $boundId) {
+            if ($boundId !== '' && hash_equals($boundId, $notifiedPaymentId)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Global API: apply the status confirmed on the gateway, never the notified one.
+     *
+     * @param Order $order
+     *
+     * @return ResultInterface
+     */
+    public function resolveGlobalStatusUpdate(Order $order)
+    {
+        $paymentId = (string) $order->getPayment()->getLastTransId();
+
+        try {
+            $info = $this->paymentInfoClient->fetch($paymentId, $order->getStoreId());
+        } catch (Exception $exc) {
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
+            $info = null;
+        }
+
+        if ($info === null) {
+            // Gateway could not confirm the payment: ask Getnet to retry the notification
+            return $this->createUnavailableResult();
+        }
+
+        if (!$this->isExpectedAmount($order, $info['amount'])) {
+            return $this->createRejectedResult();
+        }
+
+        return $this->resolveStatusUpdate($info['status'], $order);
+    }
+
+    /**
+     * API V2: no payment query for Pix/Boleto, the notification is bound to the order.
+     *
+     * @param Order                         $order
+     * @param \Magento\Framework\DataObject $getnetData
+     *
+     * @return ResultInterface
+     */
+    public function resolveV2StatusUpdate(Order $order, $getnetData)
+    {
+        $amount = $getnetData->getAmount();
+
+        if (is_numeric($amount) && !$this->isExpectedAmount($order, (int) $amount)) {
+            return $this->createRejectedResult();
+        }
+
+        return $this->resolveStatusUpdate(strtoupper((string) $getnetData->getStatus()), $order);
+    }
+
+    /**
+     * Check if the gateway amount (in cents) matches the order total.
+     *
+     * @param Order    $order
+     * @param int|null $amount
+     *
+     * @return bool
+     */
+    public function isExpectedAmount(Order $order, ?int $amount): bool
+    {
+        if ($amount === null) {
+            return true;
+        }
+
+        return $amount === (int) round($this->config->formatPrice($order->getBaseGrandTotal()));
     }
 
     /**
@@ -302,11 +422,16 @@ class All extends Action implements CsrfAwareActionInterface
     {
         $getnetDataOrderId = $getnetData->getOrderId();
 
-        if (isset($getnetDataOrderId)) {
-            return $this->findMageOrder($getnetDataOrderId);
-        }
-
         $getnetDataId = $getnetData->getId();
+
+        if (isset($getnetDataOrderId)) {
+            $order = $this->findMageOrder($getnetDataOrderId);
+
+            // Pix by biometrics sends a GUID as order_id: fall back to the payment id
+            if (($order instanceof Order && $order->getEntityId()) || !isset($getnetDataId)) {
+                return $order;
+            }
+        }
 
         if (isset($getnetDataId)) {
             return $this->findMageOrderById($getnetDataId);
@@ -375,117 +500,77 @@ class All extends Action implements CsrfAwareActionInterface
     /**
      * Resolve Status Update.
      *
-     * @param string                $getnetDataStatus
-     * @param OrderInterfaceFactory $order
-     * @param string|null           $getnetDataId
+     * @param string $getnetDataStatus
+     * @param Order  $order
      *
      * @return ResultInterface
      */
-    public function resolveStatusUpdate($getnetDataStatus, $order, $getnetDataId = null)
+    public function resolveStatusUpdate($getnetDataStatus, $order)
     {
-        if ($getnetDataStatus === self::PENDING) {
-            return $this->updatePayId($order, $getnetDataId);
-        }
-
-        if ($getnetDataStatus === self::APPROVED_PAID ||
-            $getnetDataStatus === self::ACCEPT_PAID ||
-            $getnetDataStatus === self::ACCEPT_PAID_ALTERNATIVE) {
+        if (in_array($getnetDataStatus, self::STATUSES_PAY, true)) {
             return $this->processPay($order);
         }
 
-        if ($getnetDataStatus === self::CANCELED_PAID ||
-            $getnetDataStatus === self::DENNY_PAID ||
-            $getnetDataStatus === self::ERROR) {
+        if (in_array($getnetDataStatus, self::STATUSES_CANCEL, true)) {
             return $this->processCancel($order);
         }
 
-        return $this->createResult(412, []);
+        // Waiting/registered/pending: nothing to change, acknowledge the notification
+        return $this->createAcceptedResult();
     }
 
     /**
-     * Update Payment Id.
-     *
-     * @param OrderInterfaceFactory $order
-     * @param string                $getnetDataId
-     */
-    public function updatePayId($order, $getnetDataId)
-    {
-        try {
-            $orderId = $order->getId();
-            $transaction = $this->transactionSearch->create()->addOrderIdFilter($orderId)->getFirstItem();
-            $transaction->setTxnId($getnetDataId);
-            $transaction->save();
-        } catch (Exception $exc) {
-            return $this->createResult(
-                500,
-                [
-                    'error'   => 500,
-                    'message' => $exc->getMessage(),
-                ]
-            );
-        }
-
-        return $this->createResult(
-            200,
-            [
-                'order'     => $order->getIncrementId(),
-                'state'     => $order->getState(),
-                'status'    => $order->getStatus(),
-                'pay'       => $getnetDataId,
-            ]
-        );
-    }
-
-    /**
-     * Find Magento Order.
+     * Find Magento Order by the Getnet payment id.
      *
      * @param string $getnetDataId
      *
-     * @return OrderInterfaceFactory|ResultInterface
+     * @return Order|null
      */
     public function findMageOrderById($getnetDataId)
     {
-        $searchCriteria = $this->searchCriteria->addFilter('txn_id', $getnetDataId)
+        $searchCriteria = $this->searchCriteria->addFilter('txn_id', (string) $getnetDataId)
             ->create();
 
         try {
-            /** @var TransactionRepositoryInterface $transaction */
+            /** @var \Magento\Sales\Api\Data\TransactionInterface $transaction */
             $transaction = $this->transaction->getList($searchCriteria)->getFirstItem();
+
+            if (!$transaction->getOrderId()) {
+                return null;
+            }
 
             $order = $this->orderFactory->create()->load($transaction->getOrderId());
         } catch (Exception $exc) {
-            return $this->createResult(
-                500,
-                [
-                    'error'   => 500,
-                    'message' => $exc->getMessage(),
-                ]
-            );
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
+            return null;
         }
 
         return $order;
     }
 
     /**
-     * Find Magento Order.
+     * Find Magento Order by increment id.
      *
      * @param string $getnetDataOrderId
      *
-     * @return OrderInterfaceFactory|ResultInterface
+     * @return Order|null
      */
     public function findMageOrder($getnetDataOrderId)
     {
         try {
-            /** @var OrderInterfaceFactory $order */
-            $order = $this->orderFactory->create()->load($getnetDataOrderId, 'increment_id');
+            /** @var Order $order */
+            $order = $this->orderFactory->create()->load((string) $getnetDataOrderId, 'increment_id');
         } catch (Exception $exc) {
-            return $this->createResult(
-                500,
-                [
-                    'error'   => 500,
-                    'message' => $exc->getMessage(),
-                ]
-            );
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
+            return null;
         }
 
         return $order;
@@ -511,23 +596,15 @@ class All extends Action implements CsrfAwareActionInterface
             $order->save();
             $this->communicateStatus($order, 'pay');
         } catch (Exception $exc) {
-            return $this->createResult(
-                500,
-                [
-                    'error'   => 500,
-                    'message' => $exc->getMessage(),
-                ]
-            );
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
+            return $this->createUnavailableResult();
         }
 
-        return $this->createResult(
-            200,
-            [
-                'order'     => $order->getIncrementId(),
-                'state'     => $order->getState(),
-                'status'    => $order->getStatus(),
-            ]
-        );
+        return $this->createAcceptedResult();
     }
 
     /**
@@ -550,23 +627,15 @@ class All extends Action implements CsrfAwareActionInterface
             $order->save();
             $this->communicateStatus($order, 'cancel');
         } catch (Exception $exc) {
-            return $this->createResult(
-                500,
-                [
-                    'error'   => 500,
-                    'message' => $exc->getMessage(),
-                ]
-            );
+            $this->logger->debug([
+                'type'      => 'notification_error',
+                'exception' => $exc->getMessage(),
+            ]);
+
+            return $this->createUnavailableResult();
         }
 
-        return $this->createResult(
-            200,
-            [
-                'order'     => $order->getIncrementId(),
-                'state'     => $order->getState(),
-                'status'    => $order->getStatus(),
-            ]
-        );
+        return $this->createAcceptedResult();
     }
 
     /**
@@ -592,6 +661,36 @@ class All extends Action implements CsrfAwareActionInterface
             $history->setIsCustomerNotified(true);
             $this->orderService->addComment($orderId, $history);
         }
+    }
+
+    /**
+     * Notification processed (or nothing to change).
+     *
+     * @return ResultInterface
+     */
+    public function createAcceptedResult()
+    {
+        return $this->createResult(200, ['message' => __('Received.')]);
+    }
+
+    /**
+     * Notification refused - same answer whatever the reason, so it can not be used to probe orders.
+     *
+     * @return ResultInterface
+     */
+    public function createRejectedResult()
+    {
+        return $this->createResult(412, ['message' => __('Not available.')]);
+    }
+
+    /**
+     * Temporary failure - Getnet should retry the notification.
+     *
+     * @return ResultInterface
+     */
+    public function createUnavailableResult()
+    {
+        return $this->createResult(503, ['message' => __('Internal error.')]);
     }
 
     /**

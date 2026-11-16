@@ -12,6 +12,7 @@ namespace Getnet\PaymentMagento\Console\Command\Marketplace;
 
 use Getnet\PaymentMagento\Model\Console\Command\Marketplace\PaymentRelease;
 use Magento\Framework\App\State;
+use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -81,11 +82,13 @@ class Release extends Command
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(
         InputInterface $input,
         OutputInterface $output
-    ) {
+    ): int {
         $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_ADMINHTML);
         $this->paymentRelease->setOutput($output);
 
@@ -98,7 +101,7 @@ class Release extends Command
 
         $this->paymentRelease->create($orderId, $date, $subSellerId);
 
-        return 1;
+        return Cli::RETURN_SUCCESS;
     }
 
     /**

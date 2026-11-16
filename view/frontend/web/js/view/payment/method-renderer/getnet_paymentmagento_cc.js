@@ -117,6 +117,12 @@
                 self.addInterest();
             });
 
+            quote.totals.subscribe(function () {
+                if (self.active() && getnetSetInterest.needsReprice(self.creditCardInstallment())) {
+                    self.addInterest();
+                }
+            });
+
             self.creditCardNumberToken.subscribe(function (value) {
                 creditCardData.creditCardNumberToken = value;
             });

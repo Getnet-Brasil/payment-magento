@@ -37,6 +37,11 @@ use Magento\Payment\Model\Method\Logger;
 class Api
 {
     /**
+     * Reserved request key for per-request HTTP headers; removed from the body before sending.
+     */
+    public const EXTRA_HEADERS = '__headers';
+
+    /**
      * @var Logger
      */
     protected $logger;
@@ -273,6 +278,9 @@ class Api
             unset($request['pix_expiration']);
         }
 
+        $headers = $this->mergeExtraHeaders($headers, $request);
+        unset($request[self::EXTRA_HEADERS]);
+
         $uri .= $path;
         $payload = $this->json->serialize($request);
         /** @var LaminasClient $client */
@@ -284,8 +292,12 @@ class Api
             $client->setRawBody($payload);
             $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
             $client->setMethod(Request::METHOD_POST);
-            $responseBody = $client->send()->getBody();
-            $data = $this->json->unserialize($responseBody);
+            $httpResponse = $client->send();
+            $responseBody = $httpResponse->getBody();
+            // Some operations (e.g. Open Finance merchant setup) answer 204 with no body
+            $data = $responseBody === ''
+                ? ['http_status' => $httpResponse->getStatusCode()]
+                : $this->json->unserialize($responseBody);
             $this->collectLogger(
                 $uri,
                 $client->getMethod(),
@@ -334,7 +346,8 @@ class Api
 
         $data = [];
         $uri = $this->config->getApiUrl($storeId);
-        $headers = $this->getDefaultHeaders($auth, $storeId);
+        $headers = $this->mergeExtraHeaders($this->getDefaultHeaders($auth, $storeId), $request);
+        unset($request[self::EXTRA_HEADERS]);
         $uri .= $path;
 
         /** @var LaminasClient $client */
@@ -345,7 +358,9 @@ class Api
             $client->setHeaders($headers);
             $client->setMethod(Request::METHOD_GET);
             $client->setOptions(['maxredirects' => 0, 'timeout' => 30]);
-            $client->setRawBody($this->json->serialize($request));
+            if ($request) {
+                $client->setRawBody($this->json->serialize($request));
+            }
             $responseBody = $client->send()->getBody();
             $data = $this->json->unserialize($responseBody);
             $this->collectLogger(
@@ -353,15 +368,16 @@ class Api
                 $client->getMethod(),
                 $headers,
                 $request,
-                $client->send()->getBody(),
+                $responseBody,
             );
         } catch (Exception $exc) {
+            $response = $client->getResponse();
             $this->collectLogger(
                 $uri,
                 $client->getMethod(),
                 $headers,
                 $request,
-                $client->send()->getBody(),
+                $response ? $response->getBody() : '',
                 $exc->getMessage(),
             );
             // phpcs:ignore Magento2.Exceptions.DirectThrow
@@ -495,6 +511,31 @@ class Api
         }
 
         return $data;
+    }
+
+    /**
+     * Merge per-request headers sent under the reserved EXTRA_HEADERS key.
+     *
+     * @param array $headers
+     * @param array $request
+     *
+     * @return array
+     */
+    public function mergeExtraHeaders(array $headers, array $request): array
+    {
+        $extra = $request[self::EXTRA_HEADERS] ?? [];
+
+        if (!is_array($extra)) {
+            return $headers;
+        }
+
+        foreach ($extra as $name => $value) {
+            if ($value !== null && $value !== '') {
+                $headers[(string) $name] = (string) $value;
+            }
+        }
+
+        return $headers;
     }
 
     /**

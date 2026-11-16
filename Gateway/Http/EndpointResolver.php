@@ -42,6 +42,12 @@ class EndpointResolver
      */
     public const PIX_CREATE = 'pix_create';
 
+    public const PIX_BIOMETRIC_CREATE = 'pix_biometric_create';
+
+    public const PAYMENT_INFO_GET = 'payment_info_get';
+
+    public const OPENFINANCE_MERCHANT = 'openfinance_merchant';
+
     /**
      * @const string
      */
@@ -139,6 +145,15 @@ class EndpointResolver
         self::PIX_CREATE => [
             Config::API_TYPE_V2     => 'v2/payments/qrcode/pix',
             Config::API_TYPE_GLOBAL => 'dpm/payments-gwproxy/v2/payments/qrcode/pix',
+        ],
+        self::PIX_BIOMETRIC_CREATE => [
+            Config::API_TYPE_GLOBAL => 'dpm/payments-gwproxy/v2/payments/biometric/pix',
+        ],
+        self::PAYMENT_INFO_GET => [
+            Config::API_TYPE_GLOBAL => 'dpm/hub-payment-info/v1/payments/info/%s',
+        ],
+        self::OPENFINANCE_MERCHANT => [
+            Config::API_TYPE_GLOBAL => 'dpm/pix/v1/merchants/openfinance',
         ],
         self::BOLETO_CREATE => [
             Config::API_TYPE_V2     => 'v2/payments/boleto',
