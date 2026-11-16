@@ -9,22 +9,74 @@
 <fieldset data-bind="attr: {class: 'fieldset payment items', id: 'payment_form_payer_' + getCode()}">
     <!-- ko if: (isShowLegend())-->
     <legend class="legend">
-        <span class="legend-title"><!-- ko i18n: 'Boleto Information'--><!-- /ko --></span>
+        <span class="legend-title"><!-- ko i18n: 'Pix Information'--><!-- /ko --></span>
     </legend>
     <!-- /ko -->
     <div class="field-to-pay"  data-bind="css: { _hidden:isPlaceOrderActionAllowed() }">
       <p class="not-editable-title"><!-- ko i18n: 'Waiting...'--><!-- /ko --></p>
     </div>
     <div class="field-to-pay"  data-bind="css: { _hidden:!isPlaceOrderActionAllowed() }">
-       <!-- ko if: getInstructionCheckout() -->
+        <!-- ko if: isBiometricActive() -->
+        <div class="field choice getnet-pix-mode">
+            <div class="control">
+                <input type="radio" class="radio" value="biometric"
+                       data-bind="attr: {id: getCode() + '_mode_biometric', name: getCode() + '_mode'},
+                                  checked: pixMode,
+                                  enable: isActive($parents)"/>
+                <label class="label" data-bind="attr: {for: getCode() + '_mode_biometric'}">
+                    <span><!-- ko i18n: 'Pay with biometrics on your bank app'--><!-- /ko --></span>
+                </label>
+            </div>
+            <div class="control">
+                <input type="radio" class="radio" value="qrcode"
+                       data-bind="attr: {id: getCode() + '_mode_qrcode', name: getCode() + '_mode'},
+                                  checked: pixMode,
+                                  enable: isActive($parents)"/>
+                <label class="label" data-bind="attr: {for: getCode() + '_mode_qrcode'}">
+                    <span><!-- ko i18n: 'Pay with QR code or copy and paste'--><!-- /ko --></span>
+                </label>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: isBiometricMode() -->
+        <div class="field getnet-input-group payer tax-document required">
+            <div class="control">
+                <input type="text" name="payment[pix_payer_document]" class="input-text" value=""
+                       data-bind="attr: {
+                                        autocomplete: 'off',
+                                        id: getCode() + '_payer_tax_document',
+                                        title: $t('CPF of the account holder'),
+                                        placeholder: $t('CPF of the account holder'),
+                                        'data-container': getCode() + '-tax-document',
+                                        'data-validate': JSON.stringify({'required':true})},
+                                  enable: isActive($parents),
+                                  value: payerTaxDocument,
+                                  valueUpdate: 'keyup' "/>
+                <label data-bind="attr: {for: getCode() + '_payer_tax_document'}" class="label">
+                    <span><!-- ko i18n: 'CPF of the account holder'--><!-- /ko --></span>
+                </label>
+            </div>
+        </div>
+        <!-- ko if: getBiometricInstruction() -->
         <dl class="items check payable">
-            <!-- ko if: getInstructionCheckout() -->
+            <dt class="title"><!-- ko i18n: 'Instruction' --><!-- /ko --></dt>
+            <dd class="content">
+                <address class="getnetpix instruction address" data-bind="html: getBiometricInstruction()"></address>
+            </dd>
+        </dl>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot: isBiometricMode() -->
+        <!-- ko if: getInstructionCheckout() -->
+        <dl class="items check payable">
             <dt class="title"><!-- ko i18n: 'Instruction' --><!-- /ko --></dt>
             <dd class="content">
                 <address class="getnetpix instruction address" data-bind="html: getInstructionCheckout()"></address>
             </dd>
-            <!-- /ko -->
         </dl>
+        <!-- /ko -->
         <!-- /ko -->
     </div>
 </fieldset>

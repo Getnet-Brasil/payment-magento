@@ -15,6 +15,10 @@
         <!-- CONFIG -->
         <message code="CONFIG-403" translate="true">Desculpe, esse meio de pagamento ainda não está corretamente configurado. Por favor, escolha outro meio de pagamento.</message>
         
+        <!-- PIX BIOMETRIC (business status returned with HTTP 201) -->
+        <message code="PIX-BIOMETRIC-DENIED" translate="true">Pix by biometrics is not available for this store at the moment. Please choose the Pix QR code or another payment method.</message>
+        <message code="PIX-BIOMETRIC-ERROR" translate="true">We could not start the Pix by biometrics payment. Please check your CPF or choose the Pix QR code.</message>
+
         <!-- PAYMENTS -->
         <message code="PAYMENTS-012" translate="true">Valor da entrada maior ou igual ao valor da transação.</message>
         <message code="PAYMENTS-013" translate="true">Valor da parcela inválido.</message>

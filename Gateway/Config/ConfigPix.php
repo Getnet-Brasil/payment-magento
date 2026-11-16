@@ -56,6 +56,63 @@ class ConfigPix extends PaymentConfig
     public const INSTRUCTION_CHECKOUT = 'instruction_checkout';
 
     /**
+     * @const string
+     */
+    public const BIOMETRIC_ACTIVE = 'biometric_active';
+
+    /**
+     * @const string
+     */
+    public const BIOMETRIC_DEFAULT = 'biometric_default';
+
+    /**
+     * @const string
+     */
+    public const BIOMETRIC_EXPIRATION = 'biometric_expiration';
+
+    /**
+     * @const string
+     */
+    public const BIOMETRIC_INSTRUCTION = 'biometric_instruction';
+
+    /**
+     * @const string
+     */
+    public const BIOMETRIC_RETURN_URL = 'biometric_return_url';
+
+    /**
+     * @const string
+     */
+    public const BIOMETRIC_ALLOWED_HOSTS = 'biometric_allowed_hosts';
+
+    /**
+     * Payment additional information key holding the chosen Pix flow.
+     */
+    public const MODE = 'pix_mode';
+
+    /**
+     * @const string
+     */
+    public const MODE_QRCODE = 'qrcode';
+
+    /**
+     * @const string
+     */
+    public const MODE_BIOMETRIC = 'biometric';
+
+    /**
+     * Biometric expiration limits (seconds) accepted by the Global API.
+     */
+    public const BIOMETRIC_EXPIRATION_MIN = 60;
+
+    public const BIOMETRIC_EXPIRATION_MAX = 1800;
+
+    /**
+     * Frontend route that receives the payer back from the biometric journey.
+     */
+    public const BIOMETRIC_RETURN_ROUTE = 'getnet/pixbiometric/return';
+
+    /**
      * @var ScopeConfigInterface
      */
     protected $scopeConfig;
@@ -177,12 +234,145 @@ class ConfigPix extends PaymentConfig
     }
 
     /**
+     * Is Pix with biometrics available (flag enabled and store on the Global API).
+     *
+     * @param int|null $storeId
+     *
+     * @return bool
+     */
+    public function isBiometricActive($storeId = null): bool
+    {
+        return $this->getPixValue(self::BIOMETRIC_ACTIVE, $storeId)
+            && $this->config->getApiType($storeId) === Config::API_TYPE_GLOBAL;
+    }
+
+    /**
+     * Pix flow preselected at checkout when biometrics is available.
+     *
+     * @param int|null $storeId
+     *
+     * @return string
+     */
+    public function getBiometricDefault($storeId = null): string
+    {
+        $mode = (string) $this->getPixValue(self::BIOMETRIC_DEFAULT, $storeId);
+
+        return $mode === self::MODE_QRCODE ? self::MODE_QRCODE : self::MODE_BIOMETRIC;
+    }
+
+    /**
+     * Biometric charge expiration in seconds, clamped to the API limits.
+     *
+     * @param int|null $storeId
+     *
+     * @return int
+     */
+    public function getBiometricExpiration($storeId = null): int
+    {
+        $expiration = (int) $this->getPixValue(self::BIOMETRIC_EXPIRATION, $storeId);
+
+        if (!$expiration) {
+            return 600;
+        }
+
+        return max(self::BIOMETRIC_EXPIRATION_MIN, min(self::BIOMETRIC_EXPIRATION_MAX, $expiration));
+    }
+
+    /**
+     * Instruction displayed at checkout for the biometric flow.
+     *
+     * @param int|null $storeId
+     *
+     * @return string|null
+     */
+    public function getBiometricInstruction($storeId = null): ?string
+    {
+        $value = $this->getPixValue(self::BIOMETRIC_INSTRUCTION, $storeId);
+
+        return $value === null ? null : (string) $value;
+    }
+
+    /**
+     * Return URL override registered on the Open Finance merchant setup.
+     *
+     * @param int|null $storeId
+     *
+     * @return string|null
+     */
+    public function getBiometricReturnUrl($storeId = null): ?string
+    {
+        $value = trim((string) $this->getPixValue(self::BIOMETRIC_RETURN_URL, $storeId));
+
+        return $value === '' ? null : $value;
+    }
+
+    /**
+     * Hosts (domain suffixes) accepted for the biometric journey redirect.
+     *
+     * @param int|null $storeId
+     *
+     * @return array
+     */
+    public function getBiometricAllowedHosts($storeId = null): array
+    {
+        $value = (string) $this->getPixValue(self::BIOMETRIC_ALLOWED_HOSTS, $storeId);
+
+        return array_values(array_filter(array_map('trim', explode(',', strtolower($value)))));
+    }
+
+    /**
+     * Is the url an https url on one of the allowed journey hosts.
+     *
+     * @param string   $url
+     * @param int|null $storeId
+     *
+     * @return bool
+     */
+    public function isAllowedBiometricUrl(string $url, $storeId = null): bool
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        $parts = parse_url($url);
+
+        if (!is_array($parts) || ($parts['scheme'] ?? '') !== 'https' || empty($parts['host'])) {
+            return false;
+        }
+
+        $host = strtolower($parts['host']);
+
+        foreach ($this->getBiometricAllowedHosts($storeId) as $allowed) {
+            $allowed = ltrim($allowed, '.');
+            if ($host === $allowed || substr($host, -strlen('.'.$allowed)) === '.'.$allowed) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Read a value from the Pix method config.
+     *
+     * @param string   $field
+     * @param int|null $storeId
+     *
+     * @return mixed
+     */
+    private function getPixValue(string $field, $storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            sprintf('payment/%s/%s', self::METHOD, $field),
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
      * Generate Image Qr Code.
      *
      * @param string $qrCode
      * @param string $transactionId
      *
-     * @return string
+     * @return string|false|null
      */
     public function generateImageQrCode($qrCode, $transactionId)
     {

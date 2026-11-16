@@ -15,6 +15,9 @@
         <job name="status_update_order_wallet" instance="Getnet\PaymentMagento\Cron\FetchTransactionOrderWallet" method="execute">
             <schedule>0 10 * * *</schedule>
         </job>
+        <job name="status_update_order_pix_biometric" instance="Getnet\PaymentMagento\Cron\FetchTransactionOrderPixBiometric" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
         <job name="status_update_refund" instance="Getnet\PaymentMagento\Cron\FetchTransactionRefund" method="execute">
             <schedule>10 */3 * * *</schedule>
         </job>

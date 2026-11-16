@@ -8,10 +8,12 @@
 
 namespace Getnet\PaymentMagento\Block\Sales\Order;
 
+use Getnet\PaymentMagento\Gateway\Config\ConfigPix;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Config;
 
 /**
@@ -86,6 +88,30 @@ class Success extends Template
     public function getInfo(string $info)
     {
         return  $this->getPayment()->getInfoInstance()->getAdditionalInformation($info);
+    }
+
+    /**
+     * Is the last order a Pix by biometrics still awaiting payment.
+     *
+     * @return bool
+     */
+    public function isPixBiometricPending(): bool
+    {
+        $order = $this->checkoutSession->getLastRealOrder();
+
+        return $this->getMethodCode() === ConfigPix::METHOD
+            && $this->getInfo(ConfigPix::MODE) === ConfigPix::MODE_BIOMETRIC
+            && $order->getState() === Order::STATE_NEW;
+    }
+
+    /**
+     * Url that resumes the biometric journey (validated server side by the redirect route).
+     *
+     * @return string
+     */
+    public function getPixBiometricResumeUrl(): string
+    {
+        return $this->getUrl('getnet/pixbiometric/redirect');
     }
 
     /**

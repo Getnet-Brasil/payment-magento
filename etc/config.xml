@@ -202,6 +202,13 @@ Não parcelamos no boleto.]]></instruction_checkout>
                 <instruction_checkout><![CDATA[O prazo de pagamento é de até 3 minutos.
 O QrCode para pagamento será exibido ao finalizar o pedido.
 A confirmação do seu pagamento é automática, em até 3 minutos.]]></instruction_checkout>
+                <biometric_active>0</biometric_active>
+                <biometric_default>biometric</biometric_default>
+                <biometric_expiration>600</biometric_expiration>
+                <biometric_instruction><![CDATA[Pague pelo app do seu banco, sem copiar código: na primeira compra você vincula sua conta (Open Finance) e cadastra a biometria; nas próximas, basta um toque.
+Ao finalizar o pedido você será direcionado para a autorização do pagamento.]]></biometric_instruction>
+                <biometric_return_url></biometric_return_url>
+                <biometric_allowed_hosts>linaob.com.br,linaopenx.com.br</biometric_allowed_hosts>
                 <min_order_total>1</min_order_total>
                 <max_order_total>200000</max_order_total>
                 <allowspecific>1</allowspecific>

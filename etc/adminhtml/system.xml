@@ -372,6 +372,61 @@
                         <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PixExpiration</source_model>
                         <config_path>payment/getnet_paymentmagento_pix/expiration</config_path>
                     </field>
+                    <field id="biometric_active" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enable Pix by Biometrics</label>
+                        <comment>Lets the payer authorize the Pix with biometrics through Open Finance, without copying codes. The payer chooses between biometrics and QR code at checkout. Available only in the API Global and must be enabled for your seller by Getnet.</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_active</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_default" translate="label" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Preselected Pix Option</label>
+                        <source_model>Getnet\PaymentMagento\Model\Adminhtml\Source\PixMode</source_model>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_default</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_expiration" translate="label comment" type="text" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Biometrics Expiration (seconds)</label>
+                        <comment>Time the payer has to complete the biometric journey. Between 60 and 1800 seconds.</comment>
+                        <validate>required-entry validate-digits validate-digits-range digits-range-60-1800</validate>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_expiration</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_instruction" translate="label comment" type="textarea" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Biometrics Instruction during checkout</label>
+                        <comment>Information displayed at checkout when the biometric option is selected.</comment>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_instruction</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_return_url" translate="label comment" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                        <label>Biometrics Return URL Override</label>
+                        <comment>Leave empty to use the store return route (getnet/pixbiometric/return). Must be https.</comment>
+                        <validate>validate-url</validate>
+                        <config_path>payment/getnet_paymentmagento_pix/biometric_return_url</config_path>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
+                    <field id="biometric_register_domain" translate="label" type="button" sortOrder="36" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Return URL (Open Finance)</label>
+                        <frontend_model>Getnet\PaymentMagento\Block\Adminhtml\System\Config\RegisterOpenFinanceDomain</frontend_model>
+                        <depends>
+                            <field id="*/getnet_base/api_type">api_global</field>
+                            <field id="biometric_active">1</field>
+                        </depends>
+                    </field>
                     <field id="instruction_checkout" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                         <label>Instruction during checkout</label>
                         <comment>Information displayed at checkout.</comment>

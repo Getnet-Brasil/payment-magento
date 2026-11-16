@@ -10,6 +10,7 @@ namespace Getnet\PaymentMagento\Controller\Notification;
 
 use Exception;
 use Getnet\PaymentMagento\Gateway\Config\Config;
+use Getnet\PaymentMagento\Model\PixBiometric\StatusUpdater;
 use InvalidArgumentException;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Action;
@@ -139,6 +140,11 @@ class All extends Action implements CsrfAwareActionInterface
     protected $json;
 
     /**
+     * @var StatusUpdater
+     */
+    protected $statusUpdater;
+
+    /**
      * @param Context                        $context
      * @param Logger                         $logger
      * @param OrderInterfaceFactory          $orderFactory
@@ -153,6 +159,7 @@ class All extends Action implements CsrfAwareActionInterface
      * @param OrderService                   $orderService
      * @param InvoiceService                 $invoiceService
      * @param Json                           $json
+     * @param StatusUpdater                  $statusUpdater
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -170,7 +177,8 @@ class All extends Action implements CsrfAwareActionInterface
         Config $config,
         OrderService $orderService,
         InvoiceService $invoiceService,
-        Json $json
+        Json $json,
+        StatusUpdater $statusUpdater
     ) {
         $this->logger = $logger;
         $this->orderFactory = $orderFactory;
@@ -185,6 +193,7 @@ class All extends Action implements CsrfAwareActionInterface
         $this->orderService = $orderService;
         $this->invoiceService = $invoiceService;
         $this->json = $json;
+        $this->statusUpdater = $statusUpdater;
         parent::__construct($context);
     }
 
@@ -281,6 +290,20 @@ class All extends Action implements CsrfAwareActionInterface
                 );
             }
 
+            if ($this->statusUpdater->isBiometricOrder($order)) {
+                // Never trust the webhook status alone for Pix by biometrics: confirm it on the gateway
+                $status = $this->statusUpdater->update($order);
+
+                return $this->createResult(
+                    $status === null ? 503 : 200,
+                    [
+                        'order'  => $order->getIncrementId(),
+                        'state'  => $order->getState(),
+                        'status' => $order->getStatus(),
+                    ]
+                );
+            }
+
             $getnetDataStatus = $getnetData->getStatus();
 
             return $this->resolveStatusUpdate($getnetDataStatus, $order);
@@ -302,11 +325,16 @@ class All extends Action implements CsrfAwareActionInterface
     {
         $getnetDataOrderId = $getnetData->getOrderId();
 
-        if (isset($getnetDataOrderId)) {
-            return $this->findMageOrder($getnetDataOrderId);
-        }
-
         $getnetDataId = $getnetData->getId();
+
+        if (isset($getnetDataOrderId)) {
+            $order = $this->findMageOrder($getnetDataOrderId);
+
+            // Pix by biometrics sends a GUID as order_id: fall back to the payment id
+            if (($order instanceof Order && $order->getEntityId()) || !isset($getnetDataId)) {
+                return $order;
+            }
+        }
 
         if (isset($getnetDataId)) {
             return $this->findMageOrderById($getnetDataId);

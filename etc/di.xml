@@ -24,6 +24,7 @@
                 <!-- <item name="payment_release" xsi:type="object">Getnet\PaymentMagento\Console\Command\Marketplace\Release</item> -->
                 <item name="getnet_webhook_register" xsi:type="object">Getnet\PaymentMagento\Console\Command\Webhook\Register</item>
                 <item name="getnet_webhook_unregister" xsi:type="object">Getnet\PaymentMagento\Console\Command\Webhook\Unregister</item>
+                <item name="getnet_pix_biometric_register_domain" xsi:type="object">Getnet\PaymentMagento\Console\Command\PixBiometric\RegisterDomain</item>
             </argument>
         </arguments>
     </type>
@@ -292,7 +293,52 @@
     <virtualType name="PaymentMagentoPixCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="initialize" xsi:type="string">PaymentMagentoPixOrderCommand</item>
+                <item name="initialize" xsi:type="string">PaymentMagentoPixInitializeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pix - Initialize dispatcher: QR code (default) or biometrics (Global API only) -->
+    <virtualType name="PaymentMagentoPixInitializeCommand" type="Getnet\PaymentMagento\Gateway\Command\Pix\InitializeCommand">
+        <arguments>
+            <argument name="qrCodeCommand" xsi:type="object">PaymentMagentoPixOrderCommand</argument>
+            <argument name="biometricCommand" xsi:type="object">PaymentMagentoPixBiometricOrderCommand</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pix Biometric - Order Command -->
+    <virtualType name="PaymentMagentoPixBiometricOrderCommand" type="Getnet\PaymentMagento\Gateway\Command\PaymentCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">PaymentMagentoPixCommandPool</argument>
+            <argument name="requestBuilder" xsi:type="object">PaymentMagentoPixBiometricOrderRequest</argument>
+            <argument name="handler" xsi:type="object">PaymentMagentoPixBiometricResponseHandlerComposite</argument>
+            <argument name="transferFactory" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">Getnet\PaymentMagento\Gateway\Http\Client\Pix\BiometricCreateClient</argument>
+            <argument name="validator" xsi:type="object">PaymentMagentoTransactionValidator</argument>
+            <argument name="errorMessageMapper" xsi:type="object">PaymentMagentoVirtualErrorMessageMapper</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pix Biometric - Order Request -->
+    <virtualType name="PaymentMagentoPixBiometricOrderRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="storeId" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\StoreIdDataRequest</item>
+                <item name="headers" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\Biometric\HeadersDataRequest</item>
+                <item name="order_id" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\Biometric\OrderIdDataRequest</item>
+                <item name="amount" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\AmountDataRequest</item>
+                <item name="currency" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\CurrencyDataRequest</item>
+                <item name="customer" xsi:type="string">Getnet\PaymentMagento\Gateway\Request\Pix\Biometric\CustomerDataRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pix Biometric - Order Response handlers -->
+    <virtualType name="PaymentMagentoPixBiometricResponseHandlerComposite" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="extOrdId" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\Pix\ExtOrdIdHandler</item>
+                <item name="txnIdBiometric" xsi:type="string">Getnet\PaymentMagento\Gateway\Response\Pix\BiometricTxnIdHandler</item>
             </argument>
         </arguments>
     </virtualType>

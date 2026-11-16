@@ -44,7 +44,19 @@
         </p>
     </div>
 <?php endif; ?>
-<?php if ($block->getMethodCode() === 'getnet_paymentmagento_pix'): ?>
+<?php if ($block->getMethodCode() === 'getnet_paymentmagento_pix' && $block->getInfo('pix_mode') === 'biometric'): ?>
+    <div class="getnet-payment-success-details pix-biometric">
+        <?php if ($block->isPixBiometricPending()): ?>
+            <p><?= $escaper->escapeHtml(__('We are waiting for the authorization of your Pix by biometrics.')) ?></p>
+            <p>
+                <a href="<?= $escaper->escapeUrl($block->getPixBiometricResumeUrl()) ?>"
+                    class="action primary continue">
+                    <?= $escaper->escapeHtml(__('Complete payment with biometrics')) ?>
+                </a>
+            </p>
+        <?php endif; ?>
+    </div>
+<?php elseif ($block->getMethodCode() === 'getnet_paymentmagento_pix'): ?>
     <?php 
         $qrCodeImage = $block->getInfo('qr_code_image');
         $qrCodeImageUrl = $block->getImageQrCode($qrCodeImage); 

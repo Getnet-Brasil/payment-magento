@@ -1,0 +1,61 @@
+<?php
+/**
+ * Copyright © Getnet. All rights reserved.
+ *
+ * @author    Bruno Elisei <brunoelisei@o2ti.com>
+ * See LICENSE for license details.
+ */
+
+/**
+ * @var \Getnet\PaymentMagento\Block\Adminhtml\System\Config\RegisterOpenFinanceDomain $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?= /* @noEscape */ $block->getButtonHtml() ?>
+<p class="note">
+    <span>
+        <?= $escaper->escapeHtml(__('Registers on Getnet the URL the payer returns to after the biometric journey:')) ?>
+        <strong><?= $escaper->escapeHtml($block->getReturnUrl()) ?></strong>
+        <br/>
+        <?php
+            $noteSeller = __(
+                'The URL is set for the whole seller. '
+                . 'Save the configuration before registering if you changed the override.'
+            );
+        ?>
+        <?= $escaper->escapeHtml($noteSeller) ?>
+    </span>
+</p>
+<div id="getnet-openfinance-result"></div>
+<script>
+require(['jquery'], function ($) {
+    'use strict';
+
+    $('#getnet_register_openfinance_domain').on('click', function () {
+        var button = $(this),
+            result = $('#getnet-openfinance-result');
+
+        button.prop('disabled', true);
+        result.text('<?= $escaper->escapeJs(__('Waiting...')) ?>');
+
+        $.post('<?= $escaper->escapeJs($block->getAjaxUrl()) ?>', {form_key: window.FORM_KEY})
+            .done(function (data) {
+                result.html(
+                    $('<pre/>')
+                        .css('color', data.success ? 'green' : 'red')
+                        .text(data.message + (data.redirect_uri ? '\n' + data.redirect_uri : ''))
+                );
+            })
+            .fail(function () {
+                result.html(
+                    $('<pre/>')
+                        .css('color', 'red')
+                        .text('<?= $escaper->escapeJs(__('Request failed. Check the logs.')) ?>')
+                );
+            })
+            .always(function () {
+                button.prop('disabled', false);
+            });
+    });
+});
+</script>

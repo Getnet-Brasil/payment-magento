@@ -11,6 +11,7 @@ namespace Getnet\PaymentMagento\Model\Ui;
 use Getnet\PaymentMagento\Gateway\Config\ConfigPix;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Asset\Source;
 use Magento\Payment\Model\CcConfig;
 use Magento\Quote\Api\Data\CartInterface;
@@ -51,24 +52,32 @@ class ConfigProviderPix implements ConfigProviderInterface
     protected $assetSource;
 
     /**
+     * @var UrlInterface
+     */
+    protected $urlBuilder;
+
+    /**
      * @param ConfigPix     $config
      * @param CartInterface $cart
      * @param CcConfig      $ccConfig
      * @param Escaper       $escaper
      * @param Source        $assetSource
+     * @param UrlInterface  $urlBuilder
      */
     public function __construct(
         ConfigPix $config,
         CartInterface $cart,
         CcConfig $ccConfig,
         Escaper $escaper,
-        Source $assetSource
+        Source $assetSource,
+        UrlInterface $urlBuilder
     ) {
         $this->config = $config;
         $this->cart = $cart;
         $this->escaper = $escaper;
         $this->ccConfig = $ccConfig;
         $this->assetSource = $assetSource;
+        $this->urlBuilder = $urlBuilder;
     }
 
     /**
@@ -91,6 +100,16 @@ class ConfigProviderPix implements ConfigProviderInterface
                         )
                     ),
                     'logo'                 => $this->getLogo(),
+                    'biometric'            => [
+                        'active'       => $this->config->isBiometricActive($storeId),
+                        'default'      => $this->config->getBiometricDefault($storeId),
+                        'instruction'  => nl2br(
+                            $this->escaper->escapeHtml(
+                                (string) $this->config->getBiometricInstruction($storeId)
+                            )
+                        ),
+                        'redirect_url' => $this->urlBuilder->getUrl('getnet/pixbiometric/redirect'),
+                    ],
                 ],
             ],
         ];
